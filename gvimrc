@@ -5,4 +5,4 @@ autocmd VimEnter * NERDTree
 set guioptions-=T
 
 " Font options
-"set guifont=dejavu_sans_mono:h10
+set guifont=dejavu_sans_mono:h12

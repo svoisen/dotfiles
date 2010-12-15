@@ -111,6 +111,7 @@ endfunction
 au FileType ant,html,xml,xsl,rxml,rhtml,eruby,mxml,php source ~/.vim/scripts/closetag.vim
 au FileType html,rhtml,eruby setlocal wrap
 au FileType mxml,actionscript set makeprg=ant\ -find\ build.xml
+au FileType crayon set makeprg=crayonc
 
 " dictionary completion settings
 au FileType actionscript setlocal complete+=k~/.vim/dict/actionscript3.dict

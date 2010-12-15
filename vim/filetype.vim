@@ -14,4 +14,11 @@ augroup filetypedetect
 
   " Arduino files, which are essentially C
   au BufNewFile,BufRead *.pde set filetype=c
+
+  " Treetop grammars
+  au BufNewFile,BufRead *.tt set filetype=ruby
+  au BufNewFile,BufRead *.treetop set filetype=ruby
+
+  " Crayon
+  au BufNewFile,BufRead *.cyn set filetype=crayon
 augroup END
