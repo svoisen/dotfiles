@@ -1,5 +1,4 @@
 " Sean Voisen's vimrc
-" Copyright (C) 2010 Sean Voisen
 " Web: http://voisen.org
 " Email: sean {at} voisen {dot} org
 
@@ -11,17 +10,37 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 " colorscheme desert FTW!
-if $TERM =~ "-256color" 
+if $TERM =~ "-256color"
   set t_Co=256
-  colorscheme desert256
+  " Use a different colorscheme when 256 colors are supported,
+  " if desired ...
+  colorscheme desert
 else
   colorscheme desert
+endif
+
+" GUI-specific settings
+if has("gui_running")
+  " Hide the toolbar
+  set guioptions-=T
+
+  " Set font
+  set guifont=dejavu_sans_mono:h12
+end
+
+" file encoding options
+if has("multi_byte")
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  set bomb
+  set termencoding=iso-8859-1
+  set fileencodings=tis-620,iso-8859-1,utf-8
 endif
 
 " turn on file type support
 filetype on
 
-" also turn on filetype specific indenting
+" turn on filetype specific indenting
 filetype plugin indent on
 
 " change completion menu to always appear even with one result
@@ -29,7 +48,6 @@ set completeopt=longest,menuone
 
 " use <ctrl> space for completion
 " if omnicompletion is not available, use regular completion
-"inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ? "\<lt>C-n>" : "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" . "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" . "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
 inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ? "\<C-n>" : "\<C-x>\<C-o>"
 imap <C-@> <C-Space>
 
@@ -51,12 +69,20 @@ set nocompatible
 " turn off line wrapping
 set nowrap
 
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
 " indentation options
 set autoindent
 set smartindent
 set expandtab
 set tabstop=2
 set shiftwidth=2
+set shiftround
+set smarttab
+
+" show matching parens
+set showmatch
 
 " turn off the damn bell
 set vb
@@ -64,15 +90,27 @@ set vb
 " enable the mouse
 set mouse=a
 
-" ignore case when searching
+" backup/swap options
+set nobackup
+set noswapfile
+
+" change terminal title
+set title
+
+" search options
 set ignorecase
 set infercase
-
-" if using uppercase in search, assume case sensitive
 set smartcase
-
-" search as you type
 set incsearch
+
+" always do global replace
+set gdefault
+
+" show column at 80 characters
+set colorcolumn=80
+
+" always save when editor loses focus
+au FocusLost * :wa
 
 " auto change to directories whenever a window or buffer
 " is switched
@@ -90,9 +128,9 @@ set showmode
 " tabbed buffer settings
 set showtabline=2 " tabs always visible
 map tn :tabnew<CR>
-map td :tabclose<CR> 
+map td :tabclose<CR>
 map th :tabnext<CR>
-map tl :tabprev<CR> 
+map tl :tabprev<CR>
 
 " split window below instead of above
 set splitbelow
@@ -107,7 +145,7 @@ function ToggleHLSearch()
 endfunction
 
 " filetype settings
-" au FileType text setlocal textwidth=72 lbr formatoptions+=ta infercase dictionary+=/usr/share/dict/words 
+au FileType text setlocal wrap lbr formatoptions+=ta infercase dictionary+=/usr/share/dict/words
 au FileType ant,html,xml,xsl,rxml,rhtml,eruby,mxml,php source ~/.vim/scripts/closetag.vim
 au FileType html,rhtml,eruby setlocal wrap
 au FileType mxml,actionscript set makeprg=ant\ -find\ build.xml
@@ -127,16 +165,15 @@ au FileType html setlocal omnifunc=htmlcomplete#CompleteTags
 au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 au FileType css setlocal omnifunc=csscomplete#CompleteCSS
 au FileType php setlocal omnifunc=phpcomplete#CompletePHP
-"au FileType actionscript setlocal omnifunc=actionscriptcomplete#Complete
 
 " easily comment out code selected in visual mode
 au FileType haskell,vhdl,ada            let b:comment_leader = '-- '
 au FileType vim                         let b:comment_leader = '" '
 au FileType c,cpp,java,actionscript     let b:comment_leader = '// '
-au FileType sh,make                     let b:comment_leader = '# '
+au FileType sh,make,ruby,crayon         let b:comment_leader = '# '
 au FileType tex                         let b:comment_leader = '% '
 noremap <silent> ,c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
-noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR> 
+noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
 
 " easier window movement
 set winminheight=0
@@ -144,6 +181,11 @@ nmap <C-j> <C-w>j
 nmap <C-k> <C-W>k
 nmap <C-h> <c-w>h
 nmap <C-l> <c-w>l
+nmap <C-=> <c-w>=
+
+" jump up/down only one line no matter what
+nnoremap j gj
+nnoremap k gk
 
 " fix common spelling mistakes
 abbr teh the
@@ -152,9 +194,10 @@ abbr rigth right
 abbr heiht height
 
 " function key bindings
+set pastetoggle=<F2>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
-noremap! <silent> <F6> <c-o>:set spell!<cr> 
+noremap! <silent> <F6> <c-o>:set spell!<cr>
 noremap <silent> <F7> :set list!<cr>
 noremap! <silent> <F7> <c-o>:set list!<cr>
 noremap <silent> <F8> :TlistToggle<cr>
@@ -174,17 +217,18 @@ let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:va
 " ctags
 set tags=./tags,tags,~/commontags
 
-" lookup online documentation
-function! OnlineDocs ()
-  let s:wordUnderCursor = expand("<cword>")
-  if &ft =~ "actionscript" || &ft =~ "mxml"
-    let s:url = system("~/Scripts/flexdoc " . s:wordUnderCursor)
-  endif
-  let s:cmd = "silent !firefox -new-window " . s:url . " &"
-  exec s:cmd
-  redraw!
-endfunction
-map \d :call OnlineDocs ()<cr>
-
 " show whitespaces
-set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+set listchars=eol:¬,tab:▸\ ,trail:~,extends:>,precedes:<
+
+" leader commands
+" edit vimrc
+nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+
+" strip trailing whitespace
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+" open horizontal split and switch to it
+nnoremap <leader>s <C-w>s<C-w>j
+
+" open vertical split and switch to it
+nnoremap <leader>w <C-w>v<C-w>l
