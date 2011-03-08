@@ -20,5 +20,5 @@ augroup filetypedetect
   au BufNewFile,BufRead *.treetop set filetype=ruby
 
   " Crayon
-  au BufNewFile,BufRead *.cyn set filetype=crayon
+  au BufNewFile,BufRead *.crayon set filetype=crayon
 augroup END
