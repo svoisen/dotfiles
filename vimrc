@@ -12,11 +12,12 @@ endif
 " colorscheme desert FTW!
 if $TERM =~ "-256color"
   set t_Co=256
-  " Use a different colorscheme when 256 colors are supported,
-  " if desired ...
-  colorscheme desert
+  " Use a different colorscheme when 256 colors are supported
+  " solarized will use a 'degraded' color palette in this case
+  colorscheme solarized
 else
-  colorscheme desert
+  let g:solarized_termcolors=16
+  colorscheme solarized
 endif
 
 " GUI-specific settings
@@ -25,7 +26,13 @@ if has("gui_running")
   set guioptions-=T
 
   " Set font
-  set guifont=dejavu_sans_mono:h12
+  set guifont=liberation_mono:h12
+  
+  " show column at 80 characters
+  set colorcolumn=80
+
+  " use light background with solarized
+  set background=light
 end
 
 " file encoding options
@@ -106,9 +113,6 @@ set incsearch
 " always do global replace
 set gdefault
 
-" show column at 80 characters
-set colorcolumn=80
-
 " always save when editor loses focus
 au FocusLost * :wa
 
@@ -144,8 +148,19 @@ function ToggleHLSearch()
   endif
 endfunction
 
+" toggle background color
+function! ToggleBackground()
+  if (g:solarized_style=="dark")
+    let g:solarized_style="light"
+    colorscheme solarized
+  else
+    let g:solarized_style="dark"
+    colorscheme solarized
+  endif
+endfunction
+
 " filetype settings
-au FileType text setlocal wrap lbr formatoptions+=ta infercase dictionary+=/usr/share/dict/words
+au FileType text setlocal wrap lbr infercase dictionary+=/usr/share/dict/words
 au FileType ant,html,xml,xsl,rxml,rhtml,eruby,mxml,php source ~/.vim/scripts/closetag.vim
 au FileType html,rhtml,eruby setlocal wrap
 au FileType mxml,actionscript set makeprg=ant\ -find\ build.xml
@@ -195,6 +210,10 @@ abbr heiht height
 
 " function key bindings
 set pastetoggle=<F2>
+nnoremap <F3> :call ToggleBackground()<CR>
+inoremap <F3> <ESC>:call ToggleBackground()<CR>a
+vnoremap <F3> <ESC>:call ToggleBackground()<CR>
+noremap <silent> <F4> :NERDTreeToggle<cr>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
 noremap! <silent> <F6> <c-o>:set spell!<cr>
@@ -202,8 +221,7 @@ noremap <silent> <F7> :set list!<cr>
 noremap! <silent> <F7> <c-o>:set list!<cr>
 noremap <silent> <F8> :TlistToggle<cr>
 
-" NERDTree settings
-noremap <silent> <F4> :NERDTreeToggle<cr>
+" NERDTree abbrev settings
 cabbr ntb NERDTreeFromBookmark
 cabbr nt NERDTree
 cabbr ntt NERDTreeToggle
@@ -218,7 +236,7 @@ let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:va
 set tags=./tags,tags,~/commontags
 
 " show whitespaces
-set listchars=eol:¬,tab:▸\ ,trail:~,extends:>,precedes:<
+set listchars=eol:$,trail:~,extends:>,precedes:<
 
 " leader commands
 " edit vimrc
@@ -232,3 +250,4 @@ nnoremap <leader>s <C-w>s<C-w>j
 
 " open vertical split and switch to it
 nnoremap <leader>w <C-w>v<C-w>l
+
