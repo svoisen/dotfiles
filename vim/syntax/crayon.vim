@@ -11,17 +11,19 @@ if !exists("main_syntax")
   elseif exists("b:current_syntax")
   finish
 endif
-  let main_syntax = 'actionscript'
+  let main_syntax = 'crayon'
 endif
 
 syn case ignore
 
 syn match   crayonComment               "#.*$"
-syn keyword crayonConditional           if else end
+syn keyword crayonConditional           if else unless end
 syn keyword crayonFunction              function uses
-syn keyword crayonEvent                 on
+syn keyword crayonEvent                 do stop doing on
+syn keyword crayonValue                 true false nothing
+syn keyword crayonMath                  sin cos
 
-if version >= 508 || !exists("did_actionscript_syn_inits")
+if version >= 508 || !exists("did_crayon_syn_inits")
   if version < 508
     let did_actionscript_syn_inits = 1
     command -nargs=+ HiLink hi link <args>
@@ -33,6 +35,7 @@ if version >= 508 || !exists("did_actionscript_syn_inits")
   HiLink crayonConditional              Conditional
   HiLink crayonFunction                 Function
   HiLink crayonEvent                    Function
+  HiLink crayonValue                    Boolean
 
   delcommand HiLink
 endif

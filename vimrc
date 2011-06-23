@@ -1,7 +1,5 @@
 " Sean Voisen's vimrc
 " Web: http://voisen.org
-" Email: sean {at} voisen {dot} org
-
 " turn on syntax highlighting and highlight search if the terminal has
 " colors
 if &t_Co > 2 || has("gui_running")
@@ -12,12 +10,6 @@ endif
 " colorscheme desert FTW!
 if $TERM =~ "-256color"
   set t_Co=256
-  " Use a different colorscheme when 256 colors are supported
-  " solarized will use a 'degraded' color palette in this case
-  colorscheme solarized
-else
-  let g:solarized_termcolors=16
-  colorscheme solarized
 endif
 
 " GUI-specific settings
@@ -30,18 +22,16 @@ if has("gui_running")
   
   " show column at 80 characters
   set colorcolumn=80
-
-  " use light background with solarized
-  set background=light
 end
+
+" color scheme
+colorscheme desert
 
 " file encoding options
 if has("multi_byte")
   set encoding=utf-8
   setglobal fileencoding=utf-8
-  set bomb
   set termencoding=iso-8859-1
-  set fileencodings=tis-620,iso-8859-1,utf-8
 endif
 
 " turn on file type support
@@ -162,7 +152,7 @@ endfunction
 " filetype settings
 au FileType text setlocal wrap lbr infercase dictionary+=/usr/share/dict/words
 au FileType ant,html,xml,xsl,rxml,rhtml,eruby,mxml,php source ~/.vim/scripts/closetag.vim
-au FileType html,rhtml,eruby setlocal wrap
+au FileType html,rhtml,eruby,markdown,textile setlocal wrap
 au FileType mxml,actionscript set makeprg=ant\ -find\ build.xml
 au FileType crayon set makeprg=crayonc
 
