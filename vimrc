@@ -1,5 +1,6 @@
 " Sean Voisen's vimrc
 " Web: http://voisen.org
+"
 " turn on syntax highlighting and highlight search if the terminal has
 " colors
 if &t_Co > 2 || has("gui_running")
@@ -7,7 +8,7 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-" colorscheme desert FTW!
+" check for 256 colors
 if $TERM =~ "-256color"
   set t_Co=256
 endif
@@ -19,7 +20,7 @@ if has("gui_running")
 
   " Set font
   set guifont=liberation_mono:h12
-  
+
   " show column at 80 characters
   set colorcolumn=80
 end
@@ -138,17 +139,6 @@ function ToggleHLSearch()
   endif
 endfunction
 
-" toggle background color
-function! ToggleBackground()
-  if (g:solarized_style=="dark")
-    let g:solarized_style="light"
-    colorscheme solarized
-  else
-    let g:solarized_style="dark"
-    colorscheme solarized
-  endif
-endfunction
-
 " filetype settings
 au FileType text setlocal wrap lbr infercase dictionary+=/usr/share/dict/words
 au FileType ant,html,xml,xsl,rxml,rhtml,eruby,mxml,php source ~/.vim/scripts/closetag.vim
@@ -200,9 +190,6 @@ abbr heiht height
 
 " function key bindings
 set pastetoggle=<F2>
-nnoremap <F3> :call ToggleBackground()<CR>
-inoremap <F3> <ESC>:call ToggleBackground()<CR>a
-vnoremap <F3> <ESC>:call ToggleBackground()<CR>
 noremap <silent> <F4> :NERDTreeToggle<cr>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
