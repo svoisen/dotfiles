@@ -25,3 +25,10 @@ alias h="history | tail -20"
 
 # find
 alias fn="find . -name"
+
+# clear
+alias c="clear"
+
+# processes
+alias pu="ps u"
+alias paux="ps aux | less"
