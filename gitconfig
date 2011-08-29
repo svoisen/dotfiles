@@ -1,0 +1,38 @@
+[user]
+  name = Sean Voisen
+  email = sean@voisen.org
+
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  unstage = reset HEAD
+
+[core]
+  filemode = true
+  whitespace = trailing-spacea, space-before-tab
+
+[branch]
+  autosetupmerge = true
+
+[color]
+  ui = auto
+
+[color "diff"]
+  meta = blue bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+
+[color "status"]
+  added = yellow
+  changed = green bold
+  untracked = blue bold
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow bold
+  remote = green bold
+  plain = red bold

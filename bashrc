@@ -9,8 +9,22 @@
 # if not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# stupid simple prompt
-export PS1="\w$ "
+# vi editing mode
+set -o vi
+
+: ${HOME=~}
+: ${LOGNAME=$(id -un)}
+: ${UNAME=$(uname)}
+
+# autocomplete known hosts
+: ${HOSTFILE=~/.ssh/known_hosts}
+
+# default umask
+umask 0022
+
+# -------------------------------------------------------------
+# External Includes
+# ------------------------------------------------------------ 
 
 # custom path
 if [ -f ~/.bash_path ]; then
@@ -42,6 +56,39 @@ shopt -s histappend
 shopt -s checkwinsize
 
 # -------------------------------------------------------------
+# Prompt
+# ------------------------------------------------------------ 
+
+RED="\[\033[0;31m\]"
+BROWN="\[\033[0;33m\]"
+GREY="\[\033[0;97m\]"
+BLUE="\[\033[0;34m\]"
+PS_CLEAR="\[\033[0m\]"
+SCREEN_ESC="\[\033k\033\134\]"
+
+if [ "$LOGNAME" = "root" ]; then
+  COLOR1="${RED}"
+  COLOR2="${BROWN}"
+  P="#"
+else
+  COLOR1="${BLUE}"
+  COLOR2="${BROWN}"
+  P="\$"
+fi
+
+prompt_bw() {
+  PS1="\w${P} "
+  PS2="> "
+}
+
+prompt_color() {
+  PS1="${COLOR2}\w${COLOR1}${P}${PS_CLEAR} "
+  PS2="${COLOR1}>${PS_CLEAR} "
+}
+
+prompt_bw
+
+# -------------------------------------------------------------
 # Pager and Editor
 # ------------------------------------------------------------ 
 
@@ -66,15 +113,12 @@ export PAGER MANPAGER
 # ls and Colors
 # ------------------------------------------------------------ 
 
-LS_COMMON="-hBG"
-
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias ls='ls -hBG --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
