@@ -8,9 +8,12 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-" check for 256 colors
+" check for 256 colors and set colorscheme
 if $TERM =~ "-256color"
   set t_Co=256
+  colorscheme desert256
+else
+  colorscheme desert
 endif
 
 " GUI-specific settings
@@ -24,9 +27,6 @@ if has("gui_running")
   " show column at 80 characters
   set colorcolumn=80
 end
-
-" color scheme
-colorscheme desert
 
 " file encoding options
 if has("multi_byte")
