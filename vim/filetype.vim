@@ -21,4 +21,7 @@ augroup filetypedetect
 
   " Crayon
   au BufNewFile,BufRead *.crayon set filetype=crayon
+
+  " Markdown
+  au BufNewFile,BufRead *.markdown set filetype=markdown
 augroup END
