@@ -1,5 +1,5 @@
-Sean's Dot Files
-================
+DOT DOT DOT
+===========
 
 What is it?
 -----------
