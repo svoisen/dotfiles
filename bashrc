@@ -6,7 +6,12 @@
 # Basics
 # ------------------------------------------------------------ 
 
-# if not running interactively, don't do anything
+# custom path
+if [ -f ~/.bash_path ]; then
+  . ~/.bash_path
+fi
+
+# if not running interactively, don't do anything else
 [ -z "$PS1" ] && return
 
 # vi editing mode
@@ -25,11 +30,6 @@ umask 0022
 # -------------------------------------------------------------
 # External Includes
 # ------------------------------------------------------------ 
-
-# custom path
-if [ -f ~/.bash_path ]; then
-  . ~/.bash_path
-fi
 
 # custom (non ls-related) aliases
 if [ -f ~/.bash_aliases ]; then
