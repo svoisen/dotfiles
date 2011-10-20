@@ -8,12 +8,18 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
+if has("gui_running")
+  set background=dark
+else
+  set background=light
+endif
+
 " check for 256 colors and set colorscheme
 if $TERM =~ "-256color"
   set t_Co=256
-  colorscheme desert256
+  colorscheme solarized
 else
-  colorscheme desert
+  colorscheme solarized
 endif
 
 " GUI-specific settings
@@ -92,8 +98,8 @@ set mouse=a
 set nobackup
 set noswapfile
 
-" change terminal title
-set title
+" do not change terminal title
+set notitle
 
 " search options
 set ignorecase
