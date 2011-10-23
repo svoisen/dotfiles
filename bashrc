@@ -113,12 +113,16 @@ export PAGER MANPAGER
 # ls and Colors
 # ------------------------------------------------------------ 
 
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls -hBG --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
+dircolors="$(type -P gdircolors dircolors | head -1)"
+test -n "$dircolors" && {
+  COLORS=/etc/DIR_COLORS
+  test -e "/etc/DIR_COLORS.$TERM" && COLORS="/etc/DIR_COLORS.$TERM"
+  test -e "$HOME/.dircolors" && COLORS="$HOME/.dircolors"
+  test ! -e "$COLORS"
+  eval `$dircolors --sh $COLORS`
+}
+unset dircolors
+
+LS_COMMON="-hBG"
+test -n "$LS_COMMON" &&
+alias ls="command ls $LS_COMMON"
