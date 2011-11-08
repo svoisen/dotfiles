@@ -1,6 +1,10 @@
 " Sean Voisen's vimrc
-" Web: http://voisen.org
-"
+" Web: http://sean.voisen.org
+
+" enable pathogen
+call pathogen#infect()
+call pathogen#helptags()
+
 " turn on syntax highlighting and highlight search if the terminal has
 " colors
 if &t_Co > 2 || has("gui_running")
@@ -17,10 +21,9 @@ endif
 " check for 256 colors and set colorscheme
 if $TERM =~ "-256color"
   set t_Co=256
-  colorscheme solarized
-else
-  colorscheme solarized
 endif
+
+colorscheme solarized
 
 " GUI-specific settings
 if has("gui_running")
@@ -38,7 +41,7 @@ end
 if has("multi_byte")
   set encoding=utf-8
   setglobal fileencoding=utf-8
-  set termencoding=iso-8859-1
+  "set termencoding=iso-8859-1
 endif
 
 " turn on file type support
