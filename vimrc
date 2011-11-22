@@ -179,6 +179,10 @@ au FileType tex                         let b:comment_leader = '% '
 noremap <silent> ,c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
 noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
 
+" coffeescript settings
+au BufWritePost *.coffee CoffeeMake
+let coffee_compile_vert = 1
+
 " easier window movement
 set winminheight=0
 nmap <C-j> <C-w>j
