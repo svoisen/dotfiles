@@ -1,3 +1,0 @@
-twitvim-0.2.16a.vba: call delete('/home/svoisen/.vim/plugin/twitvim.vim')|call delete('/home/svoisen/.vim/doc/twitvim.txt')
-twitvim-0.2.17.vba: call delete('/home/svoisen/.vim/plugin/twitvim.vim')|call delete('/home/svoisen/.vim/doc/twitvim.txt')
-haskellmode-20101118.vba: call delete('/Users/svoisen/.vim/compiler/ghc.vim')|call delete('/Users/svoisen/.vim/ftplugin/haskell.vim')|call delete('/Users/svoisen/.vim/ftplugin/haskell_doc.vim')|call delete('/Users/svoisen/.vim/ftplugin/haskell_hpaste.vim')|call delete('/Users/svoisen/.vim/autoload/haskellmode.vim')|call delete('/Users/svoisen/.vim/doc/haskellmode.txt')
