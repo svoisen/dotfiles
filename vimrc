@@ -118,9 +118,12 @@ au FocusLost * :wa
 
 " auto change to directories whenever a window or buffer
 " is switched
-if exists("&autochdir")
-  :set autochdir
-endif
+" if exists("&autochdir")
+"  set autochdir
+" endif
+
+" Change CWD to match NERDTree root
+let NERDTreeChDirMode=2
 
 " set the statusline and always display it
 set statusline=%<%f\ [%{&ff}]\ %h%m%r%=%-14.(%l,%c%V%)\ %P
@@ -215,6 +218,8 @@ noremap <silent> <F8> :TlistToggle<cr>
 cabbr ntb NERDTreeFromBookmark
 cabbr nt NERDTree
 cabbr ntt NERDTreeToggle
+cabbr ff :FufFile
+cabbr fb :FufBuffer
 
 " Tag list settings
 let Tlist_Inc_Winwidth = 0
@@ -230,14 +235,17 @@ set listchars=eol:$,trail:~,extends:>,precedes:<
 
 " leader commands
 " edit vimrc
-nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+nnoremap <leader>ev :tabnew $MYVIMRC<cr>
 
 " strip trailing whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 " open horizontal split and switch to it
-nnoremap <leader>s <C-w>s<C-w>j
+nnoremap <leader>hs <C-w>s<C-w>j
 
 " open vertical split and switch to it
-nnoremap <leader>w <C-w>v<C-w>l
+nnoremap <leader>vs <C-w>v<C-w>l
 
+" open fuzzy finder
+nnoremap <leader>ff :FufCoverageFile<CR>
+nnoremap <leader>fb :FufBuffer<CR>
