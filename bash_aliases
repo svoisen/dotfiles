@@ -37,3 +37,6 @@ alias c="clear"
 # processes
 alias pu="ps u"
 alias paux="ps aux | less"
+
+# slapd
+alias slapd="sudo /usr/libexec/slapd -d 255"

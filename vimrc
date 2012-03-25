@@ -79,6 +79,9 @@ set nowrap
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
+" use jj as alternative to escape
+inoremap jj <ESC>
+
 " indentation options
 set autoindent
 set smartindent
@@ -116,6 +119,9 @@ set gdefault
 " always save when editor loses focus
 au FocusLost * :wa
 
+" change the leader
+let mapleader = ","
+
 " auto change to directories whenever a window or buffer
 " is switched
 " if exists("&autochdir")
@@ -143,13 +149,18 @@ map tl :tabprev<CR>
 set splitbelow
 
 " toggle highlight search
-function ToggleHLSearch()
+function! ToggleHLSearch()
   if &hls
     set nohls
   else
     set hls
   endif
 endfunction
+
+" auto-load changes to .vimrc
+if has("autocmd")
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
 
 " filetype settings
 au FileType text setlocal wrap lbr infercase dictionary+=/usr/share/dict/words
@@ -174,17 +185,17 @@ au FileType css setlocal omnifunc=csscomplete#CompleteCSS
 au FileType php setlocal omnifunc=phpcomplete#CompletePHP
 
 " easily comment out code selected in visual mode
-au FileType haskell,vhdl,ada            let b:comment_leader = '-- '
-au FileType vim                         let b:comment_leader = '" '
-au FileType c,cpp,java,actionscript     let b:comment_leader = '// '
-au FileType sh,make,ruby,crayon         let b:comment_leader = '# '
-au FileType tex                         let b:comment_leader = '% '
+au FileType haskell,vhdl,ada                  let b:comment_leader = '-- '
+au FileType vim                               let b:comment_leader = '" '
+au FileType c,cpp,java,actionscript           let b:comment_leader = '// '
+au FileType sh,make,ruby,crayon,coffeescript  let b:comment_leader = '# '
+au FileType tex                               let b:comment_leader = '% '
 noremap <silent> ,c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
 noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
 
 " coffeescript settings
-au BufWritePost *.coffee CoffeeMake
-let coffee_compile_vert = 1
+" au BufWritePost *.coffee CoffeeMake
+" let coffee_compile_vert = 1
 
 " easier window movement
 set winminheight=0
@@ -206,6 +217,8 @@ abbr heiht height
 
 " function key bindings
 set pastetoggle=<F2>
+noremap <silent> <F3> :YRShow<cr>
+inoremap <silent> <F3> <Esc>:YRShow<cr>
 noremap <silent> <F4> :NERDTreeToggle<cr>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
@@ -246,6 +259,8 @@ nnoremap <leader>hs <C-w>s<C-w>j
 " open vertical split and switch to it
 nnoremap <leader>vs <C-w>v<C-w>l
 
-" open fuzzy finder
-nnoremap <leader>ff :FufCoverageFile<CR>
-nnoremap <leader>fb :FufBuffer<CR>
+" strip all trailing whitespace
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+" re-hardwrap paragraphs
+nnoremap <leader>q gqip
