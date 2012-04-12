@@ -58,6 +58,9 @@ set completeopt=longest,menuone
 inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ? "\<C-n>" : "\<C-x>\<C-o>"
 imap <C-@> <C-Space>
 
+" Use shift-space for non-omnicompletion
+inoremap <expr> <S-Space> "\<C-n>"
+
 " make completion menu more IDE-like
 inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
 inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
@@ -130,6 +133,7 @@ let mapleader = ","
 
 " Change CWD to match NERDTree root
 let NERDTreeChDirMode=2
+let NERDTreeWinSize=40
 
 " set the statusline and always display it
 set statusline=%<%f\ [%{&ff}]\ %h%m%r%=%-14.(%l,%c%V%)\ %P
@@ -195,7 +199,7 @@ noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>/
 
 " coffeescript settings
 " au BufWritePost *.coffee CoffeeMake
-" let coffee_compile_vert = 1
+let coffee_compile_vert = 1
 
 " easier window movement
 set winminheight=0
@@ -220,12 +224,14 @@ set pastetoggle=<F2>
 noremap <silent> <F3> :YRShow<cr>
 inoremap <silent> <F3> <Esc>:YRShow<cr>
 noremap <silent> <F4> :NERDTreeToggle<cr>
+inoremap <silent> <F4> <Esc>:NerdTreeToggle<cr>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
 noremap! <silent> <F6> <c-o>:set spell!<cr>
 noremap <silent> <F7> :set list!<cr>
 noremap! <silent> <F7> <c-o>:set list!<cr>
 noremap <silent> <F8> :TlistToggle<cr>
+inoremap <silent> <F8> <Esc>:TlistToggle<cr>
 
 " NERDTree abbrev settings
 cabbr ntb NERDTreeFromBookmark
@@ -249,6 +255,10 @@ set listchars=eol:$,trail:~,extends:>,precedes:<
 " leader commands
 " edit vimrc
 nnoremap <leader>ev :tabnew $MYVIMRC<cr>
+
+" ctrl-p
+nnoremap <leader>t :CtrlP<cr>
+let g:ctrlp_map = '<c-t>'
 
 " strip trailing whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>

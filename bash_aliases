@@ -24,6 +24,7 @@ alias gco="git checkout"
 alias gb="git branch"
 alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
 alias gpom="git push origin master"
+alias gpod="git push origin development"
 
 # history
 alias h="history | tail -20"
