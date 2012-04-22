@@ -30,8 +30,12 @@ if has("gui_running")
   " Hide the toolbar
   set guioptions-=T
 
+  " Hide scrollbars
+  set guioptions-=L
+  set guioptions-=r
+
   " Set font
-  set guifont=liberation_mono:h12
+  set guifont=consolas:h14
 
   " show column at 80 characters
   set colorcolumn=80
@@ -58,8 +62,11 @@ set completeopt=longest,menuone
 inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ? "\<C-n>" : "\<C-x>\<C-o>"
 imap <C-@> <C-Space>
 
-" Use shift-space for non-omnicompletion
+" Use shift-space for word-based completion
 inoremap <expr> <S-Space> "\<C-n>"
+
+" Use option-space for line-based completion
+inoremap <expr> <A-Space> "\<C-x>\<C-l>"
 
 " make completion menu more IDE-like
 inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
@@ -120,7 +127,7 @@ set incsearch
 set gdefault
 
 " always save when editor loses focus
-au FocusLost * :wa
+au FocusLost * silent! :wa
 
 " change the leader
 let mapleader = ","
@@ -143,7 +150,7 @@ set laststatus=2
 set showmode
 
 " tabbed buffer settings
-set showtabline=2 " tabs always visible
+" set showtabline=2 " tabs always visible
 map tn :tabnew<CR>
 map td :tabclose<CR>
 map th :tabnext<CR>
@@ -188,15 +195,6 @@ au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 au FileType css setlocal omnifunc=csscomplete#CompleteCSS
 au FileType php setlocal omnifunc=phpcomplete#CompletePHP
 
-" easily comment out code selected in visual mode
-au FileType haskell,vhdl,ada                  let b:comment_leader = '-- '
-au FileType vim                               let b:comment_leader = '" '
-au FileType c,cpp,java,actionscript           let b:comment_leader = '// '
-au FileType sh,make,ruby,crayon,coffeescript  let b:comment_leader = '# '
-au FileType tex                               let b:comment_leader = '% '
-noremap <silent> ,c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
-noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
-
 " coffeescript settings
 " au BufWritePost *.coffee CoffeeMake
 let coffee_compile_vert = 1
@@ -234,11 +232,10 @@ noremap <silent> <F8> :TlistToggle<cr>
 inoremap <silent> <F8> <Esc>:TlistToggle<cr>
 
 " NERDTree abbrev settings
+cabbr ob NERDTreeFromBookmark
 cabbr ntb NERDTreeFromBookmark
 cabbr nt NERDTree
 cabbr ntt NERDTreeToggle
-cabbr ff :FufFile
-cabbr fb :FufBuffer
 
 " Tag list settings
 let Tlist_Inc_Winwidth = 0
@@ -268,9 +265,6 @@ nnoremap <leader>hs <C-w>s<C-w>j
 
 " open vertical split and switch to it
 nnoremap <leader>vs <C-w>v<C-w>l
-
-" strip all trailing whitespace
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 " re-hardwrap paragraphs
 nnoremap <leader>q gqip

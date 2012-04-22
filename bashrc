@@ -11,6 +11,9 @@ if [ -f ~/.bash_path ]; then
   . ~/.bash_path
 fi
 
+# library paths
+export DYLD_LIBRARY_PATH="/usr/local/mysql/lib:$DYLD_LIBRARY_PATH"
+
 # if not running interactively, don't do anything else
 [ -z "$PS1" ] && return
 
@@ -132,3 +135,9 @@ alias ls="command ls $LS_COMMON"
 # -------------------------------------------------------------
 
 [[ -s "/Users/svoisen/.rvm/scripts/rvm" ]] && source "/Users/svoisen/.rvm/scripts/rvm"
+
+# -------------------------------------------------------------
+# git
+# -------------------------------------------------------------
+
+source ~/git-completion.bash
