@@ -12,21 +12,11 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-if has("gui_running")
-  set background=dark
-else
-  set background=light
-endif
-
-" check for 256 colors and set colorscheme
-if $TERM =~ "-256color"
-  set t_Co=256
-endif
-
-colorscheme solarized
-
 " GUI-specific settings
 if has("gui_running")
+  " use dark solarized background if in gVim
+  set background=dark
+
   " Hide the toolbar
   set guioptions-=T
 
@@ -39,7 +29,16 @@ if has("gui_running")
 
   " show column at 80 characters
   set colorcolumn=80
-end
+else
+  set background=light
+endif
+
+colorscheme solarized
+
+" check for 256 colors and set colorscheme
+if $TERM =~ "-256color"
+  set t_Co=256
+endif
 
 " file encoding options
 if has("multi_byte")
@@ -130,17 +129,17 @@ set gdefault
 au FocusLost * silent! :wa
 
 " change the leader
-let mapleader = ","
+" let mapleader = ","
 
 " auto change to directories whenever a window or buffer
 " is switched
-" if exists("&autochdir")
-"  set autochdir
-" endif
+if exists("&autochdir")
+ set autochdir
+endif
 
 " Change CWD to match NERDTree root
-let NERDTreeChDirMode=2
-let NERDTreeWinSize=40
+" let NERDTreeChDirMode=2
+" let NERDTreeWinSize=40
 
 " set the statusline and always display it
 set statusline=%<%f\ [%{&ff}]\ %h%m%r%=%-14.(%l,%c%V%)\ %P
@@ -151,14 +150,20 @@ set showmode
 
 " tabbed buffer settings
 " set showtabline=2 " tabs always visible
-map tn :tabnew<CR>
-map td :tabclose<CR>
-map th :tabnext<CR>
-map tl :tabprev<CR>
+nnoremap <silent> [t :tabprev<CR>
+nnoremap <silent> ]t :tabnext<CR>
+nnoremap <silent> [T :tabfirst<CR>
+nnoremap <silent> ]T :tablast<CR>
 nnoremap <C-Left> :tabprev<CR>
 nnoremap <C-Right> :tabnext<CR>
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . tabpagenr()<CR>
+
+" buffer navigation settings
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
 
 " split window below instead of above
 set splitbelow
@@ -225,8 +230,8 @@ abbr heiht height
 set pastetoggle=<F2>
 noremap <silent> <F3> :YRShow<cr>
 inoremap <silent> <F3> <Esc>:YRShow<cr>
-noremap <silent> <F4> :NERDTreeToggle<cr>
-inoremap <silent> <F4> <Esc>:NerdTreeToggle<cr>
+" noremap <silent> <F4> :NERDTreeToggle<cr>
+" inoremap <silent> <F4> <Esc>:NerdTreeToggle<cr>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
 noremap! <silent> <F6> <c-o>:set spell!<cr>
@@ -236,12 +241,12 @@ noremap <silent> <F8> :TlistToggle<cr>
 inoremap <silent> <F8> <Esc>:TlistToggle<cr>
 
 " NERDTree abbrev settings
-cabbr ob NERDTreeFromBookmark
-cabbr ntb NERDTreeFromBookmark
-cabbr nt NERDTree
-cabbr ntt NERDTreeToggle
+" cabbr ob NERDTreeFromBookmark
+" cabbr ntb NERDTreeFromBookmark
+" cabbr nt NERDTree
+" cabbr ntt NERDTreeToggle
 
-" Tag list settings
+" tag list settings
 let Tlist_Inc_Winwidth = 0
 let Tlist_Use_Right_Window = 1
 let Tlist_Show_Menu = 1
@@ -259,7 +264,13 @@ nnoremap <leader>ev :tabnew $MYVIMRC<cr>
 
 " ctrl-p
 nnoremap <leader>t :CtrlP<cr>
+nnoremap <leader>tb :CtrlPBuffer<cr>
+nnoremap <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_map = '<c-t>'
+
+" haskellmode
+let g:haddock_browser = "open"
+let g:haddock_browser_callformat = "%s %s"
 
 " strip trailing whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
