@@ -133,13 +133,13 @@ au FocusLost * silent! :wa
 
 " auto change to directories whenever a window or buffer
 " is switched
-if exists("&autochdir")
- set autochdir
-endif
+" if exists("&autochdir")
+"  set autochdir
+" endif
 
 " Change CWD to match NERDTree root
-" let NERDTreeChDirMode=2
-" let NERDTreeWinSize=40
+let NERDTreeChDirMode=2
+let NERDTreeWinSize=40
 
 " set the statusline and always display it
 set statusline=%<%f\ [%{&ff}]\ %h%m%r%=%-14.(%l,%c%V%)\ %P
@@ -150,10 +150,10 @@ set showmode
 
 " tabbed buffer settings
 " set showtabline=2 " tabs always visible
-nnoremap <silent> [t :tabprev<CR>
-nnoremap <silent> ]t :tabnext<CR>
-nnoremap <silent> [T :tabfirst<CR>
-nnoremap <silent> ]T :tablast<CR>
+nnoremap tn :tabnew<CR>
+nnoremap tc :tabclose<CR>
+nnoremap th :tabprev<CR>
+nnoremap tl :tabnext<CR>
 nnoremap <C-Left> :tabprev<CR>
 nnoremap <C-Right> :tabnext<CR>
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
@@ -229,22 +229,23 @@ abbr heiht height
 " function key bindings
 set pastetoggle=<F2>
 noremap <silent> <F3> :YRShow<cr>
-inoremap <silent> <F3> <Esc>:YRShow<cr>
-" noremap <silent> <F4> :NERDTreeToggle<cr>
-" inoremap <silent> <F4> <Esc>:NerdTreeToggle<cr>
+noremap! <silent> <F3> <Esc>:YRShow<cr>
+noremap <silent> <F4> :NERDTreeToggle<cr>
+noremap! <silent> <F4> <Esc>:NerdTreeToggle<cr>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
+noremap! <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
 noremap! <silent> <F6> <c-o>:set spell!<cr>
 noremap <silent> <F7> :set list!<cr>
 noremap! <silent> <F7> <c-o>:set list!<cr>
 noremap <silent> <F8> :TlistToggle<cr>
-inoremap <silent> <F8> <Esc>:TlistToggle<cr>
+noremap! <silent> <F8> <Esc>:TlistToggle<cr>
 
 " NERDTree abbrev settings
-" cabbr ob NERDTreeFromBookmark
-" cabbr ntb NERDTreeFromBookmark
-" cabbr nt NERDTree
-" cabbr ntt NERDTreeToggle
+cabbr ob NERDTreeFromBookmark
+cabbr ntb NERDTreeFromBookmark
+cabbr nt NERDTree
+cabbr ntt NERDTreeToggle
 
 " tag list settings
 let Tlist_Inc_Winwidth = 0
@@ -267,6 +268,10 @@ nnoremap <leader>t :CtrlP<cr>
 nnoremap <leader>tb :CtrlPBuffer<cr>
 nnoremap <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_map = '<c-t>'
+let g:ctrlp_by_filename = 1
+let g:ctrlp_reuse_window = 'netrw'
+let g:ctrlp_arg_map = 1
+let g:netrw_liststyle=3
 
 " haskellmode
 let g:haddock_browser = "open"
