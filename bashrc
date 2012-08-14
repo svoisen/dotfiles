@@ -140,4 +140,4 @@ alias ls="command ls $LS_COMMON"
 # git
 # -------------------------------------------------------------
 
-source ~/git-completion.bash
+source ~/bin/git-completion.bash
