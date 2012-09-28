@@ -12,7 +12,7 @@ if [ -f ~/.bash_path ]; then
 fi
 
 # library paths
-export DYLD_LIBRARY_PATH="/usr/local/mysql/lib:$DYLD_LIBRARY_PATH"
+# export DYLD_LIBRARY_PATH="/usr/local/mysql/lib:$DYLD_LIBRARY_PATH"
 
 # if not running interactively, don't do anything else
 [ -z "$PS1" ] && return

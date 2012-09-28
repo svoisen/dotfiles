@@ -1,5 +1,5 @@
 [user]
-  name = Sean Voisen
+	name = Sean Voisen
   email = sean@voisen.org
 
 [alias]
@@ -36,3 +36,7 @@
   local = yellow bold
   remote = green bold
   plain = red bold
+
+[merge]
+  keepBackup = false
+  tool = opendiff

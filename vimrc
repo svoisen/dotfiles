@@ -25,7 +25,7 @@ if has("gui_running")
   set guioptions-=r
 
   " Set font
-  set guifont=consolas:h12
+  set guifont=source_code_pro:h12
 
   " show column at 80 characters
   set colorcolumn=80
@@ -34,11 +34,6 @@ else
 endif
 
 colorscheme solarized
-
-" check for 256 colors and set colorscheme
-if $TERM =~ "-256color"
-  set t_Co=256
-endif
 
 " file encoding options
 if has("multi_byte")
@@ -122,14 +117,14 @@ set infercase
 set smartcase
 set incsearch
 
+" use a login shell
+set shell=bash\ --login
+
 " always do global replace
 set gdefault
 
 " always save when editor loses focus
 au FocusLost * silent! :wa
-
-" change the leader
-" let mapleader = ","
 
 " auto change to directories whenever a window or buffer
 " is switched
@@ -272,6 +267,9 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'netrw'
 let g:ctrlp_arg_map = 1
 let g:netrw_liststyle=3
+
+" yankring
+let g:yankring_manual_clipboard_check = 0
 
 " haskellmode
 let g:haddock_browser = "open"
