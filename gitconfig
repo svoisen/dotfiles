@@ -1,6 +1,6 @@
 [user]
 	name = Sean Voisen
-  email = sean@voisen.org
+	email = sean@voisen.org
 
 [alias]
   st = status
@@ -40,3 +40,5 @@
 [merge]
   keepBackup = false
   tool = opendiff
+[mergetool]
+	keepBackup = false

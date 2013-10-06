@@ -80,16 +80,16 @@ else
 fi
 
 prompt_bw() {
-  PS1="\w${P} "
+  PS1="${SCREEN_ESC}\w${P} "
   PS2="> "
 }
 
 prompt_color() {
-  PS1="${COLOR2}\w${COLOR1}${P}${PS_CLEAR} "
+  PS1="${SCREEN_ESC}${COLOR2}\w${COLOR1}${P}${PS_CLEAR} "
   PS2="${COLOR1}>${PS_CLEAR} "
 }
 
-prompt_bw
+prompt_color
 
 # -------------------------------------------------------------
 # Pager and Editor

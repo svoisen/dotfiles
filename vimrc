@@ -25,7 +25,7 @@ if has("gui_running")
   set guioptions-=r
 
   " Set font
-  set guifont=source_code_pro:h12
+  set guifont=source_code_pro:h14
 
   " show column at 80 characters
   set colorcolumn=80
