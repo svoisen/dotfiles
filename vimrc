@@ -126,6 +126,9 @@ set gdefault
 " always save when editor loses focus
 au FocusLost * silent! :wa
 
+" clear screen on quit
+au VimLeave * :!clear
+
 " auto change to directories whenever a window or buffer
 " is switched
 " if exists("&autochdir")
@@ -183,6 +186,7 @@ au FileType ant,html,xml,xsl,rxml,rhtml,eruby,mxml,php source ~/.vim/scripts/clo
 au FileType html,rhtml,eruby,markdown,textile setlocal wrap
 au FileType mxml,actionscript set makeprg=ant\ -find\ build.xml
 au FileType crayon set makeprg=crayonc
+au FileType javascript set tabstop=4|set shiftwidth=4|set expandtab
 
 " dictionary completion settings
 au FileType actionscript setlocal complete+=k~/.vim/dict/actionscript3.dict
