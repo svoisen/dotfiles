@@ -34,3 +34,12 @@
 [submodule "vim/bundle/vim-markdown"]
 	path = vim/bundle/vim-markdown
 	url = https://github.com/tpope/vim-markdown.git
+[submodule "vim/bundle/airline"]
+	path = vim/bundle/airline
+	url = https://github.com/bling/vim-airline.git
+[submodule "vim/bundle/tern_for_vim"]
+	path = vim/bundle/tern_for_vim
+	url = https://github.com/marijnh/tern_for_vim.git
+[submodule "vim/bundle/vim-fugitive"]
+	path = vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git

@@ -25,7 +25,7 @@ if has("gui_running")
   set guioptions-=r
 
   " Set font
-  set guifont=source_code_pro:h14
+  set guifont=source_code_pro_for_powerline:h14
 
   " show column at 80 characters
   set colorcolumn=80
@@ -140,7 +140,7 @@ let NERDTreeChDirMode=2
 let NERDTreeWinSize=40
 
 " set the statusline and always display it
-set statusline=%<%f\ [%{&ff}]\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+" set statusline=%<%f\ [%{&ff}]\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
 
 " show the mode all the time
@@ -258,19 +258,30 @@ set tags=./tags,tags,~/commontags
 " show whitespaces
 set listchars=eol:$,trail:~,extends:>,precedes:<
 
-" leader commands
-" edit vimrc
-nnoremap <leader>ev :tabnew $MYVIMRC<cr>
-
 " ctrl-p
 nnoremap <leader>t :CtrlP<cr>
 nnoremap <leader>tb :CtrlPBuffer<cr>
+nnoremap ; :CtrlPBuffer<cr>
 nnoremap <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_map = '<c-t>'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'netrw'
 let g:ctrlp_arg_map = 1
-let g:netrw_liststyle=3
+let g:netrw_liststyle = 3
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn|idea))$'
+
+" airline
+let g:airline_theme = 'solarized'
+let g:airline_enable_branch = 1
+
+" vim-powerline symbols
+let g:airline_right_sep          = ''
+let g:airline_right_alt_sep      = ''
+let g:airline_left_sep         = ''
+let g:airline_left_alt_sep     = ''
+let g:airline_branch_prefix     = ''
+let g:airline_readonly_symbol   = ''
+let g:airline_linecolumn_prefix = ''
 
 " yankring
 let g:yankring_manual_clipboard_check = 0
@@ -278,6 +289,10 @@ let g:yankring_manual_clipboard_check = 0
 " haskellmode
 let g:haddock_browser = "open"
 let g:haddock_browser_callformat = "%s %s"
+
+" leader commands
+" edit vimrc
+nnoremap <leader>ev :tabnew $MYVIMRC<cr>
 
 " strip trailing whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
@@ -290,3 +305,6 @@ nnoremap <leader>vs <C-w>v<C-w>l
 
 " re-hardwrap paragraphs
 nnoremap <leader>q gqip
+
+" toggle line numbers
+nnoremap <leader>l :setlocal number!<CR>
