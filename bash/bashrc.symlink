@@ -115,8 +115,7 @@ export PAGER MANPAGER
 
 dircolors="$(type -P gdircolors dircolors | head -1)"
 test -n "$dircolors" && {
-  COLORS=/etc/DIR_COLORS
-  test -e "/etc/DIR_COLORS.$TERM" && COLORS="/etc/DIR_COLORS.$TERM"
+  test -e "/etc/DIR_COLORS" && COLORS="/etc/DIR_COLORS"
   test -e "$HOME/.dircolors" && COLORS="$HOME/.dircolors"
   test ! -e "$COLORS"
   eval `$dircolors --sh $COLORS`
@@ -124,19 +123,19 @@ test -n "$dircolors" && {
 unset dircolors
 
 if [ "$(uname -s)" == "Darwin" ] ; then
-  LS_COMMON="-hBG"
+  alias ls='ls -hBG'
 else
-  LS_COMMON="--color=auto"
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
 fi
-
-test -n "$LS_COMMON" &&
-alias ls="ls $LS_COMMON"
 
 # -------------------------------------------------------------
 # git
 # -------------------------------------------------------------
 
-if [ -f ~/bin/git-completion.sh ]; then
+if [ -f ~/bin/git-completion.sh ] ; then
   source ~/bin/git-completion.sh
 fi
 
