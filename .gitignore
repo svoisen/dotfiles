@@ -1,2 +1,4 @@
 .netrwhist
 .netrwbook
+.DS_Store
+bash_aliases.symlink

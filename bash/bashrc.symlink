@@ -11,9 +11,6 @@ if [ -f ~/.bash_path ]; then
   . ~/.bash_path
 fi
 
-# library paths
-# export DYLD_LIBRARY_PATH="/usr/local/mysql/lib:$DYLD_LIBRARY_PATH"
-
 # if not running interactively, don't do anything else
 [ -z "$PS1" ] && return
 
@@ -85,7 +82,7 @@ prompt_bw() {
 }
 
 prompt_color() {
-  PS1="${SCREEN_ESC}${COLOR2}\w${COLOR1}${P}${PS_CLEAR} "
+  PS1="${SCREEN_ESC}${COLOR2}\w ${COLOR1}${P}${PS_CLEAR} "
   PS2="${COLOR1}>${PS_CLEAR} "
 }
 
@@ -126,31 +123,29 @@ test -n "$dircolors" && {
 }
 unset dircolors
 
-LS_COMMON="-hBG"
+if [ "$(uname -s)" == "Darwin" ] ; then
+  LS_COMMON="-hBG"
+else
+  LS_COMMON="--color=auto"
+fi
+
 test -n "$LS_COMMON" &&
-alias ls="command ls $LS_COMMON"
-
-# -------------------------------------------------------------
-# rvm
-# -------------------------------------------------------------
-
-[[ -s "/Users/svoisen/.rvm/scripts/rvm" ]] && source "/Users/svoisen/.rvm/scripts/rvm"
+alias ls="ls $LS_COMMON"
 
 # -------------------------------------------------------------
 # git
 # -------------------------------------------------------------
 
-source ~/bin/git-completion.bash
-
-# -------------------------------------------------------------
-# resty
-# -------------------------------------------------------------
-
-source ~/bin/resty
+if [ -f ~/bin/git-completion.sh ]; then
+  source ~/bin/git-completion.sh
+fi
 
 # -------------------------------------------------------------
 # java
 # -------------------------------------------------------------
 
-JAVA_HOME_17=/Library/Java/JavaVirtualMachines/jdk1.7.0_65.jdk/Contents/Home
-export JAVA_HOME=$JAVA_HOME_17
+if [ "$(uname -s)" == "Darwin" ]
+then
+  JAVA_HOME_17=/Library/Java/JavaVirtualMachines/jdk1.7.0_65.jdk/Contents/Home
+  export JAVA_HOME=$JAVA_HOME_17
+fi

@@ -104,9 +104,11 @@ link_file () {
 concatenate_aliases () {
   info 'concatenating aliases'
 
+  rm ${DOTFILES_ROOT}/bash_aliases.symlink
+
   for src in $(find "$DOTFILES_ROOT" -maxdepth 2 -name '*.bash')
   do
-    cat $src >> "${DOTFILES_ROOT}/bash_aliases.symlink"
+    (cat "${src}"; echo) >> "${DOTFILES_ROOT}/bash_aliases.symlink"
   done
 }
 
@@ -122,8 +124,20 @@ install_dotfiles () {
   done
 }
 
+install_scripts () {
+  info 'installing scripts'
+  
+  mkdir -p ${HOME}/bin
+
+  for src in $(find "${DOTFILES_ROOT}/bin" -maxdepth 2 -name '*.sh')
+  do
+    cp $src "${HOME}/bin/$(basename "${src}")"
+  done
+}
+
 concatenate_aliases
 install_dotfiles
+install_scripts
 
 echo ''
 echo '  All installed!'
