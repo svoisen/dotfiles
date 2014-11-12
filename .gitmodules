@@ -1,39 +1,36 @@
 [submodule "vim/bundle/ctrlp"]
-	path = vim/bundle/ctrlp
+	path = vim/vim.symlink/bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
 [submodule "vim/bundle/nerdtree"]
-	path = vim/bundle/nerdtree
+	path = vim/vim.symlink/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
 [submodule "vim/bundle/vim-coffee-script"]
-	path = vim/bundle/vim-coffee-script
+	path = vim/vim.symlink/bundle/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script.git
 [submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/bundle/vim-colors-solarized
+	path = vim/vim.symlink/bundle/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/bundle/vim-commentary"]
-	path = vim/bundle/vim-commentary
+	path = vim/vim.symlink/bundle/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
 [submodule "vim/bundle/vim-rails"]
-	path = vim/bundle/vim-rails
+	path = vim/vim.symlink/bundle/vim-rails
 	url = https://github.com/tpope/vim-rails.git
 [submodule "vim/bundle/vim-surround"]
-	path = vim/bundle/vim-surround
+	path = vim/vim.symlink/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule "vim/bundle/zencoding-vim"]
-	path = vim/bundle/zencoding-vim
-	url = https://github.com/mattn/zencoding-vim.git
 [submodule "vim/bundle/vim-unimpaired"]
-	path = vim/bundle/vim-unimpaired
+	path = vim/vim.symlink/bundle/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
 [submodule "vim/bundle/vim-markdown"]
-	path = vim/bundle/vim-markdown
+	path = vim/vim.symlink/bundle/vim-markdown
 	url = https://github.com/tpope/vim-markdown.git
 [submodule "vim/bundle/airline"]
-	path = vim/bundle/airline
+	path = vim/vim.symlink/bundle/airline
 	url = https://github.com/bling/vim-airline.git
 [submodule "vim/bundle/tern_for_vim"]
-	path = vim/bundle/tern_for_vim
+	path = vim/vim.symlink/bundle/tern_for_vim
 	url = https://github.com/marijnh/tern_for_vim.git
 [submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/vim-fugitive
+	path = vim/vim.symlink/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
