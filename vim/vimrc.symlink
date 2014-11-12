@@ -30,7 +30,8 @@ if has("gui_running")
   " show column at 80 characters
   set colorcolumn=80
 else
-  set background=light
+  " non-gVim settings
+  set background=dark
 endif
 
 colorscheme solarized
