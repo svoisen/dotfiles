@@ -42,4 +42,4 @@
   tool = opendiff
 
 [mergetool]
-	keepBackup = false
+  keepBackup = false

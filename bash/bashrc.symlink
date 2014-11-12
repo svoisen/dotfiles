@@ -34,7 +34,7 @@ umask 0022
 # External Includes
 # -------------------------------------------------------------
 
-# custom (non ls-related) aliases
+# custom aliases
 if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
