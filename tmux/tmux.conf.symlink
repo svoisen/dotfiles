@@ -26,6 +26,11 @@ set-option -g status-right-length 60
 set-option -g status-left "#(~/src/dotfiles/tmux/powerline/powerline.sh left)"
 set-option -g status-right "#(~/src/dotfiles/tmux/powerline/powerline.sh right)"
 
+# mousemode
+set -g mouse-resize-pane on
+set -g mouse-select-pane on
+set -g mouse-select-window on
+
 # bindings
 bind-key s split-window -v
 bind-key v split-window -h
@@ -35,7 +40,7 @@ bind-key j select-pane -D
 bind-key k select-pane -U
 bind-key l select-pane -R
 
-bind-key C-h resize-pane -L
-bind-key C-j resize-pane -D
-bind-key C-k resize-pane -U
-bind-key C-l resize-pane -R
+bind-key C-h resize-pane -L 5
+bind-key C-j resize-pane -D 5
+bind-key C-k resize-pane -U 5
+bind-key C-l resize-pane -R 5

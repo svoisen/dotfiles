@@ -14,9 +14,6 @@ endif
 
 " GUI-specific settings
 if has("gui_running")
-  " use dark solarized background if in gVim
-  set background=dark
-
   " Hide the toolbar
   set guioptions-=T
 
@@ -26,14 +23,18 @@ if has("gui_running")
 
   " Set font
   set guifont=source_code_pro_for_powerline:h14
-
-  " show column at 80 characters
-  set colorcolumn=80
 else
   " non-gVim settings
   set background=dark
 endif
 
+" show column at 80 characters
+set colorcolumn=80
+
+" use dark solarized background 
+set background=dark
+
+" colorscheme solarized!
 colorscheme solarized
 
 " file encoding options
@@ -231,7 +232,7 @@ set pastetoggle=<F2>
 noremap <silent> <F3> :YRShow<cr>
 noremap! <silent> <F3> <Esc>:YRShow<cr>
 noremap <silent> <F4> :NERDTreeToggle<cr>
-noremap! <silent> <F4> <Esc>:NerdTreeToggle<cr>
+noremap! <silent> <F4> <Esc>:NERDTreeToggle<cr>
 noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap! <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F6> :set spell!<cr>
@@ -246,6 +247,10 @@ cabbr ob NERDTreeFromBookmark
 cabbr ntb NERDTreeFromBookmark
 cabbr nt NERDTree
 cabbr ntt NERDTreeToggle
+
+" Fugitive abbrev settings
+cabbr gst Gstatus
+cabbr gd Gdiff
 
 " tag list settings
 let Tlist_Inc_Winwidth = 0
@@ -309,3 +314,6 @@ nnoremap <leader>q gqip
 
 " toggle line numbers
 nnoremap <leader>l :setlocal number!<CR>
+
+" toggle NERDTree
+nnoremap <leader>a :NERDTreeToggle<CR>
