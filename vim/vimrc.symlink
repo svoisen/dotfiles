@@ -41,7 +41,7 @@ colorscheme solarized
 if has("multi_byte")
   set encoding=utf-8
   setglobal fileencoding=utf-8
-  "set termencoding=iso-8859-1
+  " set termencoding=iso-8859-1
 endif
 
 " turn on file type support
@@ -50,28 +50,33 @@ filetype on
 " turn on filetype specific indenting
 filetype plugin indent on
 
+" enable omnicomplete
+set omnifunc=syntaxcomplete#Complete
+
+" omnicompletion settings disabled due to use of YouCompleteMe plugin
 " change completion menu to always appear even with one result
-set completeopt=longest,menuone
+" set completeopt=longest,menuone
+" set completeopt-=preview
 
 " use <ctrl> space for completion
 " if omnicompletion is not available, use regular completion
-inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ? "\<C-n>" : "\<C-x>\<C-o>"
-imap <C-@> <C-Space>
+" inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ? "\<C-n>" : "\<C-x>\<C-o>"
+" imap <C-@> <C-Space>
 
 " Use shift-space for word-based completion
-inoremap <expr> <S-Space> "\<C-n>"
+" inoremap <expr> <S-Space> "\<C-n>"
 
 " Use option-space for line-based completion
-inoremap <expr> <A-Space> "\<C-x>\<C-l>"
+" inoremap <expr> <A-Space> "\<C-x>\<C-l>"
 
 " make completion menu more IDE-like
-inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-inoremap <expr> <Tab>      pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+" inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+" inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+" inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+" inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+" inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+" inoremap <expr> <Tab>      pumvisible() ? "\<C-n>" : "\<Tab>"
 
 " turn on line numbers
 set number
@@ -197,17 +202,17 @@ au FileType mxml setlocal complete+=k~/.vim/dict/mxml.dict
 au FileType mxml setlocal dictionary=~/.vim/dict/mxml.dict
 
 " omnicompletion settings
-au FileType ruby setlocal omnifunc=rubycomplete#Complete
-au FileType c setlocal omnifunc=ccomplete#Complete
-au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-au FileType html setlocal omnifunc=htmlcomplete#CompleteTags
-au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-au FileType css setlocal omnifunc=csscomplete#CompleteCSS
-au FileType php setlocal omnifunc=phpcomplete#CompletePHP
+" au FileType ruby setlocal omnifunc=rubycomplete#Complete
+" au FileType c setlocal omnifunc=ccomplete#Complete
+" au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" au FileType html setlocal omnifunc=htmlcomplete#CompleteTags
+" au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" au FileType php setlocal omnifunc=phpcomplete#CompletePHP
 
 " coffeescript settings
 " au BufWritePost *.coffee CoffeeMake
-let coffee_compile_vert = 1
+" let coffee_compile_vert = 1
 
 " easier window movement
 set winminheight=0

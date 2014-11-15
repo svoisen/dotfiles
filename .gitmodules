@@ -40,3 +40,6 @@
 [submodule "tmux/powerline"]
 	path = tmux/powerline
 	url = https://github.com/erikw/tmux-powerline.git
+[submodule "vim/vim.symlink/bundle/YouCompleteMe"]
+	path = vim/vim.symlink/bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git
