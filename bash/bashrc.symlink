@@ -148,3 +148,9 @@ then
   JAVA_HOME_17=/Library/Java/JavaVirtualMachines/jdk1.7.0_65.jdk/Contents/Home
   export JAVA_HOME=$JAVA_HOME_17
 fi
+
+# -------------------------------------------------------------
+# nvm
+# -------------------------------------------------------------
+export NVM_DIR="/Users/svoisen/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

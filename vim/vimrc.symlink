@@ -1,6 +1,8 @@
 " Sean Voisen's vimrc
 " Web: http://sean.voisen.org
 
+let g:glsl_file_extensions = '*.glsl,*.vsh,*.fsh,*.frag,*.vert'
+
 " enable pathogen
 call pathogen#infect()
 call pathogen#helptags()

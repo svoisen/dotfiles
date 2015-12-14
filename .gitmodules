@@ -43,3 +43,6 @@
 [submodule "vim/vim.symlink/bundle/YouCompleteMe"]
 	path = vim/vim.symlink/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/vim.symlink/bundle/glsl.vim"]
+	path = vim/vim.symlink/bundle/glsl.vim
+	url = https://github.com/beyondmarc/glsl.vim.git
