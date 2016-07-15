@@ -26,4 +26,8 @@ augroup filetypedetect
   " Markdown
   au BufNewFile,BufRead *.markdown set filetype=markdown
   au BufNewFile,BufRead *.md set filetype=markdown
+
+  " ES6 and other JavaScript
+  au BufNewFile,BufRead *.js6 set filetype=javascript
+  au BufNewFile,BufRead *.es6.js set filetype=javascript
 augroup END

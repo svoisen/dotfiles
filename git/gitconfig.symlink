@@ -9,6 +9,7 @@
   co = checkout
   df = diff
   unstage = reset HEAD
+	d = difftool
 
 [core]
   filemode = true
@@ -43,3 +44,7 @@
 
 [mergetool]
   keepBackup = false
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
