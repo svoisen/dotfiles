@@ -286,6 +286,24 @@ let g:ctrlp_arg_map = 1
 let g:netrw_liststyle = 3
 let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn|idea))$'
 
+" search settings with silver searcher
+if executable('ag')
+  " use ag in vim.ack
+  let g:ackprg = 'ag --vimgrep'
+
+  " Use ag if available instead of grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " no caching when using ag with CtrlP
+  let g:ctrlp_use_caching = 0
+endif
+
+" shortcut for find with ack
+nnoremap <C-f> :Ack!<SPACE>
+
 " airline
 let g:airline_theme = 'solarized'
 let g:airline_enable_branch = 1
@@ -320,10 +338,14 @@ nnoremap <leader>hs <C-w>s<C-w>j
 nnoremap <leader>vs <C-w>v<C-w>l
 
 " re-hardwrap paragraphs
-nnoremap <leader>q gqip
+nnoremap <leader>p gqip
 
 " toggle line numbers
-nnoremap <leader>l :setlocal number!<CR>
+nnoremap <leader>n :setlocal number!<CR>
 
 " toggle NERDTree
 nnoremap <leader>a :NERDTreeToggle<CR>
+
+" find word under cursor 
+nnoremap <leader>k :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
