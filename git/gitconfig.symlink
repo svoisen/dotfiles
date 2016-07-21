@@ -14,6 +14,7 @@
 [core]
   filemode = true
   whitespace = trailing-spacea, space-before-tab
+  excludesfile = /Users/svoisen/.gitignore_global
 
 [branch]
   autosetupmerge = true
@@ -44,7 +45,9 @@
 
 [mergetool]
   keepBackup = false
+
 [diff]
 	tool = vimdiff
+
 [difftool]
 	prompt = false

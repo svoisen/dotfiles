@@ -145,8 +145,8 @@ au VimLeave * :!clear
 " endif
 
 " Change CWD to match NERDTree root
-let NERDTreeChDirMode=2
-let NERDTreeWinSize=40
+" let NERDTreeChDirMode=2
+" let NERDTreeWinSize=40
 
 " set the statusline and always display it
 " set statusline=%<%f\ [%{&ff}]\ %h%m%r%=%-14.(%l,%c%V%)\ %P
@@ -212,10 +212,6 @@ au FileType mxml setlocal dictionary=~/.vim/dict/mxml.dict
 " au FileType css setlocal omnifunc=csscomplete#CompleteCSS
 " au FileType php setlocal omnifunc=phpcomplete#CompletePHP
 
-" coffeescript settings
-" au BufWritePost *.coffee CoffeeMake
-" let coffee_compile_vert = 1
-
 " YouCompleteMe settings
 let g:ycm_autoclose_preview_window_after_completion = 1
 
@@ -239,18 +235,18 @@ abbr heiht height
 
 " function key bindings
 set pastetoggle=<F2>
-noremap <silent> <F3> :YRShow<cr>
-noremap! <silent> <F3> <Esc>:YRShow<cr>
-noremap <silent> <F4> :NERDTreeToggle<cr>
-noremap! <silent> <F4> <Esc>:NERDTreeToggle<cr>
-noremap <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
-noremap! <silent> <F5> <Esc>:call ToggleHLSearch()<cr>
-noremap <silent> <F6> :set spell!<cr>
-noremap! <silent> <F6> <c-o>:set spell!<cr>
-noremap <silent> <F7> :set list!<cr>
-noremap! <silent> <F7> <c-o>:set list!<cr>
-noremap <silent> <F8> :TlistToggle<cr>
-noremap! <silent> <F8> <Esc>:TlistToggle<cr>
+noremap <silent> <F3> <Esc>:call ToggleHLSearch()<cr>
+noremap! <silent> <F3> <Esc>:call ToggleHLSearch()<cr>
+noremap <silent> <F4> :set spell!<cr>
+noremap! <silent> <F4> <c-o>:set spell!<cr>
+noremap <silent> <F5> :set list!<cr>
+noremap! <silent> <F5> <c-o>:set list!<cr>
+noremap <silent> <F6> :LToggle<cr>
+noremap! <silent> <F6> <Esc>:LToggle<cr>
+noremap <silent> <F7> :LToggle<cr>
+noremap! <silent> <F7> <Esc>:LToggle<cr>
+noremap <silent> <F8> :TagbarToggle<cr>
+noremap! <silent> <F8> <Esc>:TagbarToggle<cr>
 
 " NERDTree abbrev settings
 cabbr ob NERDTreeFromBookmark
@@ -344,8 +340,8 @@ nnoremap <leader>p gqip
 nnoremap <leader>n :setlocal number!<CR>
 
 " toggle NERDTree
-nnoremap <leader>a :NERDTreeToggle<CR>
+" nnoremap <leader>a :NERDTreeToggle<CR>
 
 " find word under cursor 
-nnoremap <leader>k :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <leader>f :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
