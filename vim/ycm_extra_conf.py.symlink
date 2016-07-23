@@ -49,15 +49,28 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
       new_flags.append( new_flag )
   return new_flags
 
+SOURCE_EXTENSIONS = [ 
+  '.cpp', 
+  '.cxx', 
+  '.cc', 
+  '.c', 
+  '.m', 
+  '.mm'
+]
+
+HEADER_EXTENSIONS = [
+  '.h',
+  '.hxx',
+  '.hpp',
+  '.hh'
+]
 
 def FlagsForFile(filename, **kwargs):
   base_flags = [
     '-Wall',
     '-Wextra',
-    '-Werror'
-    '-pedantic',
-    '-I',
-    '.'
+    '-Werror',
+    '-ferror-limit=20',
   ]
   extra_flags = []
 
@@ -70,8 +83,26 @@ def FlagsForFile(filename, **kwargs):
     language = 'c++'
     extra_flags += ['-std=c++11']
   elif filetype == 'objc' or filetype == 'objcpp':
-    language = 'objective-c'
-    extra_flags = ['-fobjc-arc']
+    if filetype == 'objc':
+      language = 'objective-c'
+    elif filetype == 'objcpp':
+      language = 'objective-c++'
+      extra_flags += ['-stdlib=c++']
+
+    extra_flags += [
+      '-Wdeprecated-objc-isa-usage',
+      '-Werror=deprecated-objc-isa-usage',
+      '-resource-dir',
+      '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0',
+      '-fblocks',
+      '-fobjc-runtime=macosx-10.11.0',
+      '-fobjc-arc',
+      '-fencode-extended-block-signature',
+      '-fdeprecated-macro',
+      '-fcxx-exceptions',
+      '-fobjc-exceptions',
+      '-fexceptions'
+    ]
 
   flags = base_flags + extra_flags + ['-x', language] + LoadSystemIncludes(language)
 

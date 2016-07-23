@@ -52,10 +52,10 @@ filetype on
 " turn on filetype specific indenting
 filetype plugin indent on
 
-" omnicompletion settings disabled due to use of YouCompleteMe plugin
 " enable omnicomplete
-" set omnifunc=syntaxcomplete#Complete
+set omnifunc=syntaxcomplete#Complete
 
+" omnicompletion settings disabled due to use of YouCompleteMe plugin
 " change completion menu to always appear even with one result
 " set completeopt=longest,menuone
 " set completeopt-=preview
@@ -215,8 +215,9 @@ au FileType mxml setlocal dictionary=~/.vim/dict/mxml.dict
 let g:ycm_extra_conf_globlist = ['~/src/*']
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_extra_conf_vim_data = ['&filetype']
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_semantic_triggers = {
- \ 'objc' : ['re!\@"\.*"\s',
+ \ 'objcpp' : ['re!\@"\.*"\s',
  \ 're!\@\w+\.*\w*\s',
  \ 're!\@\(\w+\.*\w*\)\s',
  \ 're!\@\(\s*',
@@ -229,6 +230,19 @@ let g:ycm_semantic_triggers = {
  \ 're!:\s*',
  \ 're!=\s*',
  \ 're!,\s*', ],
+ \ 'objc' : ['re!\@"\.*"\s',
+ \ 're!\@\w+\.*\w*\s',
+ \ 're!\@\(\w+\.*\w*\)\s',
+ \ 're!\@\(\s*',
+ \ 're!\@\[.*\]\s',
+ \ 're!\@\[\s*',
+ \ 're!\@\{.*\}\s',
+ \ 're!\@\{\s*',
+ \ "re!\@\’.*\’\s",
+ \ '#ifdef ',
+ \ 're!:\s*',
+ \ 're!=\s*',
+ \ 're!,\s*', ]
  \ }
 
 " add a definition for Objective-C and Objective-C++ to tagbar
