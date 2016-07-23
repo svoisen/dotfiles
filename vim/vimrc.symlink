@@ -33,7 +33,7 @@ endif
 " show column at 80 characters
 set colorcolumn=80
 
-" use dark solarized background 
+" use dark solarized background
 set background=dark
 
 " colorscheme solarized!
@@ -52,10 +52,10 @@ filetype on
 " turn on filetype specific indenting
 filetype plugin indent on
 
-" enable omnicomplete
-set omnifunc=syntaxcomplete#Complete
-
 " omnicompletion settings disabled due to use of YouCompleteMe plugin
+" enable omnicomplete
+" set omnifunc=syntaxcomplete#Complete
+
 " change completion menu to always appear even with one result
 " set completeopt=longest,menuone
 " set completeopt-=preview
@@ -79,6 +79,14 @@ set omnifunc=syntaxcomplete#Complete
 " inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
 " inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
 " inoremap <expr> <Tab>      pumvisible() ? "\<C-n>" : "\<Tab>"
+
+" au FileType ruby setlocal omnifunc=rubycomplete#Complete
+" au FileType c setlocal omnifunc=ccomplete#Complete
+" au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" au FileType html setlocal omnifunc=htmlcomplete#CompleteTags
+" au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" au FileType php setlocal omnifunc=phpcomplete#CompletePHP
 
 " turn on line numbers
 set number
@@ -156,21 +164,21 @@ set laststatus=2
 set showmode
 
 " tabbed buffer settings
-" set showtabline=2 " tabs always visible
-nnoremap tn :tabnew<CR>
-nnoremap tc :tabclose<CR>
-nnoremap th :tabprev<CR>
-nnoremap tl :tabnext<CR>
-nnoremap <C-Left> :tabprev<CR>
-nnoremap <C-Right> :tabnext<CR>
-nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
-nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . tabpagenr()<CR>
+" tabs always visible
+set showtabline=2
+nnoremap <silent> tn :tabnew<CR>
+nnoremap <silent> tc :tabclose<CR>
+" alt j/h/J/H to move between tabs
+nnoremap <silent> ˙ :tabprev<CR>
+nnoremap <silent> ¬ :tabnext<CR>
+nnoremap <silent> Ó :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
+nnoremap <silent> Ò :execute 'silent! tabmove ' . tabpagenr()<CR>
 
 " buffer navigation settings
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :bfirst<CR>
-nnoremap <silent> ]B :blast<CR>
+nnoremap <silent> bh :bprevious<CR>
+nnoremap <silent> bl :bnext<CR>
+nnoremap <silent> Bh :bfirst<CR>
+nnoremap <silent> Bl :blast<CR>
 
 " split window below instead of above
 set splitbelow
@@ -203,17 +211,94 @@ au FileType actionscript setlocal dictionary=~/.vim/dict/actionscript3.dict
 au FileType mxml setlocal complete+=k~/.vim/dict/mxml.dict
 au FileType mxml setlocal dictionary=~/.vim/dict/mxml.dict
 
-" omnicompletion settings
-" au FileType ruby setlocal omnifunc=rubycomplete#Complete
-" au FileType c setlocal omnifunc=ccomplete#Complete
-" au FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" au FileType html setlocal omnifunc=htmlcomplete#CompleteTags
-" au FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-" au FileType css setlocal omnifunc=csscomplete#CompleteCSS
-" au FileType php setlocal omnifunc=phpcomplete#CompletePHP
-
 " YouCompleteMe settings
+let g:ycm_extra_conf_globlist = ['~/src/*']
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_extra_conf_vim_data = ['&filetype']
+let g:ycm_semantic_triggers = {
+ \ 'objc' : ['re!\@"\.*"\s',
+ \ 're!\@\w+\.*\w*\s',
+ \ 're!\@\(\w+\.*\w*\)\s',
+ \ 're!\@\(\s*',
+ \ 're!\@\[.*\]\s',
+ \ 're!\@\[\s*',
+ \ 're!\@\{.*\}\s',
+ \ 're!\@\{\s*',
+ \ "re!\@\’.*\’\s",
+ \ '#ifdef ',
+ \ 're!:\s*',
+ \ 're!=\s*',
+ \ 're!,\s*', ],
+ \ }
+
+" add a definition for Objective-C and Objective-C++ to tagbar
+let g:tagbar_type_objc = {
+    \ 'ctagstype' : 'ObjectiveC',
+    \ 'kinds'     : [
+        \ 'i:interface',
+        \ 'I:implementation',
+        \ 'p:Protocol',
+        \ 'm:Object_method',
+        \ 'c:Class_method',
+        \ 'v:Global_variable',
+        \ 'F:Object field',
+        \ 'f:function',
+        \ 'p:property',
+        \ 't:type_alias',
+        \ 's:type_structure',
+        \ 'e:enumeration',
+        \ 'M:preprocessor_macro',
+    \ ],
+    \ 'sro'        : ' ',
+    \ 'kind2scope' : {
+        \ 'i' : 'interface',
+        \ 'I' : 'implementation',
+        \ 'p' : 'Protocol',
+        \ 's' : 'type_structure',
+        \ 'e' : 'enumeration'
+    \ },
+    \ 'scope2kind' : {
+        \ 'interface'      : 'i',
+        \ 'implementation' : 'I',
+        \ 'Protocol'       : 'p',
+        \ 'type_structure' : 's',
+        \ 'enumeration'    : 'e'
+    \ }
+\ }
+
+let g:tagbar_type_objcpp = {
+    \ 'ctagstype' : 'ObjectiveC',
+    \ 'kinds'     : [
+        \ 'i:interface',
+        \ 'I:implementation',
+        \ 'p:Protocol',
+        \ 'm:Object_method',
+        \ 'c:Class_method',
+        \ 'v:Global_variable',
+        \ 'F:Object field',
+        \ 'f:function',
+        \ 'p:property',
+        \ 't:type_alias',
+        \ 's:type_structure',
+        \ 'e:enumeration',
+        \ 'M:preprocessor_macro',
+    \ ],
+    \ 'sro'        : ' ',
+    \ 'kind2scope' : {
+        \ 'i' : 'interface',
+        \ 'I' : 'implementation',
+        \ 'p' : 'Protocol',
+        \ 's' : 'type_structure',
+        \ 'e' : 'enumeration'
+    \ },
+    \ 'scope2kind' : {
+        \ 'interface'      : 'i',
+        \ 'implementation' : 'I',
+        \ 'Protocol'       : 'p',
+        \ 'type_structure' : 's',
+        \ 'enumeration'    : 'e'
+    \ }
+\ }
 
 " easier window movement
 set winminheight=0
@@ -235,7 +320,7 @@ abbr heiht height
 
 " function key bindings
 set pastetoggle=<F2>
-noremap <silent> <F3> <Esc>:call ToggleHLSearch()<cr>
+noremap <silent> <F3> :call ToggleHLSearch()<cr>
 noremap! <silent> <F3> <Esc>:call ToggleHLSearch()<cr>
 noremap <silent> <F4> :set spell!<cr>
 noremap! <silent> <F4> <c-o>:set spell!<cr>
@@ -243,26 +328,25 @@ noremap <silent> <F5> :set list!<cr>
 noremap! <silent> <F5> <c-o>:set list!<cr>
 noremap <silent> <F6> :LToggle<cr>
 noremap! <silent> <F6> <Esc>:LToggle<cr>
-noremap <silent> <F7> :LToggle<cr>
-noremap! <silent> <F7> <Esc>:LToggle<cr>
+noremap <silent> <F7> :QToggle<cr>
+noremap! <silent> <F7> <Esc>:QToggle<cr>
 noremap <silent> <F8> :TagbarToggle<cr>
 noremap! <silent> <F8> <Esc>:TagbarToggle<cr>
+noremap <silent> <F12> :setlocal number!<cr>
+noremap! <silent> <F12> <Esc>:setlocal number!<cr>
 
 " NERDTree abbrev settings
-cabbr ob NERDTreeFromBookmark
-cabbr ntb NERDTreeFromBookmark
-cabbr nt NERDTree
-cabbr ntt NERDTreeToggle
+" cabbr ob NERDTreeFromBookmark
+" cabbr ntb NERDTreeFromBookmark
+" cabbr nt NERDTree
+" cabbr ntt NERDTreeToggle
 
 " Fugitive abbrev settings
 cabbr gst Gstatus
 cabbr gd Gdiff
-
-" tag list settings
-let Tlist_Inc_Winwidth = 0
-let Tlist_Use_Right_Window = 1
-let Tlist_Show_Menu = 1
-let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:variable'
+cabbr gc Gcommit
+cabbr gr Gread
+cabbr gw Gwrite
 
 " ctags
 set tags=./tags,tags,~/commontags
@@ -271,16 +355,17 @@ set tags=./tags,tags,~/commontags
 set listchars=eol:$,trail:~,extends:>,precedes:<
 
 " ctrl-p
-nnoremap <leader>t :CtrlP<cr>
-nnoremap <leader>tb :CtrlPBuffer<cr>
+nnoremap ' :CtrlP<cr>
 nnoremap ; :CtrlPBuffer<cr>
 nnoremap <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_map = '<c-t>'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'netrw'
 let g:ctrlp_arg_map = 1
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn|idea|jpg|png|gif))$'
+let g:ctrlp_max_files = 10000
+let g:ctrlp_working_path_mode = 'r'
 let g:netrw_liststyle = 3
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn|idea))$'
 
 " search settings with silver searcher
 if executable('ag')
@@ -291,7 +376,7 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --nogroup --hidden -g ""'
 
   " no caching when using ag with CtrlP
   let g:ctrlp_use_caching = 0
@@ -313,9 +398,6 @@ let g:airline_branch_prefix = ''
 let g:airline_readonly_symbol = ''
 let g:airline_linecolumn_prefix = ''
 
-" yankring
-let g:yankring_manual_clipboard_check = 0
-
 " haskellmode
 let g:haddock_browser = "open"
 let g:haddock_browser_callformat = "%s %s"
@@ -336,12 +418,14 @@ nnoremap <leader>vs <C-w>v<C-w>l
 " re-hardwrap paragraphs
 nnoremap <leader>p gqip
 
-" toggle line numbers
-nnoremap <leader>n :setlocal number!<CR>
+" find word under cursor
+nnoremap <leader>f :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" YouCompleteMe go to definition of word under cursor
+nnoremap <leader>d :YcmCompleter GoToDefinition<cr>
+
+" YouCompleteMe go to declaration of word under cursor
+nnoremap <leader>r :YcmCompleter RefactorRename<cr>
 
 " toggle NERDTree
 " nnoremap <leader>a :NERDTreeToggle<CR>
-
-" find word under cursor 
-nnoremap <leader>f :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
-

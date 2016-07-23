@@ -19,9 +19,6 @@
 [submodule "vim/bundle/airline"]
 	path = vim/vim.symlink/bundle/airline
 	url = https://github.com/bling/vim-airline.git
-[submodule "vim/bundle/tern_for_vim"]
-	path = vim/vim.symlink/bundle/tern_for_vim
-	url = https://github.com/marijnh/tern_for_vim.git
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/vim.symlink/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
@@ -55,3 +52,9 @@
 [submodule "vim/vim.symlink/bundle/vim-tmux-navigator"]
 	path = vim/vim.symlink/bundle/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule "vim/vim.symlink/bundle/delimitMate"]
+	path = vim/vim.symlink/bundle/delimitMate
+	url = https://github.com/Raimondi/delimitMate.git
+[submodule "vim/vim.symlink/bundle/tern_for_vim"]
+	path = vim/vim.symlink/bundle/tern_for_vim
+	url = https://github.com/ternjs/tern_for_vim.git
