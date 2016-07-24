@@ -10,7 +10,7 @@ set -e
 echo ''
 
 info () {
-  printf "  [ \033[00;34m..\033[0m ] $1"
+  printf "  [ \033[00;34m..\033[0m ] $1 "
 }
 
 user () {
@@ -101,25 +101,26 @@ link_file () {
   fi
 }
 
-concatenate_aliases () {
-  info 'concatenating aliases'
-
-  rm ${DOTFILES_ROOT}/bash_aliases.symlink
-
-  for src in $(find "$DOTFILES_ROOT" -maxdepth 2 -name '*.bash')
-  do
-    (cat "${src}"; echo) >> "${DOTFILES_ROOT}/bash_aliases.symlink"
-  done
-}
-
 install_dotfiles () {
   info 'installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  for src in $(find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink')
+  for src in $(find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path "$DOTFILES_ROOT/nvim/*")
   do
     dst="$HOME/.$(basename "${src%.*}")"
+    link_file "$src" "$dst"
+  done
+}
+
+install_nvim () {
+  info 'installing nvim configuration'
+
+  mkdir -p ${HOME}/.config/nvim
+  
+  for src in $(find "$DOTFILES_ROOT/nvim" -maxdepth 2 -name '*.symlink')
+  do
+    dst="$HOME/.config/nvim/$(basename "${src%.*}")"
     link_file "$src" "$dst"
   done
 }
@@ -135,8 +136,8 @@ install_scripts () {
   done
 }
 
-concatenate_aliases
 install_dotfiles
+install_nvim
 install_scripts
 
 echo ''

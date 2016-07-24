@@ -1,0 +1,195 @@
+let g:python_host_prog='/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python'
+let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
+
+if !filereadable(vimplug_exists)
+  echo 'Installing Vim-Plug...'
+  echo ''
+  silent !\curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  let g:not_finish_vimplug='yes'
+  autocmd VimEnter * PlugInstall
+endif
+
+" Setup plugins using vim-plug
+call plug#begin(expand('~/.config/nvim/plugged'))
+Plug 'critiqjo/lldb.nvim'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'kien/ctrlp.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tikhomirov/vim-glsl'
+Plug 'majutsushi/tagbar'
+Plug 'Valloric/ListToggle'
+Plug 'mileszs/ack.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'tpope/vim-surround'
+Plug 'Raimondi/delimitMate'
+Plug 'sophacles/vim-processing'
+Plug 'tpope/vim-commentary'
+Plug 'mattn/emmet-vim'
+Plug 'jelera/vim-javascript-syntax'
+call plug#end()
+
+" Setup colorscheme
+colorscheme solarized
+set background=dark
+
+" Always use the system clipboard
+set clipboard+=unnamedplus
+
+" Show the column at 80 characters
+set colorcolumn=80
+
+" Turn on line numbers
+set number
+
+" Always save all the things
+au BufUnload,BufLeave,FocusLost,QuitPre,InsertLeave,TextChanged,CursorHold * silent! wall
+
+" Indentation options
+set tabstop=4
+set autoindent
+set smartindent
+set shiftwidth=4
+set shiftround
+set smarttab
+
+" Show matching parens
+set showmatch
+
+" Make tabs always visible
+set showtabline=2
+
+" Search options
+set ignorecase
+set smartcase
+
+" Backup options
+set nobackup
+set noswapfile
+
+" Always do global replace
+set gdefault
+
+" ctags
+set tags=./tags,tags,~/commontags
+
+" Show whitespaces
+set listchars=eol:$,trail:~,extends:>,precedes:<
+
+" Omnicomplete
+set omnifunc=syntaxcomplete#Complete
+
+" Fix common spelling mistakes
+abbr teh the
+abbr widht width
+abbr rigth right
+abbr heiht height
+
+" Toggle highlight search
+function! ToggleHLSearch()
+  if &hls
+    set nohls
+  else
+    set hls
+  endif
+endfunction
+
+" Tab navigation
+nnoremap T :tabnew<CR>
+nnoremap C :tabclose<CR>
+noremap <A-l> :tabnext<CR>
+noremap <A-h> :tabprev<CR>
+noremap <A-S-l> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
+noremap <A-S-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
+
+" Buffer navigation
+noremap <A-j> :bnext<CR>
+noremap <A-k> :bprevious<CR>
+noremap <A-S-k> :bfirst<CR>
+noremap <A-S-j> :blast<CR>
+
+" Always split new windows below
+set splitbelow
+
+" Easier pane movement
+set winminheight=0
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-=> <C-w>=
+
+" Jump up/down one line no matter if lines are wrapped
+nnoremap j gj
+nnoremap k gk
+
+" Maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+" Move visual blocks
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Function key mapping
+" F1 mapped to help
+noremap! <silent> <F2> <Esc>:setlocal number!<CR>
+nnoremap <silent> <F2> :setlocal number!<CR>
+noremap! <silent> <F3> <Esc>:call ToggleHLSearch()<CR>
+nnoremap <silent> <F3> :call ToggleHLSearch()<CR>
+noremap! <silent> <F4> <Esc>:set spell!<CR>
+nnoremap <silent> <F4> :set spell!<CR>
+noremap! <silent> <F5> <Esc>:set list!<CR>
+nnoremap <silent> <F5> :set list!<CR>
+noremap! <silent> <F6> <Esc>:LToggle<CR>
+nnoremap <silent> <F6> :LToggle<CR>
+noremap! <silent> <F7> <Esc>:QToggle<CR>
+nnoremap <silent> <F7> :QToggle<CR>
+noremap! <silent> <F8> <Esc>:TagbarToggle<CR>
+nnoremap <silent> <F8> :TagbarToggle<CR>
+noremap! <silent> <F9> <Esc>:LLmode debug<CR>
+nnoremap <silent> <F9> :LLmode debug<CR>
+noremap! <silent> <S-F9> <Esc>:LLmode code<CR>
+nnoremap <silent> <S-F9> :LLmode code<CR>
+noremap! <silent> <F10> <Esc>:LL continue<CR>
+nnoremap <silent> <F10> :LL continue<CR>
+noremap! <silent> <S-F10> <Esc>:LL process interrupt<CR>
+nnoremap <silent> <S-F10> :LL process interrupt<CR>
+
+" Leader key mapping
+" Strip trailing whitespace
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+" Open horizontal split and switch to it
+nnoremap <leader>h <C-w>s<C-w>j
+
+" Open vertical split and switch to it
+nnoremap <leader>v <C-w>v<C-w>l
+
+" Re-hardwrap paragraphs
+nnoremap <leader>p gqip
+
+" Launch the terminal
+nnoremap <silent> <leader>sh :terminal<CR>
+
+" Set the working directory to current file
+nnoremap <leader>. :lcd %:p:h<CR>
+
+" Open an edit command with the path of the current file
+noremap <Leader>e :e <C-R>=expand("%:p:h") . "/"<CR>
+
+" Open a tab edit command with the path of the current file
+noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
+
+" Load plugin configurations
+source ~/.config/nvim/config/lldb.vim
+source ~/.config/nvim/config/ack.vim
+source ~/.config/nvim/config/ctrlp.vim
+source ~/.config/nvim/config/ycm.vim
+source ~/.config/nvim/config/airline.vim
+source ~/.config/nvim/config/glsl.vim
+source ~/.config/nvim/config/tagbar.vim
+source ~/.config/nvim/config/fugitive.vim
