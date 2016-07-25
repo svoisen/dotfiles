@@ -81,7 +81,7 @@ set tags=./tags,tags,~/commontags
 set listchars=eol:$,trail:~,extends:>,precedes:<
 
 " Omnicomplete
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
 
 " Fix common spelling mistakes
 abbr teh the
