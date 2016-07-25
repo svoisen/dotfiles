@@ -2,6 +2,50 @@ import os
 import subprocess
 import re
 
+FRAMEWORK_DIRS = [
+]
+
+PROJECT_DIRS = [
+    '/Users/svoisen/src/sparkler-shell/third_party/v8/include',
+    '/Users/svoisen/src/sparkler-shell/third_party/v8/lib',
+    '/Users/svoisen/src/sparkler-shell/third_party/skia/include',
+    '/Users/svoisen/src/sparkler-shell/third_party/skia/lib',
+    '/Users/svoisen/src/sparkler-shell/Sparkler/Sparkler/core',
+    '/Users/svoisen/src/sparkler-shell/Sparkler/Sparkler/osx'
+]
+
+BASE_FLAGS = [
+    '-Wall',
+    '-Wextra',
+    '-Werror',
+    '-Wno-unknown-pragmas',
+    '-Wformat-security'
+    '-fexceptions',
+    '-fdeprecated-macro',
+    '-resource-dir=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0'
+]
+
+EXTRA_C_FLAGS = [
+    '-std=gnu99'
+]
+
+EXTRA_CPP_FLAGS = [
+    '-std=gnu++11',
+    '-stdlib=libc++',
+    '-fcxx-exceptions'
+]
+
+EXTRA_OBJC_FLAGS = [
+    '-Wdeprecated-objc-isa-usage',
+    '-Werror=deprecated-objc-isa-usage',
+    '-fblocks',
+    '-fobjc-runtime=macosx-10.11.0',
+    '-fobjc-arc',
+    '-fencode-extended-block-signature',
+    '-fobjc-exceptions'
+]
+
+EXTRA_OBJCPP_FLAGS = EXTRA_OBJC_FLAGS + EXTRA_CPP_FLAGS
 
 def LoadSystemIncludes( filetype ):
     regex = re.compile(ur'(?:\#include \<...\> search starts here\:)(?P<list>.*?)(?:End of search list)', re.DOTALL)
@@ -16,10 +60,20 @@ def LoadSystemIncludes( filetype ):
             includes.append(p)
     return includes
 
+def LoadProjectIncludes( root_dir ):
+    includes = []
+    for root, dirs, files in os.walk( root_dir ):
+        includes.append( '-I' + root )
+    return includes
+
+def LoadFrameworkIncludes( root_dir ):
+    includes = []
+    for root, dirs, files in os.walk( root_dir ):
+        includes.append( '-F' + root )
+    return includes
 
 def DirectoryOfThisScript():
   return os.path.dirname( os.path.abspath( __file__ ) )
-
 
 def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
   if not working_directory:
@@ -49,67 +103,37 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
       new_flags.append( new_flag )
   return new_flags
 
-SOURCE_EXTENSIONS = [ 
-  '.cpp', 
-  '.cxx', 
-  '.cc', 
-  '.c', 
-  '.m', 
-  '.mm'
-]
+def FlagsForFile( filename, **kwargs ):
+    data = kwargs['client_data']
+    filetype = data['&filetype']
 
-HEADER_EXTENSIONS = [
-  '.h',
-  '.hxx',
-  '.hpp',
-  '.hh'
-]
+    if filetype == 'c':
+        language = 'c'
+        extra_flags = EXTRA_C_FLAGS
 
-def FlagsForFile(filename, **kwargs):
-  base_flags = [
-    '-Wall',
-    '-Wextra',
-    '-Werror',
-    '-ferror-limit=20',
-  ]
-  extra_flags = []
+    elif filetype == 'cpp':
+        language = 'c++'
+        extra_flags = EXTRA_CPP_FLAGS
 
-  data = kwargs['client_data']
-  filetype = data['&filetype']
+    elif filetype == 'objc':
+        language = 'objective-c'
+        extra_flags = EXTRA_OBJC_FLAGS
 
-  if filetype == 'c':
-    language = 'c'
-  elif filetype == 'cpp':
-    language = 'c++'
-    extra_flags += ['-std=c++11']
-  elif filetype == 'objc' or filetype == 'objcpp':
-    if filetype == 'objc':
-      language = 'objective-c'
     elif filetype == 'objcpp':
-      language = 'objective-c++'
-      extra_flags += ['-stdlib=c++']
+        language = 'objective-c++'
+        extra_flags = EXTRA_OBJCPP_FLAGS
 
-    extra_flags += [
-      '-Wdeprecated-objc-isa-usage',
-      '-Werror=deprecated-objc-isa-usage',
-      '-resource-dir',
-      '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0',
-      '-fblocks',
-      '-fobjc-runtime=macosx-10.11.0',
-      '-fobjc-arc',
-      '-fencode-extended-block-signature',
-      '-fdeprecated-macro',
-      '-fcxx-exceptions',
-      '-fobjc-exceptions',
-      '-fexceptions'
-    ]
+    flags = BASE_FLAGS + extra_flags + ['-x', language] + LoadSystemIncludes(language)
 
-  flags = base_flags + extra_flags + ['-x', language] + LoadSystemIncludes(language)
+    for root_dir in ( FRAMEWORK_DIRS ):
+        flags += LoadFrameworkIncludes( root_dir )
 
-  relative_to = DirectoryOfThisScript()
-  final_flags = MakeRelativePathsInFlagsAbsolute( flags, relative_to )
+    for root_dir in ( PROJECT_DIRS ):
+        flags += LoadProjectIncludes( root_dir )
 
-  return {
-    'flags':    final_flags,
-    'do_cache': True
-  }
+    final_flags = MakeRelativePathsInFlagsAbsolute( flags, DirectoryOfThisScript() )
+
+    return {
+        'flags':    final_flags,
+        'do_cache': True
+    }

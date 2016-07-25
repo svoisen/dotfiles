@@ -1,0 +1,43 @@
+" Indentation options
+set expandtab
+
+" Search/replace options
+set gdefault
+set ignorecase
+set smartcase
+set pasteboard
+
+" Jump up/down one line no matter if lines are wrapped
+nmap j gj
+nmap k gk
+
+" Easier pane management
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-=> <C-w>=
+
+" Maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+" Move visual blocks
+vmap J :m '>+1<CR>gv=gv
+vmap K :m '<-2<CR>gv=gv
+
+" Leader key mapping
+" Strip trailing whitespace
+nmap \W :%s/\s\+$//<cr>:let @/=''<CR>
+
+" Open horizontal split and switch to it
+nmap \h <C-w>s<C-w>j
+
+" Open vertical split and switch to it
+nmap \v <C-w>v<C-w>l
+
+" Xcode commands
+nmap <C-t> :xcmenucmd Open Quickly...<CR>
+nmap \b :xccmd toggleBreakpointAtCurrentLine<CR>
+nmap gcc :xccmd commentAndUncommentCurrentLines<CR>
+vmap gc :xccmd commentAndUncommentCurrentLines<CR>

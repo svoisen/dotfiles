@@ -13,6 +13,7 @@ endif
 call plug#begin(expand('~/.config/nvim/plugged'))
 Plug 'critiqjo/lldb.nvim'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 Plug 'kien/ctrlp.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'christoomey/vim-tmux-navigator'
