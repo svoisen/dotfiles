@@ -37,6 +37,7 @@ nmap \h <C-w>s<C-w>j
 nmap \v <C-w>v<C-w>l
 
 " Xcode commands
+nmap ' :xcmenucmd Open Quickly...<CR>
 nmap <C-t> :xcmenucmd Open Quickly...<CR>
 nmap \b :xccmd toggleBreakpointAtCurrentLine<CR>
 nmap gcc :xccmd commentAndUncommentCurrentLines<CR>

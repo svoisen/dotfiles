@@ -12,8 +12,9 @@ endif
 " Setup plugins using vim-plug
 call plug#begin(expand('~/.config/nvim/plugged'))
 Plug 'critiqjo/lldb.nvim'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --tern-completer' }
+" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+Plug 'ajh17/VimCompletesMe'
 Plug 'kien/ctrlp.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'christoomey/vim-tmux-navigator'
@@ -51,6 +52,7 @@ au BufUnload,BufLeave,FocusLost,QuitPre,InsertLeave,TextChanged,CursorHold * sil
 
 " Indentation options
 set tabstop=4
+set expandtab
 set autoindent
 set smartindent
 set shiftwidth=4
@@ -81,7 +83,36 @@ set tags=./tags,tags,~/commontags
 set listchars=eol:$,trail:~,extends:>,precedes:<
 
 " Omnicomplete
-" set omnifunc=syntaxcomplete#Complete
+augroup omnifuncs
+	autocmd!
+	autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+	autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete		
+	autocmd FileType c setlocal omnifunc=ccomplete#Complete		
+	autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags		
+	autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags		
+	autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS		
+	autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+augroup end
+
+" Always show completion menu no matter what
+set completeopt=longest,menuone		
+
+" Make completion menu more IDE-like		
+inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"		
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"		
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"		
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"		
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"		
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"		
+inoremap <expr> <Tab>      pumvisible() ? "\<C-n>" : "\<Tab>"
+
+" Tern completion options if tern_for_vim is installed
+if exists('g:plugs["tern_for_vim"]')
+	set updatetime=500
+	let g:tern_show_argument_hints='on_hold'
+	let g:tern_show_signature_in_pum=1
+	autocmd FileType javascript setlocal omnifunc=tern#Complete
+endif
 
 " Fix common spelling mistakes
 abbr teh the

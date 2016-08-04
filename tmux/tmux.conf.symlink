@@ -12,8 +12,9 @@ set-option -g default-terminal "screen-256color"
 set-option -g status-bg colour235
 set-option -g status-fg white
 
-# utf8 support
-set-window-option -g utf8 on
+# pane focus
+set-option -g pane-border-fg black
+set-option -g pane-active-border-fg brightgreen 
 
 # basic settings
 set-window-option -g xterm-keys on
@@ -22,7 +23,6 @@ set-window-option -g mode-keys vi
 # status bar
 set-option -g status on
 set-option -g status-interval 2
-set-option -g status-utf8 on
 set-option -g status-justify "centre"
 set-option -g status-left-length 60
 set-option -g status-right-length 60
@@ -42,6 +42,7 @@ bind-key h select-pane -L
 bind-key j select-pane -D
 bind-key k select-pane -U
 bind-key l select-pane -R
+bind-key p display-panes
 
 bind-key C-h resize-pane -L 5
 bind-key C-j resize-pane -D 5

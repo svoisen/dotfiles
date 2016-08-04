@@ -1,0 +1,44 @@
+" Enable surround extension
+set surround
+
+" Search/replace options
+set gdefault
+set ignorecase
+set incsearch
+set smartcase
+set hlsearch
+
+" Easier pane movement
+set winminheight=0
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-=> <C-w>=
+
+" Jump up/down one line no matter if lines are wrapped
+nnoremap j gj
+nnoremap k gk
+
+" Maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+" Move visual blocks
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Leader key mapping
+" Strip trailing whitespace
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+" Open horizontal split and switch to it
+nnoremap <leader>h <C-w>s<C-w>j
+
+" Open vertical split and switch to it
+nnoremap <leader>v <C-w>v<C-w>l
+
+nnoremap <C-t> :action GotoFile<CR>
+nnoremap ' :action GotoFile<CR>
+nnoremap gcc :action CommentByLineComment<CR>
+vmap gc :action CommentByLineComment<CR>
