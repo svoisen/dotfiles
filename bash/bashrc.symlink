@@ -113,15 +113,6 @@ export PAGER MANPAGER
 # ls and Colors
 # ------------------------------------------------------------- 
 
-dircolors="$(type -P gdircolors dircolors | head -1)"
-test -n "$dircolors" && {
-  test -e "/etc/DIR_COLORS" && COLORS="/etc/DIR_COLORS"
-  test -e "$HOME/.dircolors" && COLORS="$HOME/.dircolors"
-  test ! -e "$COLORS"
-  eval `$dircolors --sh $COLORS`
-}
-unset dircolors
-
 if [ "$(uname -s)" == "Darwin" ] ; then
   alias ls='ls -hBG'
 else
@@ -154,3 +145,31 @@ fi
 # -------------------------------------------------------------
 export NVM_DIR="/Users/svoisen/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# -------------------------------------------------------------
+# rbenv
+# -------------------------------------------------------------
+eval "$(rbenv init -)"
+
+# -------------------------------------------------------------
+# emscripten
+# -------------------------------------------------------------
+export EMSDK="/Users/svoisen/bin/emsdk-portable"
+export EM_CONFIG="/Users/svoisen/.emscripten"
+export BINARYEN_ROOT="$EMSDK/clang/e1.37.21_64bit/binaryen"
+export EMSCRIPTEN="$EMSDK/emscripten/1.37.21"
+export PATH=$PATH:$EMSDK:$EMSDK/clang/e1.37.21_64bit:$EMSDK/emscripten/1.37.21
+
+# -------------------------------------------------------------
+# python
+# -------------------------------------------------------------
+
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+# -------------------------------------------------------------
+# AWS
+# -------------------------------------------------------------
+
+if [ -f ~/.aws_settings ]; then
+  . ~/.aws_settings
+fi
