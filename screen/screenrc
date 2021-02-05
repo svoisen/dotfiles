@@ -1,7 +1,0 @@
-startup_message off
-vbell off
-term screen-256color
-shelltitle "$ |"
-caption always "%{= Wk}%-w%{= Bw}%n %t%{-}%+w %-="
-
-bind 'K' kill

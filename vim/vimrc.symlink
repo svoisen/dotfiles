@@ -1,0 +1,184 @@
+set nocompatible
+
+" autoload Plug if needed
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Setup plugins using vim-plug
+call plug#begin(expand('~/.vim/bundle'))
+Plug 'altercation/vim-colors-solarized'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'leafgarland/typescript-vim'
+Plug 'quramy/tsuquyomi'
+Plug 'edkolev/tmuxline.vim'
+Plug 'oblitum/youcompleteme'
+call plug#end()
+
+" Setup colorscheme
+colorscheme solarized
+set background=dark
+
+" Setup airline
+let g:airline_powerline_fonts=1
+
+" FZF
+set rtp+=/usr/local/opt/fzf
+
+" NERDTree
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Always use the system clipboard
+set clipboard=unnamed
+
+" Show the column at 80 characters
+set colorcolumn=80
+
+" Turn on line numbers
+set number
+
+" Always save all the things
+au BufUnload,BufLeave,FocusLost,QuitPre,InsertLeave,TextChanged,CursorHold * silent! wall
+
+" Indentation options
+set tabstop=4
+set expandtab
+set autoindent
+set smartindent
+set shiftwidth=4
+set shiftround
+set smarttab
+
+" Show matching parens
+set showmatch
+
+" Make tabs always visible
+set showtabline=2
+
+" Search options
+set ignorecase
+set smartcase
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+
+" Backup options
+set nobackup
+set noswapfile
+
+" Always do global replace
+set gdefault
+
+" Show whitespaces
+set listchars=eol:$,trail:~,extends:>,precedes:<
+
+" Fix common spelling mistakes
+abbr teh the
+abbr widht width
+abbr rigth right
+abbr heiht height
+
+" Toggle highlight search
+function! ToggleHLSearch()
+  if &hls
+    set nohls
+  else
+    set hls
+  endif
+endfunction
+
+" Tab navigation and reordering
+nnoremap T :tabnew<CR>
+nnoremap C :tabclose<CR>
+noremap <A-l> :tabnext<CR>
+noremap <A-h> :tabprev<CR>
+noremap <A-S-l> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
+noremap <A-S-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
+
+" Buffer navigation
+noremap <A-j> :bnext<CR>
+noremap <A-k> :bprevious<CR>
+noremap <A-S-k> :bfirst<CR>
+noremap <A-S-j> :blast<CR>
+
+" Always split new windows below
+set splitbelow
+
+" Easier pane movement
+set winminheight=0
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-=> <C-w>=
+
+" Jump up/down one line no matter if lines are wrapped
+nnoremap j gj
+nnoremap k gk
+
+" Maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+" Move visual blocks
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Function key mapping
+" F1 mapped to help
+noremap! <silent> <F2> <Esc>:setlocal number!<CR>
+nnoremap <silent> <F2> :setlocal number!<CR>
+noremap! <silent> <F3> <Esc>:call ToggleHLSearch()<CR>
+nnoremap <silent> <F3> :call ToggleHLSearch()<CR>
+noremap! <silent> <F4> <Esc>:set spell!<CR>
+nnoremap <silent> <F4> :set spell!<CR>
+noremap! <silent> <F5> <Esc>:set list!<CR>
+nnoremap <silent> <F5> :set list!<CR>
+
+" Leader key mapping
+" Strip trailing whitespace
+nnoremap <Leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+" Open horizontal split and switch to it
+nnoremap <Leader>h <C-w>s<C-w>j
+
+" Open vertical split and switch to it
+nnoremap <Leader>v <C-w>v<C-w>l
+
+" Re-hardwrap paragraphs
+nnoremap <Leader>p gqip
+
+" Set the working directory to current file
+nnoremap <Leader>. :lcd %:p:h<CR>
+
+" Open an edit command with the path of the current file
+noremap <Leader>e :e <C-R>=expand("%:p:h") . "/"<CR>
+
+" Open a tab edit command with the path of the current file
+noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
+
+" Find files using FZF
+nnoremap <silent> <C-P> :Files<CR>
+
+" Find buffers using FZF
+nnoremap <silent> <Leader>b :Buffers<CR>
+
+" Find in file
+nnoremap <silent> <Leader>f :Rg<CR>
+
+" Find line in file
+nnoremap <silent> <Leader>\ :Blines<CR>
+
+" Toggle NERDTree
+noremap <silent> <Leader>t :NERDTreeToggle<CR>
