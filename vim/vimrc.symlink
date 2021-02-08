@@ -23,6 +23,8 @@ Plug 'leafgarland/typescript-vim'
 Plug 'quramy/tsuquyomi'
 Plug 'edkolev/tmuxline.vim'
 Plug 'oblitum/youcompleteme'
+Plug 'vimwiki/vimwiki'
+Plug 'michal-h21/vim-zettel'
 call plug#end()
 
 " Setup colorscheme
@@ -31,6 +33,11 @@ set background=dark
 
 " Setup airline
 let g:airline_powerline_fonts=1
+
+" Setup vim-zettel
+let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
+let g:vimwiki_list = [{'path':'~/Dropbox/Notes/','ext':'.md','syntax':'markdown','custom_wiki2html':'~/bin/customwiki2html.sh'}]
+let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl', 'disable_front_matter':1}]
 
 " FZF
 set rtp+=/usr/local/opt/fzf
@@ -151,7 +158,7 @@ nnoremap <silent> <F5> :set list!<CR>
 nnoremap <Leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 " Open horizontal split and switch to it
-nnoremap <Leader>h <C-w>s<C-w>j
+nnoremap <Leader>s <C-w>s<C-w>j
 
 " Open vertical split and switch to it
 nnoremap <Leader>v <C-w>v<C-w>l
