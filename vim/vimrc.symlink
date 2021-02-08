@@ -42,6 +42,11 @@ let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl', 'disable_front
 " FZF
 set rtp+=/usr/local/opt/fzf
 
+" Vim-Zettel
+let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
+let g:vimwiki_list = [{'path':'~/Dropbox/Notes/','ext':'.md','syntax':'markdown'}]
+au BufRead,BufNewFile *.md setlocal linebreak wrap tw=0
+
 " NERDTree
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
@@ -185,7 +190,10 @@ nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>f :Rg<CR>
 
 " Find line in file
-nnoremap <silent> <Leader>\ :Blines<CR>
+nnoremap <silent> <C-f> :BLines<CR>
 
 " Toggle NERDTree
 noremap <silent> <Leader>t :NERDTreeToggle<CR>
+
+" Create new zettel
+noremap <silent> <Leader>zn :ZettelNew<CR>
