@@ -22,8 +22,8 @@ set -g base-index 1
 set-option -g set-clipboard on
 
 # bindings
-bind-key s split-window -v
-bind-key v split-window -h
+bind-key - split-window -v
+bind-key | split-window -h
 
 bind-key h select-pane -L
 bind-key j select-pane -D
