@@ -47,10 +47,17 @@ au BufRead,BufNewFile *.md setlocal linebreak wrap tw=0
 set rtp+=/usr/local/opt/fzf
 
 " NERDTree
+let NERDTreeMinimalUI = 1
+let NERDTreeAutoDeleteBuffer = 1
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
+
+" Open a NERDTree if no file is given as CLI argument
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Close if the only remaining window is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " Enable Emmet only for HTML and CSS
 let g:user_emmet_install_global = 0
@@ -164,25 +171,22 @@ nnoremap <Leader>p gqip
 nnoremap <Leader>. :lcd %:p:h<CR>
 
 " Open an edit command with the path of the current file
-noremap <Leader>e :e <C-R>=expand("%:p:h") . "/"<CR>
+nnoremap <Leader>e :e <C-R>=expand("%:p:h") . "/"<CR>
 
 " Open a tab edit command with the path of the current file
-noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
-
-" Find files using FZF
-nnoremap <silent> <C-P> :Files<CR>
-
-" Find buffers using FZF
-nnoremap <silent> <Leader>b :Buffers<CR>
-
-" Find in file
-nnoremap <silent> <Leader>f :Rg<CR>
-
-" Find line in file
-nnoremap <silent> <C-f> :BLines<CR>
+nnoremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
 
 " Toggle NERDTree
-noremap <silent> <Leader>t :NERDTreeToggle<CR>
+nnoremap <silent> <Leader>t :NERDTreeToggle<CR>
 
-" Create new zettel
-noremap <silent> <Leader>zn :ZettelNew<Space>
+" Find files using FZF
+noremap <silent> <C-P> :Files<CR>
+
+" Find in files using ripgrep
+noremap <silent> <C-F> :Rg<CR>
+
+" Find line in file
+noremap <silent> <C-O> :BLines<CR>
+
+" Find buffers using FZF
+noremap <silent> <C-B> :Buffers<CR>
