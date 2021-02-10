@@ -17,6 +17,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'
 Plug 'leafgarland/typescript-vim'
@@ -25,6 +26,8 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'oblitum/youcompleteme'
 Plug 'vimwiki/vimwiki'
 Plug 'michal-h21/vim-zettel'
+Plug 'mattn/emmet-vim'
+Plug 'pangloss/vim-javascript'
 call plug#end()
 
 " Setup colorscheme
@@ -48,6 +51,10 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Enable Emmet only for HTML and CSS
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
 
 " Always use the system clipboard
 set clipboard=unnamed
@@ -105,20 +112,6 @@ function! ToggleHLSearch()
     set hls
   endif
 endfunction
-
-" Tab navigation and reordering
-nnoremap T :tabnew<CR>
-nnoremap C :tabclose<CR>
-noremap <A-l> :tabnext<CR>
-noremap <A-h> :tabprev<CR>
-noremap <A-S-l> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
-noremap <A-S-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
-
-" Buffer navigation
-noremap <A-j> :bnext<CR>
-noremap <A-k> :bprevious<CR>
-noremap <A-S-k> :bfirst<CR>
-noremap <A-S-j> :blast<CR>
 
 " Always split new windows below
 set splitbelow
@@ -192,4 +185,4 @@ nnoremap <silent> <C-f> :BLines<CR>
 noremap <silent> <Leader>t :NERDTreeToggle<CR>
 
 " Create new zettel
-noremap <silent> <Leader>zn :ZettelNew<CR>
+noremap <silent> <Leader>zn :ZettelNew<Space>
