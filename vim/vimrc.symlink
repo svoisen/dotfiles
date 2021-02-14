@@ -27,7 +27,9 @@ Plug 'oblitum/youcompleteme'
 Plug 'vimwiki/vimwiki'
 Plug 'michal-h21/vim-zettel'
 Plug 'mattn/emmet-vim'
-Plug 'pangloss/vim-javascript'
+Plug 'junegunn/goyo.vim'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 " Setup colorscheme
@@ -37,11 +39,13 @@ set background=dark
 " Setup airline
 let g:airline_powerline_fonts=1
 
-" Setup vim-zettel
+" Setup vim-zettel and related markdown
 let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
 let g:vimwiki_list = [{'path':'~/Dropbox/Notes/','ext':'.md','syntax':'markdown','custom_wiki2html':'~/bin/customwiki2html.sh'}]
-let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl'}]
-au BufRead,BufNewFile *.md setlocal linebreak wrap tw=0
+let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl', 'disable_front_matter':1}]
+let g:vim_markdown_folding_disabled = 1
+autocmd FileType vimwiki set ft=markdown
+au BufRead,BufNewFile *.md setlocal linebreak wrap
 
 " Setup FZF
 set rtp+=/usr/local/opt/fzf
