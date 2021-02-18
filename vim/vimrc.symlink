@@ -1,5 +1,63 @@
+" -----------------------------------------------------------------------------
+" Common settings
+" -----------------------------------------------------------------------------
 set nocompatible
 
+" Too long of an update leads to poor experience
+set updatetime=300
+
+" Always use the system clipboard
+set clipboard=unnamed
+
+" Show the column at 80 characters
+set colorcolumn=80
+
+" Use number column as sign column
+set signcolumn=number
+
+" Turn on line numbers
+set number
+
+" Indenting options
+set tabstop=4
+set expandtab
+set autoindent
+set smartindent
+set shiftwidth=4
+set shiftround
+set smarttab
+
+" Show matching parens
+set showmatch
+
+" Make tab bar always visible
+set showtabline=2
+
+" Search options
+set ignorecase
+set smartcase
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+
+" Backup options
+set nobackup
+set nowritebackup
+set noswapfile
+
+" Always do global replace
+set gdefault
+
+" Whitespace characters
+set listchars=eol:$,trail:~,extends:>,precedes:<
+
+" Always split new windows below
+set splitbelow
+
+" Always save all the things
+au BufUnload,BufLeave,FocusLost,QuitPre,InsertLeave,TextChanged,CursorHold * silent! wall
+
+" -----------------------------------------------------------------------------
+" Plugins
+" -----------------------------------------------------------------------------
 " autoload Plug if needed
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -7,7 +65,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Setup plugins using vim-plug
+" Setup plugins using Plug
 call plug#begin(expand('~/.vim/bundle'))
 Plug 'altercation/vim-colors-solarized'
 Plug 'christoomey/vim-tmux-navigator'
@@ -19,34 +77,128 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf'
 Plug 'leafgarland/typescript-vim'
-Plug 'quramy/tsuquyomi'
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'edkolev/tmuxline.vim'
-Plug 'oblitum/youcompleteme'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'antoinemadec/coc-fzf'
 Plug 'vimwiki/vimwiki'
 Plug 'michal-h21/vim-zettel'
 Plug 'mattn/emmet-vim'
-Plug 'pangloss/vim-javascript'
 call plug#end()
 
-" Setup colorscheme
+" -----------------------------------------------------------------------------
+" colorscheme
+" -----------------------------------------------------------------------------
 colorscheme solarized
 set background=dark
 
-" Setup airline
+" -----------------------------------------------------------------------------
+" coc
+" -----------------------------------------------------------------------------
+" Setup coc extensions
+let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-clangd', 'coc-json']
+
+" Use tab for trigger completion with characters ahead and navigate
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Use <c-space> to trigger completion
+inoremap <silent><expr> <c-@> coc#refresh()
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to format on enter
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Symbol renaming using coc
+nmap <leader>rn <Plug>(coc-rename)
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Coc FZF integration mappings
+nnoremap <silent> <space><space> :<C-u>CocFzfList<CR>
+nnoremap <silent> <space>a       :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> <space>d       :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <space>c       :<C-u>CocFzfList commands<CR>
+nnoremap <silent> <space>e       :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
+nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " " .
+    expand('<cword>')
+    endif
+endfunction
+
+" -----------------------------------------------------------------------------
+" airline
+" -----------------------------------------------------------------------------
+" Use Powerline fonts
 let g:airline_powerline_fonts=1
 
-" Setup vim-zettel
+" -----------------------------------------------------------------------------
+" vimwiki and vim-zettel
+" -----------------------------------------------------------------------------
 let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
 let g:vimwiki_list = [{'path':'~/Dropbox/Notes/','ext':'.md','syntax':'markdown','custom_wiki2html':'~/bin/customwiki2html.sh'}]
 let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl'}]
 au BufRead,BufNewFile *.md setlocal linebreak wrap tw=0
 
-" Setup FZF
+" -----------------------------------------------------------------------------
+" FZF
+" -----------------------------------------------------------------------------
 set rtp+=/usr/local/opt/fzf
 
+" Find files using FZF
+noremap <silent> <C-p> :Files<CR>
+
+" Find in files using ripgrep
+noremap <silent> <C-f> :Rg<CR>
+
+" Find tag in buffer
+noremap <silent> <C-o> :BTags<CR>
+
+" Find buffers using FZF
+noremap <silent> <C-b> :Buffers<CR>
+
+" Find line in buffer
+noremap <silent> <C-i> :BLines<CR>
+
+" -----------------------------------------------------------------------------
 " NERDTree
+" -----------------------------------------------------------------------------
 let NERDTreeMinimalUI = 1
 let NERDTreeAutoDeleteBuffer = 1
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -59,70 +211,28 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " Close if the only remaining window is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+" Toggle NERDTree
+nmap <silent> <leader>t :NERDTreeToggle<CR>
+
+" -----------------------------------------------------------------------------
+" Emmet
+" -----------------------------------------------------------------------------
 " Enable Emmet only for HTML and CSS
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 
-" Always use the system clipboard
-set clipboard=unnamed
-
-" Show the column at 80 characters
-set colorcolumn=80
-
-" Turn on line numbers
-set number
-
-" Always save all the things
-au BufUnload,BufLeave,FocusLost,QuitPre,InsertLeave,TextChanged,CursorHold * silent! wall
-
-" Indentation options
-set tabstop=4
-set expandtab
-set autoindent
-set smartindent
-set shiftwidth=4
-set shiftround
-set smarttab
-
-" Show matching parens
-set showmatch
-
-" Make tabs always visible
-set showtabline=2
-
-" Search options
-set ignorecase
-set smartcase
-set grepprg=rg\ --vimgrep\ --smart-case\ --follow
-
-" Backup options
-set nobackup
-set noswapfile
-
-" Always do global replace
-set gdefault
-
-" Show whitespaces
-set listchars=eol:$,trail:~,extends:>,precedes:<
-
+" -----------------------------------------------------------------------------
+" Abbreviations
+" -----------------------------------------------------------------------------
 " Fix common spelling mistakes
 abbr teh the
 abbr widht width
 abbr rigth right
 abbr heiht height
 
-" Toggle highlight search
-function! ToggleHLSearch()
-  if &hls
-    set nohls
-  else
-    set hls
-  endif
-endfunction
-
-" Always split new windows below
-set splitbelow
-
+" -----------------------------------------------------------------------------
+" Moving around
+" -----------------------------------------------------------------------------
 " Easier pane movement
 set winminheight=0
 nmap <C-j> <C-w>j
@@ -139,33 +249,58 @@ nnoremap k gk
 vmap < <gv
 vmap > >gv
 
-" Move visual blocks
+" Move visual block down
 vnoremap J :m '>+1<CR>gv=gv
+
+" Move visual block up
 vnoremap K :m '<-2<CR>gv=gv
 
-" Function key mapping
-" F1 mapped to help
+" -----------------------------------------------------------------------------
+" Function key mappings
+" -----------------------------------------------------------------------------
+" F1 mapped to help, don't override it
+
+" Toggle line numbers
 noremap! <silent> <F2> <Esc>:setlocal number!<CR>
 nnoremap <silent> <F2> :setlocal number!<CR>
+
+" Toggle highlight of search terms
 noremap! <silent> <F3> <Esc>:call ToggleHLSearch()<CR>
 nnoremap <silent> <F3> :call ToggleHLSearch()<CR>
+
+function! ToggleHLSearch()
+    if &hls
+        set nohls
+    else
+        set hls
+    endif
+endfunction
+
+" Toggle spell check
 noremap! <silent> <F4> <Esc>:set spell!<CR>
 nnoremap <silent> <F4> :set spell!<CR>
+
+" Toggle whitespace visibility
 noremap! <silent> <F5> <Esc>:set list!<CR>
 nnoremap <silent> <F5> :set list!<CR>
 
-" Leader key mapping
+" -----------------------------------------------------------------------------
+" Text formatting
+" -----------------------------------------------------------------------------
 " Strip trailing whitespace
 nnoremap <Leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
+" Re-hardwrap paragraphs
+nnoremap <Leader>p gqip
+
+" -----------------------------------------------------------------------------
+" Miscellaneous leader mappings
+" -----------------------------------------------------------------------------
 " Open horizontal split and switch to it
 nnoremap <Leader>s <C-w>s<C-w>j
 
 " Open vertical split and switch to it
 nnoremap <Leader>v <C-w>v<C-w>l
-
-" Re-hardwrap paragraphs
-nnoremap <Leader>p gqip
 
 " Set the working directory to current file
 nnoremap <Leader>. :lcd %:p:h<CR>
@@ -176,17 +311,5 @@ nnoremap <Leader>e :e <C-R>=expand("%:p:h") . "/"<CR>
 " Open a tab edit command with the path of the current file
 nnoremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
 
-" Toggle NERDTree
-nnoremap <silent> <Leader>t :NERDTreeToggle<CR>
-
-" Find files using FZF
-noremap <silent> <C-P> :Files<CR>
-
-" Find in files using ripgrep
-noremap <silent> <C-F> :Rg<CR>
-
-" Find line in file
-noremap <silent> <C-O> :BLines<CR>
-
-" Find buffers using FZF
-noremap <silent> <C-B> :Buffers<CR>
+" Source vim configuration file and install plugins
+nnoremap <silent> <Leader>1 :source ~/.vimrc \| :PlugInstall<CR>
