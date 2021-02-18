@@ -86,6 +86,10 @@ Plug 'antoinemadec/coc-fzf'
 Plug 'vimwiki/vimwiki'
 Plug 'michal-h21/vim-zettel'
 Plug 'mattn/emmet-vim'
+Plug 'junegunn/goyo.vim'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'ludovicchabant/vim-gutentags'
 call plug#end()
 
 " -----------------------------------------------------------------------------
@@ -173,8 +177,10 @@ let g:airline_powerline_fonts=1
 " -----------------------------------------------------------------------------
 let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
 let g:vimwiki_list = [{'path':'~/Dropbox/Notes/','ext':'.md','syntax':'markdown','custom_wiki2html':'~/bin/customwiki2html.sh'}]
-let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl'}]
-au BufRead,BufNewFile *.md setlocal linebreak wrap tw=0
+let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl', 'disable_front_matter':1}]
+let g:vim_markdown_folding_disabled = 1
+autocmd FileType vimwiki set ft=markdown
+au BufRead,BufNewFile *.md setlocal linebreak wrap
 
 " -----------------------------------------------------------------------------
 " FZF
