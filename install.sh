@@ -106,21 +106,9 @@ install_dotfiles () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  for src in $(find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path "$DOTFILES_ROOT/nvim/*")
+  for src in $(find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink')
   do
     dst="$HOME/.$(basename "${src%.*}")"
-    link_file "$src" "$dst"
-  done
-}
-
-install_nvim () {
-  info 'installing nvim configuration'
-
-  mkdir -p ${HOME}/.config/nvim
-  
-  for src in $(find "$DOTFILES_ROOT/nvim" -maxdepth 2 -name '*.symlink')
-  do
-    dst="$HOME/.config/nvim/$(basename "${src%.*}")"
     link_file "$src" "$dst"
   done
 }
@@ -137,7 +125,6 @@ install_scripts () {
 }
 
 install_dotfiles
-install_nvim
 install_scripts
 
 echo ''
