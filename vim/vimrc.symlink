@@ -188,6 +188,10 @@ let g:vim_markdown_folding_disabled = 1
 autocmd FileType vimwiki set ft=markdown
 au BufRead,BufNewFile *.md setlocal linebreak wrap
 
+command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
+nnoremap <silent> <Leader>zn :ZettelNew<CR>
+nnoremap <silent> <Leader>zf :ZettelSearchTitle<Cr>
+
 " -----------------------------------------------------------------------------
 " FZF
 " -----------------------------------------------------------------------------
