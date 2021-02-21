@@ -102,7 +102,8 @@ set background=dark
 " coc
 " -----------------------------------------------------------------------------
 " Setup coc extensions
-let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-clangd', 'coc-json']
+let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 
+    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier']
 
 " Use tab for trigger completion with characters ahead and navigate
 inoremap <silent><expr> <TAB>
@@ -166,6 +167,8 @@ function! s:show_documentation()
     endif
 endfunction
 
+" Create :Prettier command
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " -----------------------------------------------------------------------------
 " airline
 " -----------------------------------------------------------------------------
