@@ -101,13 +101,22 @@ call plug#end()
 " -----------------------------------------------------------------------------
 colorscheme solarized
 
-if $ITERM_PROFILE == 'Solarized Dark'
+if $ITERM_PROFILE=='Solarized Dark'
     set background=dark
-endif
-
-if $ITERM_PROFILE == 'Solarized Light'
+else
     set background=light
 endif
+
+function Solar_swap()
+    if &background ==? 'dark'
+        set background=light
+    else
+        set background=dark
+    endif
+    silent !osascript -e 'tell app "System Events" to keystroke "s" using {shift down, option down, control down}'
+endfunction
+
+command! SolarSwap call Solar_swap()
 
 " -----------------------------------------------------------------------------
 " coc
