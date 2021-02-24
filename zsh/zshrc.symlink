@@ -95,11 +95,15 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
+
 alias zshrc="vim ~/.zshrc"
 alias vimrc="vim ~/.vimrc"
 alias c="clear"
+alias vo='vim -o `fzf`'
+alias gfix='vim `git diff --name-only | uniq`'
+
+# Git completion
+[ -f ~/bin/git-completion.sh ] && source ~/bin/git-completion.sh
 
 # FZF Settings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

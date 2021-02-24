@@ -11,6 +11,10 @@
   df = diff
   unstage = reset HEAD
   d = difftool
+  fix = "!f() { vim -p `git diff --name-only`; }; f"
+  edit-unmerged = "!vim `git diff --name-only --diff-filter=U`"
+  add-unmerged = "!git add `git diff --name-only --diff-filter=U`"
+
 
 [core]
   filemode = true
