@@ -18,6 +18,10 @@ set signcolumn=number
 " Turn on line numbers
 set number
 
+" Enable the mouse
+set mouse=a
+set ttymouse=xterm2
+
 " Indenting options
 set tabstop=4
 set expandtab
@@ -96,7 +100,14 @@ call plug#end()
 " colorscheme
 " -----------------------------------------------------------------------------
 colorscheme solarized
-set background=dark
+
+if $ITERM_PROFILE == 'Solarized Dark'
+    set background=dark
+endif
+
+if $ITERM_PROFILE == 'Solarized Light'
+    set background=light
+endif
 
 " -----------------------------------------------------------------------------
 " coc

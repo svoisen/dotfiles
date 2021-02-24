@@ -1,6 +1,7 @@
 [user]
-	name = Sean Voisen
-	email = sean@voisen.org
+# Please adapt and uncomment the following lines:
+  name = Sean Voisen
+  email = svoisen@adobe.com
 
 [alias]
   st = status
@@ -9,7 +10,7 @@
   co = checkout
   df = diff
   unstage = reset HEAD
-	d = difftool
+  d = difftool
 
 [core]
   filemode = true
