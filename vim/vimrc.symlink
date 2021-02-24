@@ -116,6 +116,9 @@ endif
 let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 
     \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier']
 
+" Disable in markdown files
+autocmd FileType markdown let b:coc_suggest_disable = 1
+
 " Use tab for trigger completion with characters ahead and navigate
 inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
@@ -195,6 +198,10 @@ let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl', 'disable_front
 let g:vim_markdown_folding_disabled = 1
 autocmd FileType vimwiki set ft=markdown
 au BufRead,BufNewFile *.md setlocal linebreak wrap
+
+command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
+nnoremap <silent> <Leader>zn :ZettelNew<CR>
+nnoremap <silent> <Leader>zf :ZettelSearchTitle<Cr>
 
 " -----------------------------------------------------------------------------
 " FZF
