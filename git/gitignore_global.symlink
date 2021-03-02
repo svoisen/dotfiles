@@ -1,5 +1,3 @@
 .DS_Store
-.idea/
-.ycm_extra_conf*
-.tern-project
 tags
+tags.lock
