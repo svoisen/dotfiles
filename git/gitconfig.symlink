@@ -1,5 +1,4 @@
 [user]
-# Please adapt and uncomment the following lines:
   name = Sean Voisen
   email = svoisen@adobe.com
 
@@ -15,23 +14,26 @@
   edit-unmerged = "!vim `git diff --name-only --diff-filter=U`"
   add-unmerged = "!git add `git diff --name-only --diff-filter=U`"
 
-
 [core]
   filemode = true
   whitespace = trailing-spacea, space-before-tab
   excludesfile = /Users/svoisen/.gitignore_global
+  pager = diff-so-fancy | less --tabs=4 -RFX
 
 [branch]
   autosetupmerge = true
 
 [color]
-  ui = auto
+  ui = true
 
 [color "diff"]
-  meta = blue bold
-  frag = magenta bold
-  old = red bold
-  new = green bold
+	meta = 11
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	func = 146 bold
+	commit = yellow bold
+	whitespace = red reverse
 
 [color "status"]
   added = yellow
@@ -52,7 +54,16 @@
   keepBackup = false
 
 [diff]
-	tool = vimdiff
+  tool = vimdiff
 
 [difftool]
-	prompt = false
+  prompt = false
+
+[interactive]
+  diffFilter = diff-so-fancy --patch
+
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22

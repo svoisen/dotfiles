@@ -70,7 +70,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux vi-mode vscode npm common-aliases)
+plugins=(tmux vi-mode npm common-aliases forgit)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -101,6 +101,8 @@ alias vimrc="vim ~/.vimrc"
 alias c="clear"
 alias vo='vim -o `fzf`'
 alias gfix='vim `git diff --name-only | uniq`'
+alias light='echo "setting ITERM_PROFILE to light"; export ITERM_PROFILE="light"'
+alias dark='echo "setting ITERM_PROFILE to dark"; export ITERM_PROFILE="dark"'
 
 # Git completion
 [ -f ~/bin/git-completion.sh ] && source ~/bin/git-completion.sh

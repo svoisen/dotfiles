@@ -56,8 +56,11 @@ set listchars=eol:$,trail:~,extends:>,precedes:<
 " Always split new windows below
 set splitbelow
 
+" Needed for yats
+set re=0
+
 " Always save all the things
-au BufUnload,BufLeave,FocusLost,QuitPre,InsertLeave,TextChanged,CursorHold * silent! wall
+au BufUnload,BufLeave,QuitPre * silent! wall
 
 " -----------------------------------------------------------------------------
 " Plugins
@@ -81,7 +84,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/fzf.vim'
-Plug 'leafgarland/typescript-vim'
+" Plug 'leafgarland/typescript-vim'
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'edkolev/tmuxline.vim'
@@ -101,9 +105,11 @@ call plug#end()
 " -----------------------------------------------------------------------------
 colorscheme solarized
 
-if $ITERM_PROFILE=='Solarized Dark'
+if $ITERM_PROFILE =~? 'Dark\c'
     set background=dark
-else
+endif
+
+if $ITERM_PROFILE =~? 'Light\c'
     set background=light
 endif
 
@@ -133,7 +139,8 @@ inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
     \ <SID>check_back_space() ? "\<TAB>" :
     \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 function! s:check_back_space() abort
     let col = col('.') - 1
@@ -190,8 +197,10 @@ function! s:show_documentation()
     endif
 endfunction
 
-" Create :Prettier command
+" Create :Prettier command and autorun on save
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" autocmd BufWritePre *.ts Prettier
+
 " -----------------------------------------------------------------------------
 " airline
 " -----------------------------------------------------------------------------
@@ -231,6 +240,13 @@ noremap <silent> <C-b> :Buffers<CR>
 
 " Find line in buffer
 noremap <silent> <C-i> :BLines<CR>
+
+" -----------------------------------------------------------------------------
+" git and fugitive
+" -----------------------------------------------------------------------------
+nnoremap <Leader>gd :Gvdiffsplit!<CR>
+nnoremap <Leader>gdh :diffget //2<CR>
+nnoremap <Leader>gdl :diffget //3<CR>
 
 " -----------------------------------------------------------------------------
 " NERDTree
