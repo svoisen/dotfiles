@@ -208,14 +208,26 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 let g:airline_powerline_fonts=1
 
 " -----------------------------------------------------------------------------
-" vimwiki and vim-zettel
+" vimwiki and vim-zettel + markdown settings
 " -----------------------------------------------------------------------------
 let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
-let g:vimwiki_list = [{'path':'~/Dropbox/Notes/','ext':'.md','syntax':'markdown','custom_wiki2html':'~/bin/customwiki2html.sh'}]
-let g:zettel_options = [{'template':'~/Dropbox/Notes/zettel.tpl', 'disable_front_matter':1}]
+let g:vimwiki_list = [{'path':'~/zettelkasten/','ext':'.md','syntax':'markdown','custom_wiki2html':'~/bin/customwiki2html.sh'}]
+let g:zettel_options = [{'template':'~/zettelkasten/zettel.tpl', 'disable_front_matter':1}]
 let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_frontmatter = 1
 autocmd FileType vimwiki set ft=markdown
 au BufRead,BufNewFile *.md setlocal linebreak wrap
+
+function! s:make_md_link(lines)
+    let items = split(a:lines[0], ':')
+    let mdlink = "[" . trim(items[2]) . "](" . split(items[0], '\.')[0] . ")"
+    return mdlink
+endfunction
+
+inoremap <expr> <c-x><c-s> fzf#vim#complete({
+    \ 'source': 'rg --color always --ignore-case --no-heading ^title:',
+    \ 'reducer': function('<sid>make_md_link'),
+    \ 'options': "--ansi --delimiter : --preview 'bat --color=always --style=plain --line-range=:500 $(cut -d: -f1 <<< {})'"})
 
 command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
 nnoremap <silent> <Leader>zn :ZettelNew<CR>
@@ -365,3 +377,5 @@ nnoremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
 
 " Source vim configuration file and install plugins
 nnoremap <silent> <Leader>1 :source ~/.vimrc \| :PlugInstall<CR>
+nnoremap <silent> <Leader>2 :source ~/.vimrc<CR>
+
