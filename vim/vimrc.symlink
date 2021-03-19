@@ -15,6 +15,9 @@ set colorcolumn=80
 " Use number column as sign column
 set signcolumn=number
 
+" Highlight the cursor line
+set cursorline
+
 " Turn on line numbers
 set number
 
@@ -84,7 +87,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/fzf.vim'
-" Plug 'leafgarland/typescript-vim'
+Plug 'junegunn/fzf'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -98,6 +101,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 " -----------------------------------------------------------------------------
@@ -107,10 +111,10 @@ colorscheme solarized
 
 if $ITERM_PROFILE =~? 'Dark\c'
     set background=dark
-endif
-
-if $ITERM_PROFILE =~? 'Light\c'
+elseif $ITERM_PROFILE =~? 'Light\c'
     set background=light
+else
+    set background=dark
 endif
 
 function Solar_swap()
@@ -210,55 +214,53 @@ let g:airline_powerline_fonts=1
 " -----------------------------------------------------------------------------
 " vimwiki and vim-zettel + markdown settings
 " -----------------------------------------------------------------------------
-let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always"
-let g:vimwiki_list = [{'path':'~/zettelkasten/','ext':'.md','syntax':'markdown','custom_wiki2html':'~/bin/customwiki2html.sh'}]
-let g:zettel_options = [{'template':'~/zettelkasten/zettel.tpl', 'disable_front_matter':1}]
+let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always ^title:"
+let g:vimwiki_list = [{
+    \'path':'~/zettelkasten/',
+    \'ext':'.md',
+    \'syntax':'markdown',
+    \'custom_wiki2html':'~/bin/customwiki2html.sh'}]
+let g:zettel_options = [{
+    \'template':'~/zettelkasten/zettel.tpl', 
+    \'disable_front_matter':1 }]
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_frontmatter = 1
 autocmd FileType vimwiki set ft=markdown
 au BufRead,BufNewFile *.md setlocal linebreak wrap
 
-function! s:make_md_link(lines)
-    let items = split(a:lines[0], ':')
-    let mdlink = "[" . trim(items[2]) . "](" . split(items[0], '\.')[0] . ")"
-    return mdlink
-endfunction
-
-inoremap <expr> <c-x><c-s> fzf#vim#complete({
-    \ 'source': 'rg --color always --ignore-case --no-heading ^title:',
-    \ 'reducer': function('<sid>make_md_link'),
-    \ 'options': "--ansi --delimiter : --preview 'bat --color=always --style=plain --line-range=:500 $(cut -d: -f1 <<< {})'"})
-
 command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
-nnoremap <silent> <Leader>zn :ZettelNew<CR>
-nnoremap <silent> <Leader>zf :ZettelSearchTitle<Cr>
+nnoremap <silent> <leader>zn :ZettelNew<CR>
+nnoremap <silent> <leader>zs :ZettelSearch<CR>
+nnoremap <silent> <leader>zt :ZettelSearchTitle<CR>
 
 " -----------------------------------------------------------------------------
-" FZF
+" fzf
 " -----------------------------------------------------------------------------
+" Disable popup and layout window at bottom (faster)
+let g:fzf_layout = { 'down': '40%' }
+
 set rtp+=/usr/local/opt/fzf
 
-" Find files using FZF
-noremap <silent> <C-p> :Files<CR>
-
-" Find in files using ripgrep
-noremap <silent> <C-f> :Rg<CR>
-
-" Find tag in buffer
-noremap <silent> <C-o> :BTags<CR>
-
-" Find buffers using FZF
-noremap <silent> <C-b> :Buffers<CR>
-
-" Find line in buffer
-noremap <silent> <C-i> :BLines<CR>
+nnoremap <silent> <leader><space> :Files<CR>
+nnoremap <silent> <leader>a :Buffers<CR>
+nnoremap <silent> <leader>A :Windows<CR>
+nnoremap <silent> <leader>; :BLines<CR>
+nnoremap <silent> <leader>o :BTags<CR>
+nnoremap <silent> <leader>O :Tags<CR>
+nnoremap <silent> <leader>? :History<CR>
+nnoremap <silent> <leader>gl :Commits<CR>
+nnoremap <silent> <leader>ga :BCommits<CR>
+nnoremap <silent> <leader>/ :execute 'Rg ' . input('Search: ')<CR>
+nnoremap <silent> <leader>. :Rg<CR>
 
 " -----------------------------------------------------------------------------
 " git and fugitive
 " -----------------------------------------------------------------------------
-nnoremap <Leader>gd :Gvdiffsplit!<CR>
-nnoremap <Leader>gdh :diffget //2<CR>
-nnoremap <Leader>gdl :diffget //3<CR>
+nnoremap <silent> <leader>gd :Gvdiffsplit!<CR>
+nnoremap <silent> <leader>gdh :diffget //2<CR>
+nnoremap <silent> <leader>gdl :diffget //3<CR>
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
 
 " -----------------------------------------------------------------------------
 " NERDTree
@@ -319,6 +321,17 @@ vnoremap J :m '>+1<CR>gv=gv
 " Move visual block up
 vnoremap K :m '<-2<CR>gv=gv
 
+" Switch between tabs
+nmap <leader>1 1gt
+nmap <leader>2 2gt
+nmap <leader>3 3gt
+nmap <leader>4 4gt
+nmap <leader>5 5gt
+nmap <leader>6 6gt
+nmap <leader>7 7gt
+nmap <leader>8 8gt
+nmap <leader>9 9gt
+
 " -----------------------------------------------------------------------------
 " Function key mappings
 " -----------------------------------------------------------------------------
@@ -348,34 +361,65 @@ nnoremap <silent> <F4> :set spell!<CR>
 noremap! <silent> <F5> <Esc>:set list!<CR>
 nnoremap <silent> <F5> :set list!<CR>
 
+" Toggle whitespace visibility
+noremap! <silent> <F6> <Esc>:set paste!<CR>
+nnoremap <silent> <F6> :set paste!<CR>
+
 " -----------------------------------------------------------------------------
 " Text formatting
 " -----------------------------------------------------------------------------
 " Strip trailing whitespace
-nnoremap <Leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader><BS>s :%s/\s\+$//<cr>:let @/=''<CR>
 
 " Re-hardwrap paragraphs
-nnoremap <Leader>p gqip
+autocmd FileType markdown nnoremap <leader>p gqip
 
 " -----------------------------------------------------------------------------
 " Miscellaneous leader mappings
 " -----------------------------------------------------------------------------
-" Open horizontal split and switch to it
-nnoremap <Leader>s <C-w>s<C-w>j
+" Open split with new buffer in all directions
+nnoremap <Leader>hn :leftabove  vnew<CR>
+nnoremap <Leader>ln :rightbelow vnew<CR>
+nnoremap <Leader>kn :leftabove  new<CR>
+nnoremap <Leader>jn :rightbelow new<CR>
 
-" Open vertical split and switch to it
-nnoremap <Leader>v <C-w>v<C-w>l
+" If split in given direction exists - jump, else create new split
+function! JumpOrOpenNewSplit(key, cmd, fzf) " {{{
+  let current_window = winnr()
+  execute 'wincmd' a:key
+  if current_window == winnr()
+    execute a:cmd
+    if a:fzf
+      Files
+    endif
+  else
+    if a:fzf
+      Files
+    endif
+  endif
+endfunction
 
-" Set the working directory to current file
-nnoremap <Leader>. :lcd %:p:h<CR>
+nnoremap <silent> <Leader>hh :call JumpOrOpenNewSplit('h', ':leftabove vsplit', 0)<CR>
+nnoremap <silent> <Leader>ll :call JumpOrOpenNewSplit('l', ':rightbelow vsplit', 0)<CR>
+nnoremap <silent> <Leader>kk :call JumpOrOpenNewSplit('k', ':leftabove split', 0)<CR>
+nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 0)<CR>
+
+" Same as above, except it opens fzf 
+nnoremap <silent> <Leader>h<Space> :call JumpOrOpenNewSplit('h', ':leftabove vsplit', 1)<CR>
+nnoremap <silent> <Leader>l<Space> :call JumpOrOpenNewSplit('l', ':rightbelow vsplit', 1)<CR>
+nnoremap <silent> <Leader>k<Space> :call JumpOrOpenNewSplit('k', ':leftabove split', 1)<CR>
+nnoremap <silent> <Leader>j<Space> :call JumpOrOpenNewSplit('j', ':rightbelow split', 1)<CR>
 
 " Open an edit command with the path of the current file
-nnoremap <Leader>e :e <C-R>=expand("%:p:h") . "/"<CR>
+nnoremap <leader>ee :e <C-R>=expand("%:p:h") . "/"<CR>
 
 " Open a tab edit command with the path of the current file
-nnoremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
+nnoremap <leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
 
 " Source vim configuration file and install plugins
-nnoremap <silent> <Leader>1 :source ~/.vimrc \| :PlugInstall<CR>
-nnoremap <silent> <Leader>2 :source ~/.vimrc<CR>
+nnoremap <leader>vsi :source ~/.vimrc \| :PlugInstall<CR>
+nnoremap <leader>vs :source ~/.vimrc<CR>
+nnoremap <leader>ve :tabedit $MYVIMRC<CR>
 
+" Quick way to save file
+nnoremap <leader>w :w<CR>
