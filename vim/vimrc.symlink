@@ -232,6 +232,7 @@ command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
 nnoremap <silent> <leader>zn :ZettelNew<CR>
 nnoremap <silent> <leader>zs :ZettelSearch<CR>
 nnoremap <silent> <leader>zt :ZettelSearchTitle<CR>
+nnoremap <silent> <leader>zb :execute 'Rg \[.*\]\(' . expand('%:t:r') . '\)'<CR>
 
 " -----------------------------------------------------------------------------
 " fzf
