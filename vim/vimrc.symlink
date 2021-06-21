@@ -3,6 +3,13 @@
 " -----------------------------------------------------------------------------
 set nocompatible
 
+" Enable true color support
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
 " Too long of an update leads to poor experience
 set updatetime=300
 
@@ -77,7 +84,8 @@ endif
 
 " Setup plugins using Plug
 call plug#begin(expand('~/.vim/bundle'))
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -100,40 +108,22 @@ Plug 'mattn/emmet-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'SirVer/ultisnips'
 Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 " -----------------------------------------------------------------------------
 " colorscheme
 " -----------------------------------------------------------------------------
-colorscheme solarized
-
-if $ITERM_PROFILE =~? 'Dark\c'
-    set background=dark
-elseif $ITERM_PROFILE =~? 'Light\c'
-    set background=light
-else
-    set background=dark
-endif
-
-function Solar_swap()
-    if &background ==? 'dark'
-        set background=light
-    else
-        set background=dark
-    endif
-    silent !osascript -e 'tell app "System Events" to keystroke "s" using {shift down, option down, control down}'
-endfunction
-
-command! SolarSwap call Solar_swap()
+autocmd vimenter * ++nested colorscheme gruvbox
 
 " -----------------------------------------------------------------------------
 " coc
 " -----------------------------------------------------------------------------
 " Setup coc extensions
 let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 
-    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier']
+    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier', 'coc-snippets']
 
 " Disable in markdown files
 autocmd FileType markdown let b:coc_suggest_disable = 1
@@ -174,15 +164,15 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Coc FZF integration mappings
-nnoremap <silent> <space><space> :<C-u>CocFzfList<CR>
-nnoremap <silent> <space>a       :<C-u>CocFzfList diagnostics<CR>
-nnoremap <silent> <space>d       :<C-u>CocFzfList diagnostics --current-buf<CR>
-nnoremap <silent> <space>c       :<C-u>CocFzfList commands<CR>
-nnoremap <silent> <space>e       :<C-u>CocFzfList extensions<CR>
-nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
-nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
-nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
-nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
+nnoremap <silent> <space>L :<C-u>CocFzfList<CR>
+nnoremap <silent> <space>a :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> <space>d :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <space>c :<C-u>CocFzfList commands<CR>
+nnoremap <silent> <space>e :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> <space>l :<C-u>CocFzfList location<CR>
+nnoremap <silent> <space>o :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <space>s :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> <space>p :<C-u>CocFzfListResume<CR>
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -206,6 +196,20 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 " autocmd BufWritePre *.ts Prettier
 
 " -----------------------------------------------------------------------------
+" coc-snippets
+" -----------------------------------------------------------------------------
+nnoremap <leader>se :CocCommand snippets.editSnippets<CR>
+
+" Use <C-j> to select text for visual placeholder of snippet
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> to jump to next placeholder
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> to jump to previous placeholder
+let g:coc_snippet_prev = '<c-k>'
+
+" -----------------------------------------------------------------------------
 " airline
 " -----------------------------------------------------------------------------
 " Use Powerline fonts
@@ -225,8 +229,13 @@ let g:zettel_options = [{
     \'disable_front_matter':1 }]
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_auto_insert_bullets = 0
+let g:vim_markdown_new_list_item_indent = 0
 autocmd FileType vimwiki set ft=markdown
 au BufRead,BufNewFile *.md setlocal linebreak wrap
+" au BufRead,BufNewFile *.md filetype plugin indent off
+" au filetype markdown set formatoptions+=ro
+" au filetype markdown set comments=b:*,b:-,b:+,b:1.,n:>
 
 command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
 nnoremap <silent> <leader>zn :ZettelNew<CR>
@@ -238,19 +247,20 @@ nnoremap <silent> <leader>zb :execute 'Rg \[.*\]\(' . expand('%:t:r') . '\)'<CR>
 " fzf
 " -----------------------------------------------------------------------------
 " Disable popup and layout window at bottom (faster)
-let g:fzf_layout = { 'down': '40%' }
+" let g:fzf_layout = { 'down': '40%' }
 
 set rtp+=/usr/local/opt/fzf
 
+nnoremap <silent> <space><space>  :Files<CR>
 nnoremap <silent> <leader><space> :Files<CR>
-nnoremap <silent> <leader>a :Buffers<CR>
-nnoremap <silent> <leader>A :Windows<CR>
-nnoremap <silent> <leader>; :BLines<CR>
-nnoremap <silent> <leader>o :BTags<CR>
-nnoremap <silent> <leader>O :Tags<CR>
-nnoremap <silent> <leader>? :History<CR>
-nnoremap <silent> <leader>gl :Commits<CR>
-nnoremap <silent> <leader>ga :BCommits<CR>
+nnoremap <silent> <leader>a       :Buffers<CR>
+nnoremap <silent> <leader>A       :Windows<CR>
+nnoremap <silent> <leader>;       :BLines<CR>
+nnoremap <silent> <leader>o       :BTags<CR>
+nnoremap <silent> <leader>O       :Tags<CR>
+nnoremap <silent> <leader>?       :History<CR>
+nnoremap <silent> <leader>gl      :Commits<CR>
+nnoremap <silent> <leader>ga      :BCommits<CR>
 nnoremap <silent> <leader>/ :execute 'Rg ' . input('Search: ')<CR>
 nnoremap <silent> <leader>. :Rg<CR>
 
@@ -272,8 +282,8 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
 " Open a NERDTree if no file is given as CLI argument
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Close if the only remaining window is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
