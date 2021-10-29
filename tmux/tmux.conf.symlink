@@ -1,3 +1,9 @@
+# Use 256 colors
+set -g default-terminal "screen-256color"
+
+# Tell Tmux that the outside terminal supports true color
+set -ga terminal-overrides ",*256col*:Tc"
+
 # use ctrl-a
 set-option -g prefix C-a
 

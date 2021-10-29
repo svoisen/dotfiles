@@ -102,8 +102,8 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'edkolev/tmuxline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf'
-Plug 'vimwiki/vimwiki'
-Plug 'michal-h21/vim-zettel'
+" Plug 'vimwiki/vimwiki'
+" Plug 'michal-h21/vim-zettel'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
@@ -123,7 +123,7 @@ autocmd vimenter * ++nested colorscheme gruvbox
 " -----------------------------------------------------------------------------
 " Setup coc extensions
 let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 
-    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier', 'coc-snippets']
+    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier', 'coc-snippets', 'coc-rls']
 
 " Disable in markdown files
 autocmd FileType markdown let b:coc_suggest_disable = 1
@@ -218,30 +218,30 @@ let g:airline_powerline_fonts=1
 " -----------------------------------------------------------------------------
 " vimwiki and vim-zettel + markdown settings
 " -----------------------------------------------------------------------------
-let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always ^title:"
-let g:vimwiki_list = [{
-    \'path':'~/zettelkasten/',
-    \'ext':'.md',
-    \'syntax':'markdown',
-    \'custom_wiki2html':'~/bin/customwiki2html.sh'}]
-let g:zettel_options = [{
-    \'template':'~/zettelkasten/zettel.tpl', 
-    \'disable_front_matter':1 }]
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_auto_insert_bullets = 0
-let g:vim_markdown_new_list_item_indent = 0
-autocmd FileType vimwiki set ft=markdown
-au BufRead,BufNewFile *.md setlocal linebreak wrap
+" let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always ^title:"
+" let g:vimwiki_list = [{
+"     \'path':'~/zettelkasten/',
+"     \'ext':'.md',
+"     \'syntax':'markdown',
+"     \'custom_wiki2html':'~/bin/customwiki2html.sh'}]
+" let g:zettel_options = [{
+"     \'template':'~/zettelkasten/zettel.tpl', 
+"     \'disable_front_matter':1 }]
+" let g:vim_markdown_folding_disabled = 1
+" let g:vim_markdown_frontmatter = 1
+" let g:vim_markdown_auto_insert_bullets = 0
+" let g:vim_markdown_new_list_item_indent = 0
+" autocmd FileType vimwiki set ft=markdown
+" au BufRead,BufNewFile *.md setlocal linebreak wrap
 " au BufRead,BufNewFile *.md filetype plugin indent off
 " au filetype markdown set formatoptions+=ro
 " au filetype markdown set comments=b:*,b:-,b:+,b:1.,n:>
 
-command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
-nnoremap <silent> <leader>zn :ZettelNew<CR>
-nnoremap <silent> <leader>zs :ZettelSearch<CR>
-nnoremap <silent> <leader>zt :ZettelSearchTitle<CR>
-nnoremap <silent> <leader>zb :execute 'Rg \[.*\]\(' . expand('%:t:r') . '\)'<CR>
+" command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
+" nnoremap <silent> <leader>zn :ZettelNew<CR>
+" nnoremap <silent> <leader>zs :ZettelSearch<CR>
+" nnoremap <silent> <leader>zt :ZettelSearchTitle<CR>
+" nnoremap <silent> <leader>zb :execute 'Rg \[.*\]\(' . expand('%:t:r') . '\)'<CR>
 
 " -----------------------------------------------------------------------------
 " fzf
