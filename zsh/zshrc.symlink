@@ -1,38 +1,56 @@
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# oh-my-zsh
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export ZSH="/Users/svoisen/.oh-my-zsh"
+export NVM_LAZY_LOAD=true
+ZSH_THEME="robbyrussell"
+plugins=(tmux vi-mode common-aliases git forgit zsh-nvm you-should-use zsh-aliases-exa)
+source $ZSH/oh-my-zsh.sh
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:$HOME/.gem/ruby/3.0.0/bin:/usr/local/bin:/usr/local/opt/llvm/bin:$PATH
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# path
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# zplug
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# environment variables
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export EDITOR='vim'
+export VISUAL=$EDITOR
+export BAT_THEME='gruvbox-dark'
 
-# Plugins
-zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "plugins/git",   from:oh-my-zsh
-
-# Aliases
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# aliases
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 alias zshrc="vim ~/.zshrc"
 alias vimrc="vim ~/.vimrc"
 alias c="clear"
 alias vo='vim -o `fzf`'
 alias gfix='vim `git diff --name-only | uniq`'
+alias cat="bat"
 
-# Git completion
-[ -f ~/bin/git-completion.sh ] && source ~/bin/git-completion.sh
-
-# FZF Settings
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# fzf
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-if type rg &> /dev/null; then
-    export FZF_DEFAULT_COMMAND='rg --files'
-    export FZF_DEFAULT_OPTS='-m --height 50% --border'
-fi
+export FZF_DEFAULT_OPTS="
+--ansi
+--layout=default
+--info=inline
+--height=50%
+--multi
+--border
+--preview-window=right:50%
+--preview-window=sharp
+--preview-window=cycle
+--preview '([[ -f {} ]] && (bat --style=numbers --color=always --theme=gruvbox-dark --line-range :500 {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
+--bind 'ctrl-e:execute(vim {} < /dev/tty > /dev/tty 2>&1)' > selected
+--bind 'ctrl-v:execute(code {+})'"
 
-# nvm
-# export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# rbenv
-eval "$(rbenv init -)"
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# starship prompt
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+eval "$(starship init zsh)"
