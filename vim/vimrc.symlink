@@ -137,7 +137,7 @@ inoremap <expr> <S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to format on enter
 inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() 
-    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\cr>"
+    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<cr>"
 
 function! s:check_backspace() abort
     let col = col('.') - 1
