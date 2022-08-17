@@ -1,9 +1,6 @@
 [aws]
 symbol = "aws "
 
-[bun]
-symbol = "bun "
-
 [c]
 symbol = "C "
 
@@ -18,9 +15,6 @@ symbol = "cr "
 
 [cmake]
 symbol = "cmake "
-
-[daml]
-symbol = "daml "
 
 [dart]
 symbol = "dart "
@@ -90,9 +84,6 @@ symbol = "purs "
 
 [python]
 symbol = "py "
-
-[raku]
-symbol = "raku "
 
 [ruby]
 symbol = "rb "

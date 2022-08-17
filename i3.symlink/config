@@ -1,3 +1,5 @@
+# i3 config file (v4)
+#
 # -----------------------------------------------------------------------------
 # i3 Configuration
 # Based on https://github.com/a-schaefers/i3-wm-gruvbox-theme/
@@ -11,6 +13,15 @@ bindsym $mod+space exec --no-startup-id rofi -show run
 
 # Terminal using urxvt
 bindsym $mod+Return exec --no-startup-id urxvtc 
+
+# Restart i3 inplace 
+bindsym $mod+r restart
+
+# Exit i3
+bindsym $mod+Control+Escape exec i3-msg exit
+
+# Kill xorg server
+bindsym $mod+Shift+Escape exec pkill -15 Xorg
 
 # Set primary Gruvbox colorscheme colors
 set $bg #282828
@@ -26,27 +37,19 @@ set $darkgray #1d2021
 # Font used by i3 for titles and bars
 font pango:Hack 8
 
-# Window title bar
+# Bar
 bar {
     position bottom
-    status_command i3blocks -c ~/.config/i3/i3blocks.conf
+    status_command i3blocks -c ~/.i3/i3blocks.conf
     colors {
-        # Bar background color
         background $bg
-        # Text color used for blocks that do not have a color specified.
         statusline $yellow
-        # Workspaces section            
-        #                    border  backgr  text
-        focused_workspace    $aqua $aqua $darkgray
-        inactive_workspace   $darkgray $darkgray $yellow
-        active_workspace     $darkgray $darkgray $yellow
-        urgent_workspace     $red $red $bg
     }
 }
 
 # Window title bars and borders
-# class                 border|backgr|text|indicator|child_border
+# Class                 border | backgr | text| indicator| child_border
 client.focused          $blue $blue $darkgray $purple $darkgray
 client.focused_inactive $darkgray $darkgray $yellow $purple $darkgray
 client.unfocused        $darkgray $darkgray $yellow $purple $darkgray
-client.urgent           $red $red $white $red $red
+#client.urgent           $red $red $white $red $red

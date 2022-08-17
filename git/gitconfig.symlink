@@ -1,6 +1,6 @@
 [user]
   name = Sean Voisen
-  email = svoisen@adobe.com
+  email = sean@voisen.org
 
 [alias]
   st = status
@@ -27,13 +27,13 @@
   ui = true
 
 [color "diff"]
-	meta = 11
-	frag = magenta bold
-	old = red bold
-	new = green bold
-	func = 146 bold
-	commit = yellow bold
-	whitespace = red reverse
+  meta = 11
+  frag = magenta bold
+  old = red bold
+  new = green bold
+  func = 146 bold
+  commit = yellow bold
+  whitespace = red reverse
 
 [color "status"]
   added = yellow
@@ -67,8 +67,9 @@
   oldHighlight = red bold 52
   newNormal = green bold
   newHighlight = green bold 22
+
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
