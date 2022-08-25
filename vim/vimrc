@@ -112,6 +112,7 @@ Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'tpope/vim-fireplace'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-salve'
 call plug#end()
 
 " -----------------------------------------------------------------------------
