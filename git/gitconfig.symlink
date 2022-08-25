@@ -3,72 +3,73 @@
   email = svoisen@adobe.com
 
 [alias]
-  st = status
-  ci = commit
-  br = branch
-  co = checkout
-  df = diff
-  unstage = reset HEAD
-  d = difftool
-  fix = "!f() { vim -p `git diff --name-only`; }; f"
-  edit-unmerged = "!vim `git diff --name-only --diff-filter=U`"
-  add-unmerged = "!git add `git diff --name-only --diff-filter=U`"
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff
+    unstage = reset HEAD
+    d = difftool
+    fix = "!f() { vim -p `git diff --name-only`; }; f"
+    edit-unmerged = "!vim `git diff --name-only --diff-filter=U`"
+    add-unmerged = "!git add `git diff --name-only --diff-filter=U`"
 
 [core]
-  filemode = true
-  whitespace = trailing-spacea, space-before-tab
-  excludesfile = /Users/svoisen/.gitignore_global
-  pager = diff-so-fancy | less --tabs=4 -RFX
+    filemode = true
+    whitespace = trailing-spacea, space-before-tab
+    excludesfile = /Users/svoisen/.gitignore_global
+    pager = diff-so-fancy | less --tabs=4 -RFX
 
 [branch]
-  autosetupmerge = true
+    autosetupmerge = true
 
 [color]
-  ui = true
+    ui = true
 
 [color "diff"]
-	meta = 11
-	frag = magenta bold
-	old = red bold
-	new = green bold
-	func = 146 bold
-	commit = yellow bold
-	whitespace = red reverse
+    meta = 11
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    func = 146 bold
+    commit = yellow bold
+    whitespace = red reverse
 
 [color "status"]
-  added = yellow
-  changed = green bold
-  untracked = blue bold
+    added = yellow
+    changed = green bold
+    untracked = blue bold
 
 [color "branch"]
-  current = yellow reverse
-  local = yellow bold
-  remote = green bold
-  plain = red bold
+    current = yellow reverse
+    local = yellow bold
+    remote = green bold
+    plain = red bold
 
 [merge]
-  keepBackup = false
-  tool = opendiff
+    keepBackup = false
+    tool = opendiff
 
 [mergetool]
-  keepBackup = false
+    keepBackup = false
 
 [diff]
-  tool = vimdiff
+    tool = vimdiff
 
 [difftool]
-  prompt = false
+    prompt = false
 
 [interactive]
-  diffFilter = diff-so-fancy --patch
+    diffFilter = diff-so-fancy --patch
 
 [color "diff-highlight"]
-  oldNormal = red bold
-  oldHighlight = red bold 52
-  newNormal = green bold
-  newHighlight = green bold 22
+    oldNormal = red bold
+    oldHighlight = red bold 52
+    newNormal = green bold
+    newHighlight = green bold 22
+
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

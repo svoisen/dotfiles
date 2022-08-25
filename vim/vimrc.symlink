@@ -47,6 +47,9 @@ set showmatch
 " Make tab bar always visible
 set showtabline=2
 
+" Show status line
+set laststatus=2
+
 " Search options
 set ignorecase
 set smartcase
@@ -84,11 +87,8 @@ endif
 
 " Setup plugins using Plug
 call plug#begin(expand('~/.vim/bundle'))
-" Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -102,21 +102,23 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'edkolev/tmuxline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf'
-" Plug 'vimwiki/vimwiki'
-" Plug 'michal-h21/vim-zettel'
 Plug 'mattn/emmet-vim'
-Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-" Plug 'ludovicchabant/vim-gutentags'
-" Plug 'SirVer/ultisnips'
 Plug 'easymotion/vim-easymotion'
+Plug 'itchyny/lightline.vim'
+Plug 'shinchu/lightline-gruvbox.vim'
+Plug 'tpope/vim-fireplace'
+Plug 'mileszs/ack.vim'
+Plug 'tpope/vim-dispatch'
 call plug#end()
 
 " -----------------------------------------------------------------------------
 " colorscheme
 " -----------------------------------------------------------------------------
 autocmd vimenter * ++nested colorscheme gruvbox
+set background=dark
 
 " -----------------------------------------------------------------------------
 " coc
@@ -130,13 +132,16 @@ autocmd FileType markdown let b:coc_suggest_disable = 1
 
 " Use tab for trigger completion with characters ahead and navigate
 inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#pum#visible() ? coc#pum#next(1) :
+    \ CheckBackspace() ? "\<TAB>" :
     \ coc#refresh()
-inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+" Make <CR> auto-select the first completion item and notify coc.nvim to format on enter
+inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm() 
+    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<cr>"
+
+function! CheckBackspace() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
@@ -146,9 +151,6 @@ set shortmess+=c
 
 " Use <c-space> to trigger completion
 inoremap <silent><expr> <c-@> coc#refresh()
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to format on enter
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Symbol renaming using coc
 nmap <leader>rn <Plug>(coc-rename)
@@ -191,9 +193,9 @@ function! s:show_documentation()
     endif
 endfunction
 
-" Create :Prettier command and autorun on save
+" Create :Prettier command and autorun on save of TypeScript files
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
-" autocmd BufWritePre *.ts Prettier
+autocmd BufWritePre *.ts Prettier
 
 " -----------------------------------------------------------------------------
 " coc-snippets
@@ -210,44 +212,60 @@ let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
 
 " -----------------------------------------------------------------------------
-" airline
+" lightline
 " -----------------------------------------------------------------------------
-" Use Powerline fonts
-let g:airline_powerline_fonts=1
+let g:lightline = { 'colorscheme': 'gruvbox' }
 
 " -----------------------------------------------------------------------------
-" vimwiki and vim-zettel + markdown settings
-" -----------------------------------------------------------------------------
-" let g:zettel_fzf_command = "rg --column --line-number --ignore-case --no-heading --color=always ^title:"
-" let g:vimwiki_list = [{
-"     \'path':'~/zettelkasten/',
-"     \'ext':'.md',
-"     \'syntax':'markdown',
-"     \'custom_wiki2html':'~/bin/customwiki2html.sh'}]
-" let g:zettel_options = [{
-"     \'template':'~/zettelkasten/zettel.tpl', 
-"     \'disable_front_matter':1 }]
-" let g:vim_markdown_folding_disabled = 1
-" let g:vim_markdown_frontmatter = 1
-" let g:vim_markdown_auto_insert_bullets = 0
-" let g:vim_markdown_new_list_item_indent = 0
-" autocmd FileType vimwiki set ft=markdown
-" au BufRead,BufNewFile *.md setlocal linebreak wrap
-" au BufRead,BufNewFile *.md filetype plugin indent off
-" au filetype markdown set formatoptions+=ro
-" au filetype markdown set comments=b:*,b:-,b:+,b:1.,n:>
+" tmuxline
+" ----------------------------------------------------------------------------
+let g:tmuxline_powerline_separators = 1
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'b'    : '#W',
+      \'win'  : '#I #W',
+      \'cwin' : '#I #W',
+      \'x'    : '%a',
+      \'y'    : '%R',
+      \'z'    : '#{battery_percentage} #{battery_remain}'}
 
-" command! -nargs=* ZettelSearchTitle :Rg ^title: <args>
-" nnoremap <silent> <leader>zn :ZettelNew<CR>
-" nnoremap <silent> <leader>zs :ZettelSearch<CR>
-" nnoremap <silent> <leader>zt :ZettelSearchTitle<CR>
-" nnoremap <silent> <leader>zb :execute 'Rg \[.*\]\(' . expand('%:t:r') . '\)'<CR>
+" -----------------------------------------------------------------------------
+"  ack
+" -----------------------------------------------------------------------------
+" Options include:
+" --vimgrep -> Needed to parse the rg response properly for ack.vim
+" --type-not sql -> Avoid huge sql file dumps as it slows down the search
+" --smart-case -> Search case insensitive if all lowercase pattern, search case 
+"   sensitively otherwise
+let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+
+" Auto close the Quickfix list after pressing '<enter>' on a list item
+let g:ack_autoclose = 0
+
+" Perform searches in the background (requires dispatch-vim plugin)
+let g:ack_use_dispatch = 1
+
+" Any empty ack search will search for the work the cursor is on
+let g:ack_use_cword_for_empty_search = 1
+
+" Don't jump to first match
+cnoreabbrev Ack Ack!
+
+" Maps <leader>/ so we're ready to type the search keyword
+nnoremap <Leader>/ :Ack!<Space>
 
 " -----------------------------------------------------------------------------
 " fzf
 " -----------------------------------------------------------------------------
 " Disable popup and layout window at bottom (faster)
-" let g:fzf_layout = { 'down': '40%' }
+let g:fzf_layout = { 'down': '40%' }
+
+" Disable preview window
+" let g:fzf_preview_window = []
+
+" Speed up the time to dismiss the fzf window using Esc
+set ttimeout
+set timeoutlen=1000 ttimeoutlen=0
 
 set rtp+=/usr/local/opt/fzf
 
@@ -261,8 +279,7 @@ nnoremap <silent> <leader>O       :Tags<CR>
 nnoremap <silent> <leader>?       :History<CR>
 nnoremap <silent> <leader>gl      :Commits<CR>
 nnoremap <silent> <leader>ga      :BCommits<CR>
-nnoremap <silent> <leader>/ :execute 'Rg ' . input('Search: ')<CR>
-nnoremap <silent> <leader>. :Rg<CR>
+nnoremap <silent> <leader>. :execute 'Rg ' . input('Search: ')<CR>
 
 " -----------------------------------------------------------------------------
 " git and fugitive
@@ -372,7 +389,7 @@ nnoremap <silent> <F4> :set spell!<CR>
 noremap! <silent> <F5> <Esc>:set list!<CR>
 nnoremap <silent> <F5> :set list!<CR>
 
-" Toggle whitespace visibility
+" Toggle paste mode
 noremap! <silent> <F6> <Esc>:set paste!<CR>
 nnoremap <silent> <F6> :set paste!<CR>
 
