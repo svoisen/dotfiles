@@ -20,9 +20,14 @@ Feel free to peruse and cherry-pick what works for you.
 2. Install fzf: `brew install fzf`
 3. Install ripgrep: `brew install ripgrep`
 4. Install tmux: `brew install tmux`
-4. [Install oh-my-zsh](https://ohmyz.sh/#install)
-6. Install diff-so-fancy: `brew install diff-so-fancy`
-7. Install Powerline fonts from https://github.com/powerline/fonts
+5. Install exa: `brew install exa`
+6. [Install oh-my-zsh](https://ohmyz.sh/#install)
+7. Install diff-so-fancy: `brew install diff-so-fancy`
+8. Install Powerline fonts from https://github.com/powerline/fonts
+9. Install custom oh-my-zsh plugins by cloning into `~/.oh-my-zsh/custom/plugins`:
+    1. [forgit](https://github.com/wfxr/forgit)
+    2. [zsh-nvm](https://github.com/lukechilds/zsh-nvm)
+    3. [zsh-aliases-exa](https://github.com/DarrinTisdale/zsh-aliases-exa)
 
 ### Install Dotfiles
 
