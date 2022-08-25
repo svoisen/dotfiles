@@ -214,7 +214,13 @@ let g:coc_snippet_prev = '<c-k>'
 " -----------------------------------------------------------------------------
 " lightline
 " -----------------------------------------------------------------------------
-let g:lightline = { 'colorscheme': 'gruvbox' }
+let g:lightline = { 'colorscheme': 'gruvbox', 
+    \ 'component': {
+    \     'lineinfo': ' %3l:%-2v',
+    \ }
+\ }
+let g:lightline.separator = { 'left': '', 'right': '' }
+let g:lightline.subseparator = { 'left': '', 'right': '' }
 
 " -----------------------------------------------------------------------------
 " tmuxline
