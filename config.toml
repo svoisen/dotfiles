@@ -23,3 +23,6 @@ backup = "$HOME/.dotfiles~"
 
 # zsh
 "zsh/zshrc" = ".zshrc"
+
+# starship
+"starship/starship.toml" = ".config/starship.toml"
