@@ -28,8 +28,11 @@ Feel free to peruse and cherry-pick what works for you.
     1. [forgit](https://github.com/wfxr/forgit)
     2. [zsh-nvm](https://github.com/lukechilds/zsh-nvm)
     3. [zsh-aliases-exa](https://github.com/DarrinTisdale/zsh-aliases-exa)
+    3. [you-should-use](https://github.com/MichaelAquilina/zsh-you-should-use)
 
-### Install Dotfiles
+### Install Dotfiles Using Dotbro
 
-1. Clone this repository: `git clone https://github.com/svoisen/dotfiles.git`
-2. Install: `cd dotfiles && ./install.sh`
+1. Install go if not already installed: `brew install golang`
+2. Ensure go binaries are in the `$PATH`.
+3. Install dotbro: `go install github.com/hypnoglow/dotbro@latest`
+4. Install dotfiles `dotbro --config [PATH_TO_CONFIG_TOML]`

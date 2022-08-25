@@ -1,0 +1,25 @@
+# Dotbro configuration file
+
+[directories]
+dotfiles = "$HOME/src/dotfiles"
+destination = "$HOME"
+backup = "$HOME/.dotfiles~"
+
+[mapping]
+
+# Binaries
+"bin" = "bin"
+
+# git
+"git/gitconfig" = ".gitconfig"
+"git/gitignore_global" = ".gitignore_global"
+
+# tmux
+"tmux/tmuxline.conf" = ".tmuxline.conf"
+"tmux/tmux.conf" = ".tmux.conf"
+
+# vim
+"vim/vimrc" = ".vimrc"
+
+# zsh
+"zsh/zshrc" = ".zshrc"
