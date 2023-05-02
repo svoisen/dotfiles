@@ -28,6 +28,8 @@ alias c="clear"
 alias vo='vim -o `fzf`'
 alias gfix='vim `git diff --name-only | uniq`'
 alias cat="bat"
+alias python="python3"
+alias pip="pip3"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # fzf
