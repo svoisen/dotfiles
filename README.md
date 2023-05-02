@@ -10,25 +10,27 @@ Feel free to peruse and cherry-pick what works for you.
 
 ## Installation on macOS
 
-### Install and Setup iTerm
+### Prerequisites
 
-1. Install iterm: `brew install iterm`
+1. Homebrew
+2. Node.js (preferably via `nvm`)
 
 ### Install Dependencies
 
-1. Install latest vim: `brew install vim`
-2. Install fzf: `brew install fzf`
-3. Install ripgrep: `brew install ripgrep`
-4. Install tmux: `brew install tmux`
-5. Install exa: `brew install exa`
-6. [Install oh-my-zsh](https://ohmyz.sh/#install)
-7. Install diff-so-fancy: `brew install diff-so-fancy`
-8. Install Powerline fonts from https://github.com/powerline/fonts
-9. Install custom oh-my-zsh plugins by cloning into `~/.oh-my-zsh/custom/plugins`:
+1. Install iterm: `brew install iterm`
+2. Install latest vim: `brew install vim`
+3. Install fzf: `brew install fzf`
+4. Install ripgrep: `brew install ripgrep`
+5. Install tmux: `brew install tmux`
+6. Install exa: `brew install exa`
+7. [Install oh-my-zsh](https://ohmyz.sh/#install)
+8. Install diff-so-fancy: `brew install diff-so-fancy`
+9. Install Powerline fonts from https://github.com/powerline/fonts
+10. Install custom oh-my-zsh plugins by cloning into `~/.oh-my-zsh/custom/plugins`:
     1. [forgit](https://github.com/wfxr/forgit)
     2. [zsh-nvm](https://github.com/lukechilds/zsh-nvm)
     3. [zsh-aliases-exa](https://github.com/DarrinTisdale/zsh-aliases-exa)
-    3. [you-should-use](https://github.com/MichaelAquilina/zsh-you-should-use)
+    3. [zsh-you-should-use](https://github.com/MichaelAquilina/zsh-you-should-use)
 
 ### Install Dotfiles Using Dotbro
 
@@ -36,3 +38,8 @@ Feel free to peruse and cherry-pick what works for you.
 2. Ensure go binaries are in the `$PATH`.
 3. Install dotbro: `go install github.com/hypnoglow/dotbro@latest`
 4. Install dotfiles `dotbro --config [PATH_TO_CONFIG_TOML]`
+
+## Post-installation
+
+1. Run `vim` to auto-install plugins as well as coc extensions.
+2. In `tmux`, run the command `prefix + I` to install tmux plugins.

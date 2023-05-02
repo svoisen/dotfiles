@@ -103,7 +103,6 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf'
 Plug 'mattn/emmet-vim'
-" Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'easymotion/vim-easymotion'
@@ -126,7 +125,8 @@ set background=dark
 " -----------------------------------------------------------------------------
 " Setup coc extensions
 let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 
-    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier', 'coc-snippets', 'coc-rls']
+    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier', 'coc-snippets', 
+    \'coc-rls', 'coc-pyright']
 
 " Disable in markdown files
 autocmd FileType markdown let b:coc_suggest_disable = 1
