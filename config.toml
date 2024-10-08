@@ -24,3 +24,7 @@ backup = "$HOME/.dotfiles~"
 
 # zsh
 "zsh/zshrc" = ".zshrc"
+
+# alacritty
+"alacritty/alacritty.toml" = ".alacritty.toml"
+"alacritty/themes/gruvbox_material.toml" = "./config/alacritty/themes/gruvbox_material.toml"
