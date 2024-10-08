@@ -1,6 +1,6 @@
 [user]
   name = Sean Voisen
-  email = svoisen@adobe.com
+  email = sean@voisen.org
 
 [alias]
     st = status
@@ -73,3 +73,7 @@
     required = true
     clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+
+# This next lines include Netlify's Git Credential Helper configuration in your Git configuration.
+[include]
+  path = /Users/svoisen/Library/Preferences/netlify/helper/git-config
