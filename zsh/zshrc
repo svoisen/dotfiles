@@ -3,8 +3,8 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 export ZSH="/Users/svoisen/.oh-my-zsh"
 export NVM_LAZY_LOAD=true
-ZSH_THEME="robbyrussell"
-plugins=(tmux vi-mode common-aliases git forgit zsh-you-should-use zsh-aliases-exa)
+# ZSH_THEME="robbyrussell"
+plugins=(tmux vi-mode common-aliases git zsh-eza)
 source $ZSH/oh-my-zsh.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,6 +60,19 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# starship prompt
+# ruby
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# eval "$(starship init zsh)"
+if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
+  export PATH=/opt/homebrew/opt/ruby/bin:$PATH
+  export PATH=`gem environment gemdir`/bin:$PATH
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# netlify
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+test -f "$HOME/Library/Preferences/netlify/helper/path.zsh.inc" && source "$HOME/Library/Preferences/netlify/helper/path.zsh.inc"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# spaceship prompt
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+source "/opt/homebrew/opt/spaceship/spaceship.zsh"
