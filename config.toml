@@ -20,9 +20,7 @@ backup = "$HOME/.dotfiles~"
 
 # vim
 "vim/vimrc" = ".vimrc"
+"vim/coc-settings.json" = "./vim/coc-settings.json"
 
 # zsh
 "zsh/zshrc" = ".zshrc"
-
-# starship
-"starship/starship.toml" = ".config/starship.toml"

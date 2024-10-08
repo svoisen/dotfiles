@@ -87,7 +87,7 @@ endif
 
 " Setup plugins using Plug
 call plug#begin(expand('~/.vim/bundle'))
-Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
@@ -104,21 +104,40 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf'
 Plug 'mattn/emmet-vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'preservim/vim-markdown'
 Plug 'easymotion/vim-easymotion'
 Plug 'itchyny/lightline.vim'
-Plug 'shinchu/lightline-gruvbox.vim'
-Plug 'tpope/vim-fireplace'
 Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-salve'
+Plug 'junegunn/goyo.vim'
+Plug 'https://tildegit.org/sloum/gemini-vim-syntax'
+Plug 'preservim/vim-pencil'
 call plug#end()
 
 " -----------------------------------------------------------------------------
 " colorscheme
 " -----------------------------------------------------------------------------
-autocmd vimenter * ++nested colorscheme gruvbox
+autocmd vimenter * ++nested colorscheme gruvbox-material
+let g:gruvbox_material_better_performance = 1
 set background=dark
+
+" -----------------------------------------------------------------------------
+" markdown
+" -----------------------------------------------------------------------------
+" Disable markdown folding by default
+let g:vim_markdown_folding_disabled = 1
+
+" -----------------------------------------------------------------------------
+" pencil
+" -----------------------------------------------------------------------------
+let g:pencil#wrapModeDefault = 'soft'
+
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd,gmi,gemtext call pencil#init()
+  autocmd FileType text                     call pencil#init({'wrap': 'hard'})
+augroup END
 
 " -----------------------------------------------------------------------------
 " coc
@@ -126,7 +145,7 @@ set background=dark
 " Setup coc extensions
 let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 
     \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier', 'coc-snippets', 
-    \'coc-rls', 'coc-pyright']
+    \'coc-rls', 'coc-pyright', 'coc-go']
 
 " Disable in markdown files
 autocmd FileType markdown let b:coc_suggest_disable = 1
@@ -215,7 +234,7 @@ let g:coc_snippet_prev = '<c-k>'
 " -----------------------------------------------------------------------------
 " lightline
 " -----------------------------------------------------------------------------
-let g:lightline = { 'colorscheme': 'gruvbox', 
+let g:lightline = { 'colorscheme': 'gruvbox_material', 
     \ 'component': {
     \     'lineinfo': ' %3l:%-2v',
     \ }
@@ -316,11 +335,17 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 nmap <silent> <leader>t :NERDTreeToggle<CR>
 
 " -----------------------------------------------------------------------------
-" Emmet
+" emmet
 " -----------------------------------------------------------------------------
 " Enable Emmet only for HTML and CSS
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
+
+" -----------------------------------------------------------------------------
+" go
+" -----------------------------------------------------------------------------
+autocmd BufNewFile,BufRead *.go setlocal expandtab tabstop=4 shiftwidth=4
+" autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
 " -----------------------------------------------------------------------------
 " Abbreviations
@@ -450,6 +475,9 @@ nnoremap <leader>ee :e <C-R>=expand("%:p:h") . "/"<CR>
 
 " Open a tab edit command with the path of the current file
 nnoremap <leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
+
+" Edit file under cursor and create if needed
+nnoremap <leader>gf :edit %:h/<cfile><CR>
 
 " Source vim configuration file and install plugins
 nnoremap <leader>vsi :source ~/.vimrc \| :PlugInstall<CR>

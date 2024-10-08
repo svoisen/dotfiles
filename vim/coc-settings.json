@@ -1,0 +1,12 @@
+{
+  "diagnostic.errorSign": "✘",
+  "diagnostic.checkCurrentLine": true,
+  "coc.preferences.formatOnSave": [
+    "javascript",
+    "html",
+    "json",
+    "css",
+    "scss",
+    "go"
+  ]
+}
