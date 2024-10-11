@@ -147,7 +147,7 @@ augroup END
 " -----------------------------------------------------------------------------
 " Setup coc extensions
 let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 
-    \'coc-clangd', 'coc-json', 'coc-tslint', 'coc-prettier', 'coc-snippets', 
+    \'coc-clangd', 'coc-json', 'coc-prettier', 'coc-snippets', 
     \'coc-rls', 'coc-pyright', 'coc-go']
 
 " Disable in markdown files
