@@ -4,7 +4,7 @@
 set nocompatible
 
 " Enable true color support
-if exists('+termguicolors')
+if has('termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
@@ -88,6 +88,7 @@ endif
 " Setup plugins using Plug
 call plug#begin(expand('~/.vim/bundle'))
 Plug 'sainnhe/gruvbox-material'
+Plug 'morhetz/gruvbox'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
@@ -118,9 +119,11 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " colorscheme
 " -----------------------------------------------------------------------------
-autocmd vimenter * ++nested colorscheme gruvbox-material
+let g:gruvbox_material_background = 'medium'
 let g:gruvbox_material_better_performance = 1
 set background=dark
+" autocmd vimenter * ++nested colorscheme gruvbox-material
+colorscheme gruvbox-material
 
 " -----------------------------------------------------------------------------
 " markdown
