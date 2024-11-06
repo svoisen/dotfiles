@@ -348,6 +348,7 @@ autocmd FileType html,css EmmetInstall
 " go
 " -----------------------------------------------------------------------------
 autocmd BufNewFile,BufRead *.go setlocal expandtab tabstop=4 shiftwidth=4
+autocmd BufNewFile,BufRead *.tmpl setlocal expandtab tabstop=2 shiftwidth=2
 " autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
 " -----------------------------------------------------------------------------
