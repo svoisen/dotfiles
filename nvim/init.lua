@@ -45,7 +45,6 @@ vim.opt.autoindent = true            -- Copy indent from current line when start
 
 -- Visual settings
 vim.opt.termguicolors = true         -- Enable 24-bit RGB colors
-vim.opt.signcolumn = "yes"           -- Always show the signcolumn
 vim.opt.wrap = false                 -- Don't wrap lines
 
 -- System settings
@@ -68,11 +67,39 @@ vim.opt.incsearch = true             -- Show search matches as you type
 vim.opt.hlsearch = false             -- Highlight search matches
 vim.opt.gdefault = true              -- Use 'g' flag by default with :s
 
+-- nextra settings
+vim.g.loaded_netrw = 1              -- Disable netrw
+vim.g.loaded_netrwPlugin = 1        -- Disable netrw
+
 -- Use ripgrep for grepping
 vim.opt.grepprg = "rg --vimgrep --smart-case --follow"
 
 -- -- Filetype-specific indentation settings
 vim.api.nvim_create_augroup("FileTypeIndent", { clear = true })
+
+-- Window splitting
+vim.keymap.set('n', '<leader>sv', ':vsplit<CR>', { desc = 'Split window vertically', silent = true })
+vim.keymap.set('n', '<leader>sh', ':split<CR>', { desc = 'Split window horizontally', silent = true })
+vim.keymap.set('n', '<leader>se', '<C-w>=', { desc = 'Make splits equal size', silent = true })
+vim.keymap.set('n', '<leader>sx', ':close<CR>', { desc = 'Close current split', silent = true })
+
+-- Window navigation
+vim.keymap.set('n', '<leader>h', '<C-w>h', { desc = 'Navigate to left split', silent = true })
+vim.keymap.set('n', '<leader>j', '<C-w>j', { desc = 'Navigate to bottom split', silent = true })
+vim.keymap.set('n', '<leader>k', '<C-w>k', { desc = 'Navigate to top split', silent = true })
+vim.keymap.set('n', '<leader>l', '<C-w>l', { desc = 'Navigate to right split', silent = true })
+
+-- Window resizing
+vim.keymap.set('n', '<leader>>', '10<C-w>>', { desc = 'Increase width', silent = true })
+vim.keymap.set('n', '<leader><', '10<C-w><', { desc = 'Decrease width', silent = true })
+vim.keymap.set('n', '<leader>+', '10<C-w>+', { desc = 'Increase height', silent = true })
+vim.keymap.set('n', '<leader>-', '10<C-w>-', { desc = 'Decrease height', silent = true })
+
+-- Max out the height of the current split
+vim.keymap.set('n', '<leader>sm', '<C-w>_', { desc = 'Max out the height', silent = true })
+
+-- Max out the width of the current split
+vim.keymap.set('n', '<leader>sw', '<C-w>|', { desc = 'Max out the width', silent = true })
 
 -- JavaScript/TypeScript settings (2 spaces)
 vim.api.nvim_create_autocmd("FileType", {
@@ -190,146 +217,332 @@ require("lazy").setup({
 
       -- Load extensions
       telescope.load_extension('fzf')
-      telescope.load_extension('file_browser')
+      -- telescope.load_extension('file_browser')
 
       -- Keymaps
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
-      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
+      vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Find files' })
+      vim.keymap.set('n', '<leader>fo', builtin.lsp_document_symbols, { desc = 'Find lsp symbols' })
       vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find buffers' })
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
       vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = 'Recent files' })
       vim.keymap.set('n', '<leader>fs', builtin.current_buffer_fuzzy_find, { desc = 'Search in buffer' })
       vim.keymap.set('n', '<leader>fc', builtin.command_history, { desc = 'Command history' })
       vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Find keymaps' })
       vim.keymap.set('n', '<leader>fm', builtin.marks, { desc = 'Find marks' })
-      vim.keymap.set('n', '<leader>ft', builtin.treesitter, { desc = 'Find symbols' })
+      vim.keymap.set('n', '<leader>ft', builtin.treesitter, { desc = 'Find treesitter symbols' })
       -- File browser
-      vim.keymap.set('n', '<leader>fe', ':Telescope file_browser<CR>', { noremap = true, desc = 'File browser' })
+      -- vim.keymap.set('n', '<leader>fe', ':Telescope file_browser<CR>', { noremap = true, desc = 'File browser' })
     end,
   },
 
   -- Gruvbox Theme
   {
-    "ellisonleao/gruvbox.nvim",
-    priority = 1000, -- Load theme before other plugins
-    config = function()
-      vim.o.background = "dark" -- or "light" for light version
-      vim.cmd([[colorscheme gruvbox]])
-    end,
+      'sainnhe/gruvbox-material',
+      lazy = false,
+      priority = 1000,
+      config = function()
+        vim.g.gruvbox_material_enable_italic = true
+        vim.cmd.colorscheme('gruvbox-material')
+      end
   },
 
   -- Tmux integration
-  {
-    "aserowy/tmux.nvim",
+  { 
+    'alexghergh/nvim-tmux-navigation', 
     config = function()
-      require("tmux").setup({
-        -- Enable copy mode navigation
-        copy_sync = {
-          -- Enable copy mode navigation
-          enable = true,
-          -- Remove default keybindings
-          clear_registers = false,
-          -- Sync registers
-          sync_registers = true,
-          -- Sync system clipboard
-          sync_clipboard = true,
-          -- Sync deletions
-          sync_deletes = true,
-          -- Sync latest paste
-          sync_latest = true,
-          -- Sync unnamed register
-          sync_unnamed = true,
-        },
-        -- Enable navigation
-        navigation = {
-          -- Enable cycling through tmux sessions
-          cycle_navigation = true,
-          -- Enable navigation in copy mode
-          enable_default_keybindings = true,
-          -- Persist zoom in tmux
-          persist_zoom = false,
-        },
-        -- Enable resurrection of tmux sessions
-        resize = {
-          -- Enable default keybindings
-          enable_default_keybindings = true,
-          -- Force same size for all panes
-          force_equal = false,
-          -- Resize amount
-          resize_step_x = 1,
-          resize_step_y = 1,
-        }
-      })
+      local nvim_tmux_nav = require('nvim-tmux-navigation')
 
-      -- local tmux_term = require('tmux.term')
+      nvim_tmux_nav.setup {
+        disable_when_zoomed = true -- defaults to false
+      }
 
-      -- Additional keybindings for terminal management
-      vim.keymap.set('n', '<C-h>', [[<Cmd>lua require("tmux").move_left()<CR>]])
-      vim.keymap.set('n', '<C-j>', [[<Cmd>lua require("tmux").move_down()<CR>]])
-      vim.keymap.set('n', '<C-k>', [[<Cmd>lua require("tmux").move_up()<CR>]])
-      vim.keymap.set('n', '<C-l>', [[<Cmd>lua require("tmux").move_right()<CR>]])
-
-      -- Optional: Terminal mappings
-      -- vim.keymap.set('n', '<leader>th', function() tmux_term.toggle_term_main('h') end, { desc = 'Toggle horizontal terminal' })
-      -- vim.keymap.set('n', '<leader>tv', function() tmux_term.toggle_term_main('v') end, { desc = 'Toggle vertical terminal' })
+      vim.keymap.set('n', "<C-h>", nvim_tmux_nav.NvimTmuxNavigateLeft)
+      vim.keymap.set('n', "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown)
+      vim.keymap.set('n', "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp)
+      vim.keymap.set('n', "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight)
+      vim.keymap.set('n', "<C-\\>", nvim_tmux_nav.NvimTmuxNavigateLastActive)
+      vim.keymap.set('n', "<C-Space>", nvim_tmux_nav.NvimTmuxNavigateNext)
     end,
   },
 
-  -- COC (Conquer of Completion)
+  -- Copilot
   {
-    "neoclide/coc.nvim",
-    branch = "release",
-    -- COC configuration
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
     config = function()
-      -- Key mappings for COC
-      local keyset = vim.keymap.set
-
-      -- Autocomplete
-      function _G.check_back_space()
-          local col = vim.fn.col('.') - 1
-          return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
-      end
-
-      -- Use Tab for trigger completion with characters ahead and navigate
-      local opts = {silent = true, noremap = true, expr = true, replace_keycodes = false}
-      keyset("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
-      keyset("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
-
-      -- Make <CR> to accept selected completion item or notify coc.nvim to format
-      -- <C-g>u breaks current undo, please make your own choice
-      keyset("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
-
-      -- GoTo code navigation
-      keyset("n", "gd", "<Plug>(coc-definition)", {silent = true})
-      keyset("n", "gy", "<Plug>(coc-type-definition)", {silent = true})
-      keyset("n", "gi", "<Plug>(coc-implementation)", {silent = true})
-      keyset("n", "gr", "<Plug>(coc-references)", {silent = true})
-
-      -- Use K to show documentation in preview window
-      function _G.show_docs()
-        local cw = vim.fn.expand('<cword>')
-        if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
-          vim.api.nvim_command('h ' .. cw)
-        elseif vim.api.nvim_eval('coc#rpc#ready()') then
-          vim.fn.CocActionAsync('doHover')
-        else
-          vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
-        end
-      end
-      keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
-
-      -- Symbol renaming
-      keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
-
-      -- Highlight the symbol and its references on CursorHold
-      vim.api.nvim_create_augroup("CocGroup", {})
-      vim.api.nvim_create_autocmd("CursorHold", {
-        group = "CocGroup",
-        command = "silent call CocActionAsync('highlight')",
-        desc = "Highlight symbol under cursor on CursorHold"
+      require("copilot").setup({
+        panel = {
+          enabled = false,
+          auto_refresh = true,
+          keymap = {
+            jump_prev = "[[",
+            jump_next = "]]",
+            accept = "<CR>",
+            refresh = "gr",
+            open = "<M-CR>"
+          },
+        },
+        suggestion = {
+          enabled = false,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+        filetypes = {
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ["."] = false,
+        },
       })
     end,
+  },
+
+  -- Copilot chat
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "saadparwaiz1/cmp_luasnip",
+      "L3MON4D3/LuaSnip",
+      "rafamadriz/friendly-snippets",
+    },
+    config = function()
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
+
+      -- Load friendly-snippets
+      require("luasnip.loaders.from_vscode").lazy_load()
+
+      local has_words_before = function()
+        unpack = unpack or table.unpack
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      end
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
+        mapping = cmp.mapping.preset.insert({
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+        }),
+        sources = cmp.config.sources({
+          { name = "copilot" },
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+          { name = "buffer" },
+          { name = "path" },
+        }),
+        sorting = {
+          priority_weight = 2,
+          comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+          },
+        },
+        formatting = {
+          format = function(entry, vim_item)
+            -- Kind icons
+            vim_item.kind = string.format("%s", vim_item.kind)
+
+            -- Source
+            vim_item.menu = ({
+              copilot = "[Copilot]",
+              nvim_lsp = "[LSP]",
+              luasnip = "[Snippet]",
+              buffer = "[Buffer]",
+              path = "[Path]",
+            })[entry.source.name]
+
+            return vim_item
+          end,
+        },
+      })
+
+      -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+            { name = 'cmdline' }
+          })
+      })
+    end
+  },
+
+  -- Copilot completions
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },  
+
+  -- LSP Configuration for Go
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+      require('lspconfig').gopls.setup({
+        capabilities = capabilities,
+        settings = {
+          gopls = {
+            analyses = {
+              unusedparams = true,
+            },
+            staticcheck = true,
+            gofumpt = true,
+          },
+        },
+      })
+
+      -- Global mappings.
+      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+      vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+      vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+      -- Use LspAttach autocommand to only map the following keys
+      -- after the language server attaches to the current buffer
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+        callback = function(ev)
+          local opts = { buffer = ev.buf }
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+          -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+          vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+          vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+          vim.keymap.set('n', '<space>wl', function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          end, opts)
+          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+          vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+          vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        end,
+      })
+    end
+  },
+
+  {
+    "fatih/vim-go",
+    ft = "go",
+    build = ":GoInstallBinaries",
+    config = function()
+      -- Highlighting settings
+      vim.g.go_highlight_functions = 1
+      vim.g.go_highlight_function_calls = 1
+      vim.g.go_highlight_fields = 1
+      vim.g.go_highlight_types = 1
+      vim.g.go_highlight_operators = 1
+      vim.g.go_highlight_build_constraints = 1
+
+      -- Build/test settings
+      vim.g.go_test_timeout = '10s'
+
+      -- Configure key mappings
+      local function map(mode, lhs, rhs, opts)
+        local options = { noremap = true, silent = true }
+        if opts then
+          options = vim.tbl_extend("force", options, opts)
+        end
+        vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+      end
+
+      -- Common vim-go commands
+      map('n', '<leader>gr', ':GoRun<CR>')
+      map('n', '<leader>gt', ':GoTest<CR>')
+      map('n', '<leader>gb', ':GoBuild<CR>')
+      map('n', '<leader>gc', ':GoCoverageToggle<CR>')
+      map('n', '<leader>gi', ':GoInfo<CR>')
+      map('n', '<leader>gm', ':GoMetaLinter<CR>')
+    end,
+    dependencies = {
+      "neovim/nvim-lspconfig",  -- Optional: if you're using LSP
+    }
   },
 
   -- Treesitter for better syntax highlighting
@@ -425,6 +638,9 @@ require("lazy").setup({
           dotfiles = false,
         },
       })
+
+      vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<CR>', { silent = true })
+
     end,
   },
 
@@ -435,7 +651,7 @@ require("lazy").setup({
     config = function()
       require('lualine').setup({
         options = {
-          theme = 'gruvbox',
+          theme = 'gruvbox-material',
           component_separators = { left = '', right = ''},
           section_separators = { left = '', right = ''},
           globalstatus = true,         
