@@ -101,10 +101,10 @@ vim.keymap.set('n', '<leader>sm', '<C-w>_', { desc = 'Max out the height', silen
 -- Max out the width of the current split
 vim.keymap.set('n', '<leader>sw', '<C-w>|', { desc = 'Max out the width', silent = true })
 
--- JavaScript/TypeScript settings (2 spaces)
+-- JavaScript/TypeScript/HTML settings (2 spaces)
 vim.api.nvim_create_autocmd("FileType", {
   group = "FileTypeIndent",
-  pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact", "lua" },
+  pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact", "lua", "gohtmltmpl" },
   callback = function()
     vim.opt_local.expandtab = true
     vim.opt_local.tabstop = 2
@@ -239,13 +239,13 @@ require("lazy").setup({
 
   -- Gruvbox Theme
   {
-      'sainnhe/gruvbox-material',
-      lazy = false,
-      priority = 1000,
-      config = function()
-        vim.g.gruvbox_material_enable_italic = true
-        vim.cmd.colorscheme('gruvbox-material')
-      end
+    'sainnhe/gruvbox-material',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.g.gruvbox_material_enable_italic = true
+      vim.cmd.colorscheme('gruvbox-material')
+    end
   },
 
   -- Tmux integration
@@ -316,17 +316,29 @@ require("lazy").setup({
   -- Copilot chat
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    branch = "main",
     dependencies = {
       { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
     },
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
-      debug = true, -- Enable debugging
-      -- See Configuration section for rest
+      debug = false, -- Enable debugging
+      mappings = {
+        reset = {
+          normal ='<C-x>',
+          insert = '<C-x>'
+        },
+      }
     },
-    -- See Commands section for default commands if you want to lazy load on them
+    keys = {
+      {
+        "<leader>cc",
+        "<cmd>CopilotChatToggle<cr>",
+        desc = "Toggle Copilot Chat",
+        mode = "n",
+      },
+    }
   },
 
   {
@@ -554,7 +566,8 @@ require("lazy").setup({
         -- A list of parser names, or "all"
         ensure_installed = {
           "lua", "vim", "vimdoc", "javascript", "typescript", "python",
-          "cpp", "c", "rust", "markdown", "bash", "go", "json", "yaml"
+          "cpp", "c", "rust", "markdown", "bash", "go", "json", "yaml",
+          "clojure"
         },
 
         -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -676,6 +689,45 @@ require("lazy").setup({
         -- Additional options for specific filetypes
         extensions = {'fugitive', 'nvim-tree', 'quickfix'}
       })
+    end,
+  },
+
+  -- vim-sexp for Lisp editing
+  {
+    'guns/vim-sexp',
+    ft = { 'lisp', 'scheme', 'clojure' },
+    dependencies = {
+      'tpope/vim-sexp-mappings-for-regular-people',
+    },
+    config = function()
+      vim.g.vimsexp_maps = 0
+    end,
+  },
+
+  -- Conjure for Clojure development
+  {
+    'Olical/conjure',
+    ft = 'clojure',
+    lazy = true,
+    config = function()
+    --   vim.g.conjure#client#clojure#nrepl#lein#executable = 'lein'
+    --   vim.g.conjure#client#clojure#nrepl#lein#command = 'repl :headless'
+    --   vim.g.conjure#client#clojure#nrepl#lein#classpath = 'dev'
+    --   vim.g.conjure#client#clojure#nrepl#lein#dependencies = 'nrepl'
+    --   vim.g.conjure#client#clojure#nrepl#lein#repl_host = 'localhost'
+    --   vim.g.conjure#client#clojure#nrepl#lein#repl_port = 5555
+    end,
+    dependencies = { "PaterJason/cmp-conjure" }
+  },
+
+  {
+    "PaterJason/cmp-conjure",
+    lazy = true,
+    config = function()
+      local cmp = require("cmp")
+      local config = cmp.get_config()
+      table.insert(config.sources, { name = "conjure" })
+      return cmp.setup(config)
     end,
   },
 
