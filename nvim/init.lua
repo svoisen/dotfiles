@@ -112,6 +112,26 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Julia settings (4 spaces)
+vim.api.nvim_create_autocmd("FileType", {
+  group = "FileTypeIndent",
+  pattern = { "julia" },
+  callback = function()
+    vim.opt_local.expandtab = true
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+  end,
+})
+
+require'lspconfig'.julials.setup{
+  on_new_config = function(new_config, _)
+    local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
+    if require'lspconfig'.util.path.is_file(julia) then
+      new_config.cmd[1] = julia
+    end
+  end
+}
+
 -- Setup lazy.nvim
 require("lazy").setup({
   -- Telescope fuzzy finder
@@ -237,16 +257,26 @@ require("lazy").setup({
     end,
   },
 
-  -- Gruvbox Theme
-  {
-    'sainnhe/gruvbox-material',
+  -- Catppuccin Theme
+  { 'catppuccin/nvim', 
     lazy = false,
+    name = 'catppuccin', 
     priority = 1000,
     config = function()
-      vim.g.gruvbox_material_enable_italic = true
-      vim.cmd.colorscheme('gruvbox-material')
+      vim.cmd.colorscheme('catppuccin-macchiato')
     end
   },
+
+  -- Gruvbox Theme
+  -- {
+  --   'sainnhe/gruvbox-material',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     vim.g.gruvbox_material_enable_italic = true
+  --     vim.cmd.colorscheme('gruvbox-material')
+  --   end
+  -- },
 
   -- Tmux integration
   { 
@@ -352,6 +382,8 @@ require("lazy").setup({
       "saadparwaiz1/cmp_luasnip",
       "L3MON4D3/LuaSnip",
       "rafamadriz/friendly-snippets",
+      "PaterJason/cmp-conjure",
+      "kdheepak/cmp-latex-symbols",
     },
     config = function()
       local cmp = require("cmp")
@@ -409,6 +441,7 @@ require("lazy").setup({
           { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
+          { name = "conjure" }
         }),
         sorting = {
           priority_weight = 2,
@@ -567,7 +600,7 @@ require("lazy").setup({
         ensure_installed = {
           "lua", "vim", "vimdoc", "javascript", "typescript", "python",
           "cpp", "c", "rust", "markdown", "bash", "go", "json", "yaml",
-          "clojure"
+          "clojure", "commonlisp", "julia"
         },
 
         -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -664,7 +697,7 @@ require("lazy").setup({
     config = function()
       require('lualine').setup({
         options = {
-          theme = 'gruvbox-material',
+          theme = 'catppuccin-macchiato',
           component_separators = { left = '', right = ''},
           section_separators = { left = '', right = ''},
           globalstatus = true,         
@@ -704,10 +737,10 @@ require("lazy").setup({
     end,
   },
 
-  -- Conjure for Clojure development
+  -- -- Conjure for Clojure development
   {
     'Olical/conjure',
-    ft = 'clojure',
+    ft = { 'clojure' },
     lazy = true,
     config = function()
     --   vim.g.conjure#client#clojure#nrepl#lein#executable = 'lein'
@@ -720,15 +753,52 @@ require("lazy").setup({
     dependencies = { "PaterJason/cmp-conjure" }
   },
 
+  -- vim-jack-in
   {
-    "PaterJason/cmp-conjure",
-    lazy = true,
+    'clojure-vim/vim-jack-in',
+    ft = { 'clojure', 'lisp', 'scheme' },
     config = function()
-      local cmp = require("cmp")
-      local config = cmp.get_config()
-      table.insert(config.sources, { name = "conjure" })
-      return cmp.setup(config)
+      vim.g.jack_in_default_command = 'lein repl :headless'
     end,
+    dependencies = { 'tpope/vim-dispatch', 'radenling/vim-dispatch-neovim' }
+  },
+
+  {
+    'p00f/nvim-ts-rainbow',
+    requires = 'nvim-treesitter/nvim-treesitter',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        rainbow = {
+          enable = true,
+          extended_mode = false, -- Highlight also non-parentheses delimiters
+          max_file_lines = nil, -- Do not enable for files with more than n lines
+        }
+      }
+    end
+  },
+
+  {
+    'tpope/vim-surround',
+    event = 'VeryLazy'
+  },
+
+  {
+    'edkolev/tmuxline.vim',
+  },
+
+  -- For unicode completion, useful for Julia
+  {
+    'arthurxavierx/vim-unicoder'
+  },
+  
+  {
+    'Glench/Vim-Jinja2-Syntax',
+    config = function()
+      vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+        pattern = { "*.njk" },
+        command = "set filetype=jinja"
+      })
+    end
   },
 
   -- Check for updates
