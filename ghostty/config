@@ -1,0 +1,39 @@
+# Font
+font-family = "FiraCode Nerd Font Mono"
+font-family-bold = "FiraCode Nerd Font Mono"
+font-family-italic = "Hack Nerd Font"
+font-family-bold-italic = "Hack Nerd Font"
+font-size = 12
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+macos-titlebar-style = hidden
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+
+# Colors (Gruvbox Material Dark Medium)
+background = #282828
+foreground = #dfbf8e
+
+# Normal colors
+palette = 0=#665c54
+palette = 1=#ea6962
+palette = 2=#a9b665
+palette = 3=#e78a4e
+palette = 4=#7daea3
+palette = 5=#d3869b
+palette = 6=#89b482
+palette = 7=#dfbf8e
+
+# Bright colors
+palette = 8=#928374
+palette = 9=#ea6962
+palette = 10=#a9b665
+palette = 11=#e3a84e
+palette = 12=#7daea3
+palette = 13=#d3869b
+palette = 14=#89b482
+palette = 15=#dfbf8e

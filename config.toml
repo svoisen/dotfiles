@@ -31,3 +31,6 @@ backup = "$HOME/.dotfiles~"
 # alacritty
 "alacritty/alacritty.toml" = ".alacritty.toml"
 "alacritty/themes/gruvbox_material.toml" = "./config/alacritty/themes/gruvbox_material.toml"
+
+# ghostty
+"ghostty/config" = "./config/ghostty/config"
