@@ -15,7 +15,7 @@ export PATH=$HOME/bin:$HOME/go/bin:/usr/local/bin:$PATH
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # environment variables
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-export EDITOR='vim'
+export EDITOR='nvim'
 export VISUAL=$EDITOR
 export BAT_THEME='gruvbox-dark'
 
@@ -73,6 +73,20 @@ fi
 test -f "$HOME/Library/Preferences/netlify/helper/path.zsh.inc" && source "$HOME/Library/Preferences/netlify/helper/path.zsh.inc"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# local API keys
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+source "$HOME/.anthropic-api-key"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # spaceship prompt
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 source "/opt/homebrew/opt/spaceship/spaceship.zsh"
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/Users/svoisen/.juliaup/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<

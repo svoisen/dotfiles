@@ -15,4 +15,7 @@ cursor-style = block
 cursor-style-blink = true
 
 # Theme
-theme = catppuccin-macchiato
+theme = "Catppuccin Macchiato"
+
+# Terminal
+term = xterm-256color

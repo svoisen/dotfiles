@@ -33,4 +33,4 @@ backup = "$HOME/.dotfiles~"
 "alacritty/themes/catppuccin_macchiato.toml" = "./config/alacritty/themes/catppuccin_macchiato.toml"
 
 # ghostty
-"ghostty/config" = "./config/ghostty/config"
+"ghostty/config" = "./.config/ghostty/config"
