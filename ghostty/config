@@ -1,0 +1,21 @@
+# Font
+font-family = "FiraCode Nerd Font Mono"
+font-family-bold = "FiraCode Nerd Font Mono"
+font-family-italic = "Hack Nerd Font"
+font-family-bold-italic = "Hack Nerd Font"
+font-size = 12
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+macos-titlebar-style = hidden
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+
+# Theme
+theme = "Catppuccin Macchiato"
+
+# Terminal
+term = xterm-256color
