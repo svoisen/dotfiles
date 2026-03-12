@@ -32,7 +32,6 @@ vim.g.maplocalleader = "\\"          -- This is the default
 vim.opt.number = true                -- Show line numbers
 vim.opt.relativenumber = false       -- Show relative line numbers
 vim.opt.colorcolumn = "80"           -- Highlight column 80
-vim.opt.clipboard = "unnamed"        -- Use system clipboard  
 vim.opt.cursorline = true            -- Highlight current line
 
 -- Indentation settings
@@ -111,26 +110,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.shiftwidth = 2
   end,
 })
-
--- Julia settings (4 spaces)
-vim.api.nvim_create_autocmd("FileType", {
-  group = "FileTypeIndent",
-  pattern = { "julia" },
-  callback = function()
-    vim.opt_local.expandtab = true
-    vim.opt_local.tabstop = 4
-    vim.opt_local.shiftwidth = 4
-  end,
-})
-
-require'lspconfig'.julials.setup{
-  on_new_config = function(new_config, _)
-    local julia = vim.fn.expand("~/.julia/environments/nvim-lspconfig/bin/julia")
-    if require'lspconfig'.util.path.is_file(julia) then
-      new_config.cmd[1] = julia
-    end
-  end
-}
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -297,80 +276,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Copilot
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        panel = {
-          enabled = false,
-          auto_refresh = true,
-          keymap = {
-            jump_prev = "[[",
-            jump_next = "]]",
-            accept = "<CR>",
-            refresh = "gr",
-            open = "<M-CR>"
-          },
-        },
-        suggestion = {
-          enabled = false,
-          auto_trigger = true,
-          debounce = 75,
-          keymap = {
-            accept = "<M-l>",
-            accept_word = false,
-            accept_line = false,
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
-        },
-        filetypes = {
-          yaml = false,
-          markdown = false,
-          help = false,
-          gitcommit = false,
-          gitrebase = false,
-          hgcommit = false,
-          svn = false,
-          cvs = false,
-          ["."] = false,
-        },
-      })
-    end,
-  },
-
-  -- Copilot chat
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "main",
-    dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-    },
-    build = "make tiktoken", -- Only on MacOS or Linux
-    opts = {
-      debug = false, -- Enable debugging
-      mappings = {
-        reset = {
-          normal ='<C-x>',
-          insert = '<C-x>'
-        },
-      }
-    },
-    keys = {
-      {
-        "<leader>cc",
-        "<cmd>CopilotChatToggle<cr>",
-        desc = "Toggle Copilot Chat",
-        mode = "n",
-      },
-    }
-  },
-
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
@@ -379,29 +284,14 @@ require("lazy").setup({
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      "saadparwaiz1/cmp_luasnip",
-      "L3MON4D3/LuaSnip",
-      "rafamadriz/friendly-snippets",
-      "PaterJason/cmp-conjure",
-      "kdheepak/cmp-latex-symbols",
     },
     config = function()
       local cmp = require("cmp")
-      local luasnip = require("luasnip")
-
-      -- Load friendly-snippets
-      require("luasnip.loaders.from_vscode").lazy_load()
-
-      local has_words_before = function()
-        unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
 
       cmp.setup({
         snippet = {
           expand = function(args)
-            luasnip.lsp_expand(args.body)
+            vim.snippet.expand(args.body)
           end,
         },
         window = {
@@ -417,10 +307,6 @@ require("lazy").setup({
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
             else
               fallback()
             end
@@ -428,20 +314,15 @@ require("lazy").setup({
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
             else
               fallback()
             end
           end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
-          { name = "copilot" },
           { name = "nvim_lsp" },
-          { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
-          { name = "conjure" }
         }),
         sorting = {
           priority_weight = 2,
@@ -462,9 +343,7 @@ require("lazy").setup({
 
             -- Source
             vim_item.menu = ({
-              copilot = "[Copilot]",
               nvim_lsp = "[LSP]",
-              luasnip = "[Snippet]",
               buffer = "[Buffer]",
               path = "[Path]",
             })[entry.source.name]
@@ -494,21 +373,13 @@ require("lazy").setup({
     end
   },
 
-  -- Copilot completions
-  {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },  
-
   -- LSP Configuration for Go
   {
     "neovim/nvim-lspconfig",
     config = function()
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      require('lspconfig').gopls.setup({
+      vim.lsp.config('gopls', {
         capabilities = capabilities,
         settings = {
           gopls = {
@@ -520,11 +391,12 @@ require("lazy").setup({
           },
         },
       })
+      vim.lsp.enable('gopls')
 
       -- Global mappings.
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
-      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-      vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+      vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1 }) end)
+      vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1 }) end)
       vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
       -- Use LspAttach autocommand to only map the following keys
@@ -565,6 +437,12 @@ require("lazy").setup({
       vim.g.go_highlight_operators = 1
       vim.g.go_highlight_build_constraints = 1
 
+      -- Disable vim-go features handled by gopls/LSP to avoid conflicts
+      vim.g.go_gopls_enabled = 0        -- use nvim-lspconfig's gopls instead
+      vim.g.go_fmt_autosave = 0         -- let gopls handle formatting
+      vim.g.go_imports_autosave = 0     -- let gopls handle imports
+      vim.g.go_def_mapping_enabled = 0  -- let LSP handle gd
+
       -- Build/test settings
       vim.g.go_test_timeout = '10s'
 
@@ -600,7 +478,6 @@ require("lazy").setup({
         ensure_installed = {
           "lua", "vim", "vimdoc", "javascript", "typescript", "python",
           "cpp", "c", "rust", "markdown", "bash", "go", "json", "yaml",
-          "clojure", "commonlisp", "julia"
         },
 
         -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -725,55 +602,14 @@ require("lazy").setup({
     end,
   },
 
-  -- vim-sexp for Lisp editing
   {
-    'guns/vim-sexp',
-    ft = { 'lisp', 'scheme', 'clojure' },
-    dependencies = {
-      'tpope/vim-sexp-mappings-for-regular-people',
-    },
+    'HiPhish/rainbow-delimiters.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
-      vim.g.vimsexp_maps = 0
-    end,
-  },
-
-  -- -- Conjure for Clojure development
-  {
-    'Olical/conjure',
-    ft = { 'clojure' },
-    lazy = true,
-    config = function()
-    --   vim.g.conjure#client#clojure#nrepl#lein#executable = 'lein'
-    --   vim.g.conjure#client#clojure#nrepl#lein#command = 'repl :headless'
-    --   vim.g.conjure#client#clojure#nrepl#lein#classpath = 'dev'
-    --   vim.g.conjure#client#clojure#nrepl#lein#dependencies = 'nrepl'
-    --   vim.g.conjure#client#clojure#nrepl#lein#repl_host = 'localhost'
-    --   vim.g.conjure#client#clojure#nrepl#lein#repl_port = 5555
-    end,
-    dependencies = { "PaterJason/cmp-conjure" }
-  },
-
-  -- vim-jack-in
-  {
-    'clojure-vim/vim-jack-in',
-    ft = { 'clojure', 'lisp', 'scheme' },
-    config = function()
-      vim.g.jack_in_default_command = 'lein repl :headless'
-    end,
-    dependencies = { 'tpope/vim-dispatch', 'radenling/vim-dispatch-neovim' }
-  },
-
-  {
-    'p00f/nvim-ts-rainbow',
-    requires = 'nvim-treesitter/nvim-treesitter',
-    config = function()
-      require('nvim-treesitter.configs').setup {
-        rainbow = {
-          enable = true,
-          extended_mode = false, -- Highlight also non-parentheses delimiters
-          max_file_lines = nil, -- Do not enable for files with more than n lines
-        }
-      }
+      require('rainbow-delimiters.setup').setup({
+        strategy = { [''] = require('rainbow-delimiters').strategy['global'] },
+        query = { [''] = 'rainbow-delimiters', lua = 'rainbow-blocks' },
+      })
     end
   },
 
@@ -786,11 +622,6 @@ require("lazy").setup({
     'edkolev/tmuxline.vim',
   },
 
-  -- For unicode completion, useful for Julia
-  {
-    'arthurxavierx/vim-unicoder'
-  },
-  
   {
     'Glench/Vim-Jinja2-Syntax',
     config = function()
