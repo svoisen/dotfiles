@@ -353,6 +353,13 @@ require("lazy").setup({
         },
       })
 
+      -- Markdown/text: only complete filesystem paths, suppress all other sources
+      cmp.setup.filetype({ 'markdown', 'mkd', 'text', 'gmi' }, {
+        sources = cmp.config.sources({
+          { name = 'path' },
+        }),
+      })
+
       -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline({ '/', '?' }, {
         mapping = cmp.mapping.preset.cmdline(),
