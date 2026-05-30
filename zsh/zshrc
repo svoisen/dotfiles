@@ -79,6 +79,15 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# pnpm
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # netlify
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 test -f "$HOME/Library/Preferences/netlify/helper/path.zsh.inc" && source "$HOME/Library/Preferences/netlify/helper/path.zsh.inc"
@@ -87,6 +96,13 @@ test -f "$HOME/Library/Preferences/netlify/helper/path.zsh.inc" && source "$HOME
 # local API keys
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 [ -f "$HOME/.anthropic-api-key" ] && source "$HOME/.anthropic-api-key"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# wt (worktree)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+if command -v wt &> /dev/null; then
+  eval "$(wt config shell init zsh)"
+fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # spaceship prompt

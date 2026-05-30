@@ -20,17 +20,17 @@ backup = "$HOME/.dotfiles~"
 
 # vim
 "vim/vimrc" = ".vimrc"
-"vim/coc-settings.json" = "./vim/coc-settings.json"
+"vim/coc-settings.json" = "./.vim/coc-settings.json"
 
 # nvim
-"nvim/init.lua" = "./config/nvim/init.lua"
+"nvim/init.lua" = "./.config/nvim/init.lua"
 
 # zsh
 "zsh/zshrc" = ".zshrc"
 
 # alacritty
 "alacritty/alacritty.toml" = ".alacritty.toml"
-"alacritty/themes/catppuccin_macchiato.toml" = "./config/alacritty/themes/catppuccin_macchiato.toml"
+"alacritty/themes/catppuccin_macchiato.toml" = "./.config/alacritty/themes/catppuccin_macchiato.toml"
 
 # ghostty
 "ghostty/config" = "./.config/ghostty/config"
